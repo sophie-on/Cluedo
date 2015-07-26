@@ -30,12 +30,12 @@ public class Location extends GameObject {
 	private Set<Weapon> weapons;
 
 	// Characters that are in this room.
-	private Set<Character> characters;
+	private Set<CluedoCharacter> characters;
 
 	public Location(boolean isCrimeScene, Room room) {
 		super(isCrimeScene);
 		this.m_room = room;
-		characters = new HashSet<Character>();
+		characters = new HashSet<CluedoCharacter>();
 		weapons = new HashSet<Weapon>();
 	}
 
@@ -45,7 +45,7 @@ public class Location extends GameObject {
 	 * @param character
 	 * @return
 	 */
-	public boolean addCharacter(Character character) {
+	public boolean addCharacter(CluedoCharacter character) {
 		return characters.add(character);
 	}
 
@@ -55,7 +55,7 @@ public class Location extends GameObject {
 	 * @param character
 	 * @return
 	 */
-	public boolean removeCharacter(Character character) {
+	public boolean removeCharacter(CluedoCharacter character) {
 		return characters.remove(character);
 	}
 

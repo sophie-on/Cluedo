@@ -1,5 +1,6 @@
 package cluedo.model.cards;
 
+import cluedo.model.gameObjects.GameObject;
 import cluedo.model.gameObjects.Weapon;
 
 /**
@@ -17,7 +18,8 @@ public class WeaponCard implements Card {
 		this.m_weapon = weapon;
 	}
 
-	public Weapon getWeapon() {
+	@Override
+	public GameObject getObject() {
 		return m_weapon;
 	}
 }

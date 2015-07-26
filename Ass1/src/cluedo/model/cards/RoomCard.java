@@ -1,5 +1,6 @@
 package cluedo.model.cards;
 
+import cluedo.model.gameObjects.GameObject;
 import cluedo.model.gameObjects.Location;
 
 /**
@@ -17,7 +18,8 @@ public class RoomCard implements Card {
 		this.m_room = room;
 	}
 
-	public Location getRoom() {
+	@Override
+	public GameObject getObject() {
 		return m_room;
 	}
 }
