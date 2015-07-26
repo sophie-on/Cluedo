@@ -1,5 +1,12 @@
 package cluedo.model;
 
+/**
+ * 
+ * @author CBryers
+ *
+ * Just a tester class for github
+ */
+
 public class TestCode {
 
 }
