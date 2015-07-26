@@ -1,0 +1,26 @@
+25 25
+!!!!!!!!!s!!!!s!!!!!!!!!!
+kkkkkpccccbbbbccccCCCCCCC
+kkkkkkccbbbbbbbbccCCCCCCC
+kkkkkkccbbbbbbbbccCCCCCCC
+kkkkkkccbbbbbbbbccdCCCCCC
+kkkkkkccdbbbbbbdcccCCCCp!
+!kkkdkccbbbbbbbbccccccccs
+ccccccccbdbbbbdbcccccccc!
+!ccccccccccccccccccBBBBBB
+DDDDDccccccccccccccdBBBBB
+DDDDDDDDccxxxxxxcccBBBBBB
+DDDDDDDDccxxxxxxcccBBBBBB
+DDDDDDDdccxxxxxxcccBBBBdB
+DDDDDDDDccxxxxxxcccccccc!
+DDDDDDDDccxxxxxxccclldll!
+DDDDDDdDccxxxxxxcclllllll
+!cccccccccxxxxxxccdllllll
+sccccccccccccccccclllllll
+!ccccccccHHddHHcccclllll!
+pLLLLLdccHHHHHHcccccccccs
+LLLLLLLccHHHHHdccccccccc!
+LLLLLLLccHHHHHHccdSSSSSSp
+LLLLLLLccHHHHHHccSSSSSSSS
+LLLLLLLccHHHHHHccSSSSSSSS
+LLLLLL!s!HHHHHH!c!SSSSSSS
