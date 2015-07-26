@@ -24,6 +24,10 @@ import cluedo.model.gameObjects.Weapon.WeaponType;
  */
 public class Game {
 
+	public enum Command {
+		MOVE, SUGGESTION, ACCUSATION, HELP, QUIT;
+	}
+	
 	private static final boolean DEBUG = true;
 
 	// The game board
@@ -47,7 +51,7 @@ public class Game {
 		deck = new HashSet<Card>();
 		envelope = new HashSet<Card>();
 		createDeck();
-		
+
 		// Create a scanner
 		Scanner reader = new Scanner(System.in);
 
@@ -64,7 +68,7 @@ public class Game {
 	/**
 	 * Creates the game deck and fills the envelope
 	 */
-	public void createDeck() {
+	private void createDeck() {
 
 		// Used to select the murderer, murder weapon and crime scene.
 		int criminal = randomNumber(0, 5);
@@ -136,6 +140,12 @@ public class Game {
 		}
 	}
 
+	private boolean move(Player player, int x, int y) {
+		// TODO should call on a isValid method in board to see if the player
+		// can move there
+		return true;
+	}
+
 	/**
 	 * Generate a random number between a given min and max. Used to choose the
 	 * murderer, murder weapon and crime scene.
@@ -157,7 +167,7 @@ public class Game {
 	}
 
 	public static void main(String args[]) {
-		
+
 		Game cluedo = new Game();
 
 		if (DEBUG) {
