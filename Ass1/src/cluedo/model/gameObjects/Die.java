@@ -7,7 +7,7 @@ package cluedo.model.gameObjects;
  *
  */
 
-public class Dice {
+public class Die {
 	
 	public int roll(){
 		return (int)(1 + Math.random()*5);

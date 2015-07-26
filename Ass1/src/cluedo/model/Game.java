@@ -2,8 +2,10 @@ package cluedo.model;
 
 import java.util.HashSet;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.Set;
 
+import cluedo.model.board.Board;
 import cluedo.model.cards.Card;
 import cluedo.model.cards.CharacterCard;
 import cluedo.model.cards.RoomCard;
@@ -22,8 +24,10 @@ import cluedo.model.gameObjects.Weapon.WeaponType;
  */
 public class Game {
 
+	private static final boolean DEBUG = true;
+
 	// The game board
-	// private Board m_board;
+	private Board m_board;
 
 	// Players in the game
 	// private Set<Player> players;
@@ -35,20 +39,26 @@ public class Game {
 	private Set<Card> envelope;
 
 	// Dice in the game
-	// private Set<Die> dice;
+	private Set<Die> dice;
 
 	public Game() {
-		
+
 		// Initialize the deck and the envelope
 		deck = new HashSet<Card>();
 		envelope = new HashSet<Card>();
 		createDeck();
 		
+		// Create a scanner
+		Scanner reader = new Scanner(System.in);
+
 		// TODO Create players
-		
+
 		// TODO Load board
-		
-		// TODO Create dice
+
+		// Create dice
+		dice = new HashSet<Die>();
+		System.out.println("How many dice are you playing with?");
+		// TODO read number of dice
 	}
 
 	/**
@@ -136,6 +146,32 @@ public class Game {
 	 */
 	public static int randomNumber(int min, int max) {
 		return new Random().nextInt((max - min) + 1) + min;
+	}
+
+	public final Set<Card> getDeck() {
+		return deck;
+	}
+
+	public final Set<Card> getEnvelope() {
+		return envelope;
+	}
+
+	public static void main(String args[]) {
+		
+		Game cluedo = new Game();
+
+		if (DEBUG) {
+
+			System.out.println("*CARDS IN DECK*\n");
+
+			for (Card c : cluedo.getDeck())
+				System.out.println(c.getObject().getName());
+
+			System.out.println("\n*CARDS IN ENVELOPE*\n");
+
+			for (Card c : cluedo.getEnvelope())
+				System.out.println(c.getObject().getName());
+		}
 	}
 
 }
