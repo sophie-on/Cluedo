@@ -21,11 +21,16 @@ public class Player {
 	// Player's character token
 	private CluedoCharacter m_character;
 	
+	// Player's gamertag
+	private String m_name;
+	
 	// Player's position on the board
 	int m_x, m_y;
 	
-	public Player(Set<Card> hand, int start_x, int start_y) {
+	public Player(Set<Card> hand, String name, CluedoCharacter character, int start_x, int start_y) {
 		this.hand = hand;
+		this.m_name = name;
+		this.m_character = character;
 		this.m_x = start_x;
 		this.m_y = start_y;
 	}
