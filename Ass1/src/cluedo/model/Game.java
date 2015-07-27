@@ -1,6 +1,7 @@
 package cluedo.model;
 
 import java.awt.Point;
+import java.io.FileReader;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
@@ -76,6 +77,49 @@ public class Game {
 		dice = new HashSet<Die>();
 		System.out.println("How many dice are you playing with?");
 		// TODO read number of dice
+
+		// TODO start the game
+		// startGame()
+	}
+
+	/**
+	 * Start the actual game
+	 */
+	private void startGame() {
+
+		/**
+		 * loop until game is over:
+		 *  for each player:
+		 *   ask for a command
+		 *   validate command
+		 *   check if player has lost
+		 *
+		 */
+
+		boolean gameOver = false;
+
+		while (!gameOver) {
+			for (Player p : players) {
+
+				// Check for game over
+				if (players.size() == 1) {
+					gameOver = true;
+					System.out.println("***Congragulations " + p.getName() + " You won!***");
+					break;
+				}
+
+				// Ask for a command
+				System.out.println("***" + p.getName() + " please enter a command***");
+
+				// TODO parse command
+				boolean validCommand = false;
+
+				// Loop until command is valid
+				do {
+
+				} while (!validCommand);
+			}
+		}
 	}
 
 	/**
@@ -358,7 +402,7 @@ public class Game {
 			System.out.println("\n*CARDS IN PLAYER HANDS*\n");
 
 			for (Player p : cluedo.players)
-				for (Card c :p.getHand())
+				for (Card c : p.getHand())
 					System.out.println(c.getObject().getName());
 		}
 	}
