@@ -9,7 +9,7 @@ import cluedo.model.gameObjects.CluedoCharacter.Suspect;
 
 /**
  * Class that represents the player
- * 
+ *
  * @author Cameron Bryers, Hannah Craighead.
  *
  */
@@ -72,5 +72,9 @@ public class Player {
 
 	public final Suspect getCharacter() {
 		return m_character;
+	}
+
+	public final Set<Card> getHand() {
+		return hand;
 	}
 }

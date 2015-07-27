@@ -2,6 +2,7 @@ package cluedo.model;
 
 import java.awt.Point;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
@@ -12,14 +13,13 @@ import cluedo.model.cards.CharacterCard;
 import cluedo.model.cards.RoomCard;
 import cluedo.model.cards.WeaponCard;
 import cluedo.model.gameObjects.*;
-import cluedo.model.gameObjects.CluedoCharacter;
 import cluedo.model.gameObjects.CluedoCharacter.Suspect;
 import cluedo.model.gameObjects.Location.Room;
 import cluedo.model.gameObjects.Weapon.WeaponType;
 
 /**
  * Class that represents the game itself
- * 
+ *
  * @author Cameron Bryers, Hannah Craighead.
  *
  */
@@ -66,6 +66,9 @@ public class Game {
 
 		// Create players
 		setupPlayers();
+
+		// Deal cards
+		deal();
 
 		// TODO Load board
 
@@ -170,7 +173,8 @@ public class Game {
 
 			// Error message
 			if (numOfPlayers < 3 || numOfPlayers > 6)
-				System.out.println("***That is not a valid number of players***");
+				System.out
+						.println("***That is not a valid number of players***");
 
 		} while (numOfPlayers < 3 || numOfPlayers > 6);
 
@@ -178,10 +182,11 @@ public class Game {
 		for (int i = 0; i < numOfPlayers; i++) {
 
 			// Get name
-			System.out.println("***Player " + (i + 1) + " please enter a name***");
+			System.out.println("***Player " + (i + 1)
+					+ " please enter a name***");
 			String name = reader.next();
 
-			boolean isValidCharacter, characterFound;
+			boolean isValidCharacter;
 			Suspect suspect;
 
 			// Get character
@@ -190,9 +195,11 @@ public class Game {
 				suspect = null;
 
 				// Print out characters
-				System.out.println("***" + name + " please choose a character***\n");
+				System.out.println("***" + name
+						+ " please choose a character***\n");
 				for (int j = 0; j < Suspect.values().length; j++)
-					System.out.println(Suspect.values()[j].toString() + ": " + (j + 1));
+					System.out.println(Suspect.values()[j].toString() + ": "
+							+ (j + 1));
 
 				int character = reader.nextInt();
 
@@ -231,7 +238,8 @@ public class Game {
 					}
 
 				if (!isValidCharacter)
-					System.out.println("***Character is not valid or is already taken***");
+					System.out
+							.println("***Character is not valid or is already taken***");
 				else
 					break;
 
@@ -270,8 +278,33 @@ public class Game {
 	}
 
 	/**
+	 * Deal cards to players
+	 */
+	private void deal() {
+
+		// Number of cards in each player's hand
+		int numOfCards = deck.size() / players.size();
+
+		Iterator<Card> iter = deck.iterator();
+
+		for (Player player : players) {
+
+			// Create a hand
+			Set<Card> hand = new HashSet<Card>();
+
+			// Add cards to the hand
+			for (int j = 0; j < numOfCards; j++)
+				hand.add(iter.next());
+
+			// Give player the cards
+			player.setHand(hand);
+		}
+
+	}
+
+	/**
 	 * Move a player given a position and a roll.
-	 * 
+	 *
 	 * @param player
 	 * @param dx
 	 * @param dy
@@ -289,7 +322,7 @@ public class Game {
 	/**
 	 * Generate a random number between a given min and max. Used to choose the
 	 * murderer, murder weapon and crime scene.
-	 * 
+	 *
 	 * @param min
 	 * @param max
 	 * @return
@@ -321,6 +354,12 @@ public class Game {
 
 			for (Card c : cluedo.getEnvelope())
 				System.out.println(c.getObject().getName());
+
+			System.out.println("\n*CARDS IN PLAYER HANDS\n*");
+
+			for (Player p : cluedo.players)
+				for (Card c :p.getHand())
+					System.out.println(c.getObject().toString());
 		}
 	}
 
