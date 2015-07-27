@@ -355,11 +355,11 @@ public class Game {
 			for (Card c : cluedo.getEnvelope())
 				System.out.println(c.getObject().getName());
 
-			System.out.println("\n*CARDS IN PLAYER HANDS\n*");
+			System.out.println("\n*CARDS IN PLAYER HANDS*\n");
 
 			for (Player p : cluedo.players)
 				for (Card c :p.getHand())
-					System.out.println(c.getObject().toString());
+					System.out.println(c.getObject().getName());
 		}
 	}
 
