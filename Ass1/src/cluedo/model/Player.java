@@ -1,12 +1,15 @@
 package cluedo.model;
 
+import java.awt.Point;
 import java.util.Set;
 
 import cluedo.model.cards.Card;
 import cluedo.model.gameObjects.CluedoCharacter;
+import cluedo.model.gameObjects.CluedoCharacter.Suspect;
 
 /**
  * Class that represents the player
+ * 
  * @author Cameron Bryers, Hannah Craighead.
  *
  */
@@ -14,30 +17,41 @@ public class Player {
 
 	// Cards in the players hand
 	private Set<Card> hand;
-	
+
 	// Player's checklist
 	// private CheckList checkList;
-	
+
 	// Player's character token
-	private CluedoCharacter m_character;
-	
+	private Suspect m_character;
+
 	// Player's gamertag
 	private String m_name;
-	
+
 	// Player's position on the board
 	int m_x, m_y;
-	
-	public Player(Set<Card> hand, String name, CluedoCharacter character, int start_x, int start_y) {
+
+	public Player(Set<Card> hand, String name, Suspect character, int start_x, int start_y) {
 		this.hand = hand;
-		this.m_name = name;
+		this.setName(name);
 		this.m_character = character;
 		this.m_x = start_x;
 		this.m_y = start_y;
 	}
-	
+
+	public Player(String name, Suspect character, Point start) {
+		this.setName(name);
+		this.m_character = character;
+		this.m_x = start.x;
+		this.m_y = start.y;
+	}
+
 	public void move(int x, int y) {
 		m_x += x;
 		m_y += y;
+	}
+
+	public void setHand(Set<Card> hand) {
+		this.hand = hand;
 	}
 
 	public int getX() {
@@ -46,5 +60,17 @@ public class Player {
 
 	public int getY() {
 		return m_y;
+	}
+
+	public String getName() {
+		return m_name;
+	}
+
+	public void setName(String m_name) {
+		this.m_name = m_name;
+	}
+
+	public final Suspect getCharacter() {
+		return m_character;
 	}
 }
