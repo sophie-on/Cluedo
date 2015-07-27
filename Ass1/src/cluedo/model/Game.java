@@ -64,7 +64,7 @@ public class Game {
 		envelope = new HashSet<Card>();
 		createDeck();
 
-		// TODO Create players
+		// Create players
 		setupPlayers();
 
 		// TODO Load board
@@ -169,10 +169,10 @@ public class Game {
 			numOfPlayers = reader.nextInt();
 
 			// Error message
-			if (numOfPlayers < 3)
+			if (numOfPlayers < 3 || numOfPlayers > 6)
 				System.out.println("***That is not a valid number of players***");
 
-		} while (numOfPlayers < 3);
+		} while (numOfPlayers < 3 || numOfPlayers > 6);
 
 		// Enter player details
 		for (int i = 0; i < numOfPlayers; i++) {
@@ -186,33 +186,54 @@ public class Game {
 
 			// Get character
 			do {
-				isValidCharacter = characterFound = false;
+				isValidCharacter = true;
 				suspect = null;
 
-				System.out.println("***" + name + " please choose a character***");
-				for (Suspect s : Suspect.values())
-					System.out.println(s.toString());
+				// Print out characters
+				System.out.println("***" + name + " please choose a character***\n");
+				for (int j = 0; j < Suspect.values().length; j++)
+					System.out.println(Suspect.values()[j].toString() + ": " + (j + 1));
 
-				String character = reader.next();
+				int character = reader.nextInt();
 
-				for (Suspect s : Suspect.values()) {
-					if (s.toString().equalsIgnoreCase(character)) {
-						isValidCharacter = true;
-						suspect = s;
-						characterFound = false;
-
-						// If a player has already chosen this character
-						if (!players.isEmpty())
-							for (Player p : players)
-								if (p.getCharacter().equals(suspect)) {
-									isValidCharacter = false;
-									System.out.println("***Character already taken please try again***");
-								}
-					}
-					// } else
-					// System.out.println("***That is not a valid character
-					// please try again***");
+				switch (character) {
+				case 1:
+					suspect = Suspect.MISS_SCARLET;
+					break;
+				case 2:
+					suspect = Suspect.COLONEL_MUSTARD;
+					break;
+				case 3:
+					suspect = Suspect.MRS_WHITE;
+					break;
+				case 4:
+					suspect = Suspect.THE_REVEREND_GREEN;
+					break;
+				case 5:
+					suspect = Suspect.MRS_PEACOCK;
+					break;
+				case 6:
+					suspect = Suspect.PROFESSOR_PLUM;
+					break;
+				default:
+					suspect = null;
+					break;
 				}
+
+				// Check if character is valid
+				if (suspect == null)
+					isValidCharacter = false;
+
+				for (Player p : players)
+					if (p.getCharacter().equals(suspect)) {
+						isValidCharacter = false;
+						break;
+					}
+
+				if (!isValidCharacter)
+					System.out.println("***Character is not valid or is already taken***");
+				else
+					break;
 
 			} while (!isValidCharacter);
 
@@ -245,6 +266,7 @@ public class Game {
 			Player player = new Player(name, suspect, p);
 			players.add(player);
 		}
+		reader.close();
 	}
 
 	/**
