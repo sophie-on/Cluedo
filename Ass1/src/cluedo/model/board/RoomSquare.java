@@ -40,5 +40,10 @@ public class RoomSquare implements Square{
 	public int getY() {
 		return m_y;
 	}
+
+	@Override
+	public boolean isOccupied() {
+		return false;
+	}
 	
 }

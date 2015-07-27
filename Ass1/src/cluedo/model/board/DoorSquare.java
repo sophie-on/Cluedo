@@ -38,6 +38,14 @@ public class DoorSquare implements Square{
 		return m_y;
 	}
 
+	public Location getRoom() {
+		return l;
+	}
+
+	@Override
+	public boolean isOccupied() {
+		return false;
+	}
 
 
 }

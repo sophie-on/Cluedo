@@ -28,7 +28,8 @@ public class CorridorSquare implements Square{
 	 * @return boolean indicating occupation
 	 */
 	
-	private boolean isOccupied(){
+	@Override
+	public boolean isOccupied(){
 		return isOccupied;		
 	}
 	

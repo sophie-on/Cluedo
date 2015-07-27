@@ -39,4 +39,12 @@ public class Player {
 		m_x += x;
 		m_y += y;
 	}
+
+	public int getX() {
+		return m_x;
+	}
+
+	public int getY() {
+		return m_y;
+	}
 }

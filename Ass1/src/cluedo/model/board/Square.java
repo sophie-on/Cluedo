@@ -24,4 +24,6 @@ public interface Square {
 	 */
 	
 	public int getY() ;
+	
+	public boolean isOccupied();
 }
