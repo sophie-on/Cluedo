@@ -225,13 +225,13 @@ public class Game {
 
 		// Get the number of players first
 		do {
-			System.out.println("***How many players? (min = 3, max = 6)***");
+			System.out.println("*** How many players? (min = 3, max = 6) ***");
 			numOfPlayers = reader.nextInt();
 
 			// Error message
 			if (numOfPlayers < 3 || numOfPlayers > 6)
 				System.out
-						.println("***That is not a valid number of players***");
+						.println("*** That is not a valid number of players ***");
 
 		} while (numOfPlayers < 3 || numOfPlayers > 6);
 
@@ -239,8 +239,8 @@ public class Game {
 		for (int i = 0; i < numOfPlayers; i++) {
 
 			// Get name
-			System.out.println("***Player " + (i + 1)
-					+ " please enter a name***");
+			System.out.println("*** Player " + (i + 1)
+					+ " please enter a name ***");
 			String name = reader.next();
 
 			boolean isValidCharacter;
@@ -252,8 +252,8 @@ public class Game {
 				suspect = null;
 
 				// Print out characters
-				System.out.println("***" + name
-						+ " please choose a character***\n");
+				System.out.println("*** " + name
+						+ " please choose a character ***\n");
 				for (int j = 0; j < Suspect.values().length; j++)
 					System.out.println(Suspect.values()[j].toString() + ": "
 							+ (j + 1));
@@ -296,7 +296,7 @@ public class Game {
 
 				if (!isValidCharacter)
 					System.out
-							.println("***Character is not valid or is already taken***");
+							.println("*** Character is not valid or is already taken ***");
 				else
 					break;
 
@@ -329,8 +329,11 @@ public class Game {
 				break;
 			}
 			Player player = new Player(name, suspect, p);
-			players.add(player);
-			playersList.add(player);
+			// players.add(player);
+			// playersList.add(player);
+
+			if (players.add(player))
+				playersList.add(player);
 		}
 		reader.close();
 	}
