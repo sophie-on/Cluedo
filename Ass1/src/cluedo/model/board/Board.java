@@ -152,4 +152,20 @@ public class Board {
 	public final Square squareAt(int x, int y) {
 		return board[x][y];
 	}
+
+	public void drawBoard(){
+		for(int i = 0; i < board.length + 2; i++){
+			for(int j = 0; j < board[i].length + 2; j++){
+				if(j == 0 || j == board[i].length){
+					System.out.println("_");
+				}
+				else if(i == 0 || i == board.length){
+					System.out.println("|");
+				}
+				else{
+					// Need to do this
+				}
+			}
+		}
+	}
 }
