@@ -2,8 +2,11 @@ package cluedo.model;
 
 import java.awt.Point;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
@@ -26,10 +29,6 @@ import cluedo.model.gameObjects.Weapon.WeaponType;
  */
 public class Game {
 
-	public enum Command {
-		MOVE, SUGGESTION, ACCUSATION, HELP, QUIT;
-	}
-
 	// Starting positions for the characters
 	public static final Point MRS_WHITE_START = new Point(9, 0);
 	public static final Point MR_GREEN_START = new Point(14, 0);
@@ -46,6 +45,8 @@ public class Game {
 	// Players in the game
 	private Set<Player> players;
 
+	private List<Player> playersList;
+
 	// Cards to be distributed to players
 	private Set<Card> deck;
 
@@ -55,10 +56,13 @@ public class Game {
 	// Dice in the game
 	private Set<Die> dice;
 
+	// Current player and next
+	private Player current, next;
+
 	public Game() {
 
-		System.out.println("***Welcome to Cluedo (Pre - Alpha Version)***");
-		System.out.println("***By Cameron Bryers and Hannah Craighead***");
+		System.out.println("*** Welcome to Cluedo (Pre - Alpha Version) ***");
+		System.out.println("*** By Cameron Bryers and Hannah Craighead ***");
 
 		// Initialize the deck and the envelope
 		deck = new HashSet<Card>();
@@ -75,7 +79,7 @@ public class Game {
 
 		// Create dice
 		dice = new HashSet<Die>();
-		System.out.println("How many dice are you playing with?");
+		// System.out.println("How many dice are you playing with?");
 		// TODO read number of dice
 
 		// TODO start the game
@@ -88,28 +92,33 @@ public class Game {
 	private void startGame() {
 
 		/**
-		 * loop until game is over:
-		 *  for each player:
-		 *   ask for a command
-		 *   validate command
-		 *   check if player has lost
+		 * loop until game is over: for each player: ask for a command validate
+		 * command check if player has lost update board
 		 *
 		 */
+
+		// Draw the board
+		m_board.drawBoard();
 
 		boolean gameOver = false;
 
 		while (!gameOver) {
 			for (Player p : players) {
 
+				current = p;
+				next = getNextPlayer();
+
 				// Check for game over
 				if (players.size() == 1) {
 					gameOver = true;
-					System.out.println("***Congragulations " + p.getName() + " You won!***");
+					System.out.println("*** Congragulations " + p.getName()
+							+ " You won! ***");
 					break;
 				}
 
 				// Ask for a command
-				System.out.println("***" + p.getName() + " please enter a command***");
+				System.out.println("*** " + p.getName()
+						+ " please enter a command ***");
 
 				// TODO parse command
 				boolean validCommand = false;
@@ -118,6 +127,9 @@ public class Game {
 				do {
 
 				} while (!validCommand);
+
+				// Update board
+				m_board.drawBoard();
 			}
 		}
 	}
@@ -203,6 +215,7 @@ public class Game {
 	private void setupPlayers() {
 
 		players = new HashSet<Player>();
+		playersList = new ArrayList<Player>();
 
 		// Create a scanner
 		Scanner reader = new Scanner(System.in);
@@ -317,6 +330,7 @@ public class Game {
 			}
 			Player player = new Player(name, suspect, p);
 			players.add(player);
+			playersList.add(player);
 		}
 		reader.close();
 	}
@@ -381,6 +395,15 @@ public class Game {
 
 	public final Set<Card> getEnvelope() {
 		return envelope;
+	}
+
+	/**
+	 *
+	 * @return the next player to play
+	 */
+	public final Player getNextPlayer() {
+		int curIndex = playersList.indexOf(current);
+		return playersList.get((curIndex + 1) % playersList.size());
 	}
 
 	public static void main(String args[]) {
