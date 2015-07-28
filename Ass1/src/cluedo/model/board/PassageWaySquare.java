@@ -47,4 +47,8 @@ public class PassageWaySquare implements Square{
 		return false;
 	}
 
+	public String toString(){
+		return "p";
+	}
+
 }
