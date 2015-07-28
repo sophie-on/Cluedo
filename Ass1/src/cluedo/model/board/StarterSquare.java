@@ -1,13 +1,15 @@
 package cluedo.model.board;
 
+import cluedo.model.gameObjects.CluedoCharacter.Suspect;
+
 public class StarterSquare implements Square{
 
-	private Character c;
+	private Suspect c;
 	private int m_x;
 	private int m_y;
 	private boolean isOcuppied;
 
-	public StarterSquare(int x, int y, Character c) {
+	public StarterSquare(int x, int y, Suspect suspect) {
 		m_x = x;
 		m_y = y;
 	}

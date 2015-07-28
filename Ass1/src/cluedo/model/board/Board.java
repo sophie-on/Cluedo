@@ -3,11 +3,14 @@ package cluedo.model.board;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
 import cluedo.model.Player;
 import cluedo.model.gameObjects.Location;
+import cluedo.model.gameObjects.Location.Room;
+import cluedo.model.gameObjects.CluedoCharacter.Suspect;
 
 /**
  * This class represents the board (or tiles) of the game Cluedo. The game board
@@ -23,6 +26,8 @@ public class Board {
 
 	private int x_size;
 	private int y_size;
+	private Map<String,Room> places;
+	private int character;
 
 	public Board(String fileName){
 		try {
@@ -31,8 +36,21 @@ public class Board {
 			y_size = s.nextInt();
 			board = new Square[x_size][y_size];
 			s.useDelimiter("");
+			setUpMap();
 			parseBoard(s);
 		} catch (FileNotFoundException e) { e.printStackTrace();}
+	}
+
+	private void setUpMap() {
+		places.put("k",Room.KITCHEN);
+		places.put("b",Room.BALL_ROOM);
+		places.put("B",Room.BILLIARD_ROOM);
+		places.put("D",Room.DINING_ROOM);
+		places.put("l",Room.LIBRARY);
+		places.put("H",Room.HALL);
+		places.put("L",Room.LOUNGE);
+		places.put("S",Room.STUDY);
+		places.put("C", Room.CONSERVATORY);
 	}
 
 	/**
@@ -42,33 +60,42 @@ public class Board {
 	private void parseBoard(Scanner s) {
 		for(int i = 0; i < board.length; i++){
 			for(int j = 0; j< board[i].length; j++){
-				switch(s.next()){
+				String key = s.next();
+				switch(key){
 				case "!": // Does nothing, a non-used square for decoration
 					break;
 				case "s": // Generates a starting square
-				//	board[i][j] = new StarterSquare(i,j,);
-					break;
-				case "k":
-					board[i][j] = new RoomSquare(i,j, new Location(KITCHEN));
+					board[i][j] = new StarterSquare(i,j,Suspect.values()[character++]);
 					break;
 				case "c":
+					board[i][j] = new CorridorSquare(i,j);
 					break;
-				case "b":
+				case "p":
+					board[i][j] = new PassageWaySquare(i,j, findRoom(i,j), ?);
 					break;
-				case "C":
+				case "d":
+					board[i][j] = new DoorSquare(i,j,findRoom(i,j)); // Need to deal with how to find room it is related to
 					break;
-				case "!":
-					break;
-				case "!":
-					break;
-				case "!":
-					break;
-				case "!":
-					break;
+				case "k|b|B|D|l|L|H|S|C":
+					board[i][j] = new RoomSquare(i,j,places.get(key));
 				}
 			}
 		}
 
+	}
+
+	private Room findRoom(int i, int j) {
+		if(i > 0){
+			if(board[i-1][j] instanceof RoomSquare){
+				return ((RoomSquare)(board[i-1][j])).getRoom();
+			}
+		}
+		if(j > 0){
+			if(board[i][j-1] instanceof RoomSquare){
+				return ((RoomSquare)(board[i][j-1])).getRoom();
+			}
+		}
+		return null; // NOTE: need to figure out case where there is no left or above room
 	}
 
 	/**
