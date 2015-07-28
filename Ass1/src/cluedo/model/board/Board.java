@@ -106,15 +106,15 @@ public class Board {
 
 		Set<Location> rooms = new HashSet<Location>();
 
-		for (int i = player.getX(); i < size; i++) {
-			for (int j = player.getY(); j < size; j++) {
+		for (int i = player.getX(); i < x_size; i++) {
+			for (int j = player.getY(); j < y_size; j++) {
 
 				// If the player is in reach of a room add it to the room set
 				if ((i + j) <= roll) {
 					Square square = squareAt(i, j);
 					if (square instanceof DoorSquare) {
 						DoorSquare door = (DoorSquare) square;
-						rooms.add(door.getRoom());
+						// rooms.add(door.getLocation());
 					}
 				}
 			}
