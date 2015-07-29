@@ -71,7 +71,7 @@ public class Board {
 					board[i][j] = new CorridorSquare(i,j);
 					break;
 				case "p":
-					board[i][j] = new PassageWaySquare(i,j, findRoom(i,j), ?);
+					// board[i][j] = new PassageWaySquare(i,j, findRoom(i,j), ?);
 					break;
 				case "d":
 					board[i][j] = new DoorSquare(i,j,findRoom(i,j)); // Need to deal with how to find room it is related to

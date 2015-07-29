@@ -16,6 +16,8 @@ import cluedo.model.cards.Card;
 import cluedo.model.cards.CharacterCard;
 import cluedo.model.cards.RoomCard;
 import cluedo.model.cards.WeaponCard;
+import cluedo.model.commands.Command;
+import cluedo.model.commands.Command.CommandType;
 import cluedo.model.gameObjects.*;
 import cluedo.model.gameObjects.CluedoCharacter.Suspect;
 import cluedo.model.gameObjects.Location.Room;
@@ -37,7 +39,7 @@ public class Game {
 	public static final Point MISS_SCARLET_START = new Point(7, 24);
 	public static final Point PROFESSOR_PLUM_START = new Point(24, 19);
 
-	private static final boolean DEBUG = true;
+	private static final boolean DEBUG = false;
 
 	// The game board
 	private Board m_board;
@@ -58,6 +60,12 @@ public class Game {
 
 	// Current player and next
 	private Player current, next;
+
+	// Characters that have been used
+	private Set<Suspect> usedSuspects;
+
+	// Current roll
+	private int roll;
 
 	public Game() {
 
@@ -83,7 +91,7 @@ public class Game {
 		// TODO read number of dice
 
 		// TODO start the game
-		// startGame()
+		startGame();
 	}
 
 	/**
@@ -98,9 +106,10 @@ public class Game {
 		 */
 
 		// Draw the board
-		m_board.drawBoard();
+		// m_board.drawBoard();
 
 		boolean gameOver = false;
+		Scanner reader = new Scanner(System.in);
 
 		while (!gameOver) {
 			for (Player p : players) {
@@ -120,12 +129,18 @@ public class Game {
 				System.out.println("*** " + p.getName()
 						+ " please enter a command ***");
 
+				System.out.print("***");
+
+				for (CommandType c : CommandType.values())
+					System.out.print(" " + c.toString() + " (" + c.getValue() + ") *");
+				System.out.println("**\n");
+
 				// TODO parse command
 				boolean validCommand = false;
 
 				// Loop until command is valid
 				do {
-
+					Command c = parseCommand(reader);
 				} while (!validCommand);
 
 				// Update board
@@ -216,6 +231,7 @@ public class Game {
 
 		players = new HashSet<Player>();
 		playersList = new ArrayList<Player>();
+		usedSuspects = new HashSet<Suspect>();
 
 		// Create a scanner
 		Scanner reader = new Scanner(System.in);
@@ -238,10 +254,28 @@ public class Game {
 		// Enter player details
 		for (int i = 0; i < numOfPlayers; i++) {
 
-			// Get name
-			System.out.println("*** Player " + (i + 1)
-					+ " please enter a name ***");
-			String name = reader.next();
+			boolean isValidName;
+			String name;
+
+			do {
+
+				isValidName = true;
+
+				// Get name
+				System.out.println("*** Player " + (i + 1)
+						+ " please enter a name ***");
+				name = reader.next();
+
+				// Check if name is valid
+				for (Player p : players)
+					if (p.getName().equalsIgnoreCase(name)) {
+						System.out
+								.println("*** Name is already being used! ***");
+						isValidName = false;
+						break;
+					}
+
+			} while (!isValidName);
 
 			boolean isValidCharacter;
 			Suspect suspect;
@@ -255,8 +289,9 @@ public class Game {
 				System.out.println("*** " + name
 						+ " please choose a character ***\n");
 				for (int j = 0; j < Suspect.values().length; j++)
-					System.out.println(Suspect.values()[j].toString() + ": "
-							+ (j + 1));
+					if (!usedSuspects.contains(Suspect.values()[j]))
+						System.out.println(Suspect.values()[j].toString()
+								+ ": " + (j + 1));
 
 				int character = reader.nextInt();
 
@@ -301,6 +336,9 @@ public class Game {
 					break;
 
 			} while (!isValidCharacter);
+
+			// Add suspects to this set so no other player can choose it
+			usedSuspects.add(suspect);
 
 			Point p;
 
@@ -373,10 +411,18 @@ public class Game {
 	 * @return true if the move was valid
 	 */
 	public boolean move(Player player, int dx, int dy, int roll) {
-		if (m_board.isValid(player, dx, dy, roll))
+		if (!m_board.isValid(player, dx, dy, roll))
 			return false;
 
 		player.move(dx, dy);
+		return true;
+	}
+
+	public boolean move(int dx, int dy) {
+		if (!m_board.isValid(current, dx, dy, roll))
+			return false;
+
+		current.move(dx, dy);
 		return true;
 	}
 
@@ -398,6 +444,14 @@ public class Game {
 
 	public final Set<Card> getEnvelope() {
 		return envelope;
+	}
+
+	public Board getBoard() {
+		return this.m_board;
+	}
+
+	public Command parseCommand(Scanner s) {
+		return null;
 	}
 
 	/**
