@@ -72,8 +72,10 @@ public class Board {
 		for(int i = 0; i < board.length; i++){
 			for(int j = 0; j< board[i].length; j++){
 				String key = s.next();
+				System.out.println(key);
 				switch(key){
 				case "!": // Does nothing, a non-used square for decoration
+					board[i][j] = new BlankSquare(i,j);
 					break;
 				case "s": // Generates a starting square
 					board[i][j] = new StarterSquare(i,j,Suspect.values()[character++]);
@@ -96,6 +98,7 @@ public class Board {
 	}
 
 	private Room findRoom(int i, int j, Scanner s) {
+		System.out.println("FR");
 		if(i > 0){
 			if(board[i-1][j] instanceof RoomSquare){
 				return ((RoomSquare)(board[i-1][j])).getRoom();
@@ -187,5 +190,9 @@ public class Board {
 				}
 			}
 		}
+	}
+
+	public static void main(String args[]){
+		new Board("cluedo.txt").drawBoard();
 	}
 }
