@@ -44,7 +44,7 @@ public class CorridorSquare implements Square{
 	}
 
 	public String toString(){
-		return " ";
+		return "_";
 	}
 
 	/**

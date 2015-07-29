@@ -2,6 +2,7 @@ package cluedo.model.board;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
@@ -28,6 +29,7 @@ public class Board {
 	private int y_size;
 	private Map<String,Room> places;
 	private int character;
+	private Map<Room, Room> passages;
 
 	public Board(String fileName){
 		try {
@@ -37,11 +39,13 @@ public class Board {
 			board = new Square[x_size][y_size];
 			s.useDelimiter("");
 			setUpMap();
+			setUpPassage();
 			parseBoard(s);
 		} catch (FileNotFoundException e) { e.printStackTrace();}
 	}
 
 	private void setUpMap() {
+		places = new HashMap<String, Room>();
 		places.put("k",Room.KITCHEN);
 		places.put("b",Room.BALL_ROOM);
 		places.put("B",Room.BILLIARD_ROOM);
@@ -53,16 +57,35 @@ public class Board {
 		places.put("C", Room.CONSERVATORY);
 	}
 
+	private void setUpPassage(){
+		passages = new HashMap<Room,Room>();
+		passages.put(Room.STUDY,Room.KITCHEN);
+		passages.put(Room.KITCHEN,Room.STUDY);
+		passages.put(Room.LOUNGE,Room.CONSERVATORY);
+		passages.put(Room.CONSERVATORY,Room.LOUNGE);
+	}
+
 	/**
 	 * Takes input from the Scanner and generates the Squares for the board
 	 * @param s
 	 */
-	private void parseBoard(Scanner s) {
+	private void parseBoard(Scanner s) {	
+		s.next(); 		
 		for(int i = 0; i < board.length; i++){
 			for(int j = 0; j< board[i].length; j++){
 				String key = s.next();
+				System.out.println("Key "+key + "i " + i + " j " + j);
 				switch(key){
+				case "\n": // Does nothing, end of line character to indicate new row
+					j--; 
+					System.out.println("Newline found");
+					break;
+				case " ": // Does nothing, end of line character to indicate new row
+					j--;
+					System.out.println("Space found");
+					break;
 				case "!": // Does nothing, a non-used square for decoration
+					board[i][j] = new BlankSquare(i,j);
 					break;
 				case "s": // Generates a starting square
 					board[i][j] = new StarterSquare(i,j,Suspect.values()[character++]);
@@ -71,31 +94,53 @@ public class Board {
 					board[i][j] = new CorridorSquare(i,j);
 					break;
 				case "p":
-					// board[i][j] = new PassageWaySquare(i,j, findRoom(i,j), ?);
+					 Room r = findRoom(i,j,s);
+					 System.out.println("R is " + r );//+ "passages.get(r) is " + passages.get(r));
+					 board[i][j] = new PassageWaySquare(i,j, r , passages.get(r));
 					break;
 				case "d":
-					board[i][j] = new DoorSquare(i,j,findRoom(i,j)); // Need to deal with how to find room it is related to
+					board[i][j] = new DoorSquare(i,j,findRoom(i,j,s)); // Need to deal with how to find room it is related to
 					break;
-				case "k|b|B|D|l|L|H|S|C":
+				//case ("k"|"b"|"B"|"D"|"l"|"L"|"H"|"S"|"C"):
+					default:
+					System.out.println("Making room square " + key);
 					board[i][j] = new RoomSquare(i,j,places.get(key));
+					break;
+					
 				}
 			}
+			//s.next(); // to skip newline character
 		}
 
 	}
 
-	private Room findRoom(int i, int j) {
+	private Room findRoom(int i, int j, Scanner s) {
+		System.out.println("FR");
 		if(i > 0){
+			System.out.println("i > 0 ");
 			if(board[i-1][j] instanceof RoomSquare){
+				System.out.println("Returning room square 2");
 				return ((RoomSquare)(board[i-1][j])).getRoom();
 			}
 		}
 		if(j > 0){
+			System.out.println("j > 0 ");
 			if(board[i][j-1] instanceof RoomSquare){
+				System.out.println("Returning room square 2");
 				return ((RoomSquare)(board[i][j-1])).getRoom();
 			}
 		}
-		return null; // NOTE: need to figure out case where there is no left or above room
+		
+		if(s.hasNext("k")){return Room.KITCHEN;	}
+		if(s.hasNext("b")){return Room.BALL_ROOM;}
+		if(s.hasNext("B")){return Room.BILLIARD_ROOM;}
+		if(s.hasNext("D")){return Room.DINING_ROOM;	}
+		if(s.hasNext("l")){return Room.LIBRARY;	}
+		if(s.hasNext("L")){return Room.LOUNGE;	}
+		if(s.hasNext("H")){return Room.HALL;	}
+		if(s.hasNext("S")){return Room.STUDY;	}
+		if(s.hasNext("C")){return Room.CONSERVATORY;}
+		return null;
 	}
 
 	/**
@@ -154,18 +199,22 @@ public class Board {
 	}
 
 	public void drawBoard(){
-		for(int i = 0; i < board.length + 1; i++){
-			for(int j = 0; j < board[i].length + 1; j++){
+		for(int i = 0; i < board.length; i++){
+			for(int j = 0; j < board[i].length; j++){
 				if(j == 0){
-					System.out.println("_");
+					System.out.printf("_");
 				}
-				else if(i == 0 || i == board.length){
-					System.out.println("|");
+				else if(i == 0 || i == board.length -1){
+					System.out.printf("|");
 				}
 				else{
-					System.out.println(board[i][j].toString() + "|");
+					System.out.println(board[i][j].toString());
 				}
 			}
 		}
+	}
+
+	public static void main(String args[]){
+		new Board("cluedo.txt").drawBoard();
 	}
 }
