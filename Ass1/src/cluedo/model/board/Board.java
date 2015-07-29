@@ -39,6 +39,7 @@ public class Board {
 			board = new Square[x_size][y_size];
 			s.useDelimiter("");
 			setUpMap();
+			setUpPassage();
 			parseBoard(s);
 		} catch (FileNotFoundException e) { e.printStackTrace();}
 	}
@@ -68,12 +69,21 @@ public class Board {
 	 * Takes input from the Scanner and generates the Squares for the board
 	 * @param s
 	 */
-	private void parseBoard(Scanner s) {
+	private void parseBoard(Scanner s) {	
+		s.next(); 		
 		for(int i = 0; i < board.length; i++){
 			for(int j = 0; j< board[i].length; j++){
 				String key = s.next();
-				System.out.println(key);
+				System.out.println("Key "+key + "i " + i + " j " + j);
 				switch(key){
+				case "\n": // Does nothing, end of line character to indicate new row
+					j--; 
+					System.out.println("Newline found");
+					break;
+				case " ": // Does nothing, end of line character to indicate new row
+					j--;
+					System.out.println("Space found");
+					break;
 				case "!": // Does nothing, a non-used square for decoration
 					board[i][j] = new BlankSquare(i,j);
 					break;
@@ -84,15 +94,22 @@ public class Board {
 					board[i][j] = new CorridorSquare(i,j);
 					break;
 				case "p":
-					 board[i][j] = new PassageWaySquare(i,j, findRoom(i,j,s), passages.get(findRoom(i,j,s)));
+					 Room r = findRoom(i,j,s);
+					 System.out.println("R is " + r );//+ "passages.get(r) is " + passages.get(r));
+					 board[i][j] = new PassageWaySquare(i,j, r , passages.get(r));
 					break;
 				case "d":
 					board[i][j] = new DoorSquare(i,j,findRoom(i,j,s)); // Need to deal with how to find room it is related to
 					break;
-				case "k|b|B|D|l|L|H|S|C":
+				//case ("k"|"b"|"B"|"D"|"l"|"L"|"H"|"S"|"C"):
+					default:
+					System.out.println("Making room square " + key);
 					board[i][j] = new RoomSquare(i,j,places.get(key));
+					break;
+					
 				}
 			}
+			//s.next(); // to skip newline character
 		}
 
 	}
@@ -100,15 +117,20 @@ public class Board {
 	private Room findRoom(int i, int j, Scanner s) {
 		System.out.println("FR");
 		if(i > 0){
+			System.out.println("i > 0 ");
 			if(board[i-1][j] instanceof RoomSquare){
+				System.out.println("Returning room square 2");
 				return ((RoomSquare)(board[i-1][j])).getRoom();
 			}
 		}
 		if(j > 0){
+			System.out.println("j > 0 ");
 			if(board[i][j-1] instanceof RoomSquare){
+				System.out.println("Returning room square 2");
 				return ((RoomSquare)(board[i][j-1])).getRoom();
 			}
 		}
+		
 		if(s.hasNext("k")){return Room.KITCHEN;	}
 		if(s.hasNext("b")){return Room.BALL_ROOM;}
 		if(s.hasNext("B")){return Room.BILLIARD_ROOM;}
@@ -177,16 +199,16 @@ public class Board {
 	}
 
 	public void drawBoard(){
-		for(int i = 0; i < board.length + 1; i++){
-			for(int j = 0; j < board[i].length + 1; j++){
+		for(int i = 0; i < board.length; i++){
+			for(int j = 0; j < board[i].length; j++){
 				if(j == 0){
-					System.out.println("_");
+					System.out.printf("_");
 				}
-				else if(i == 0 || i == board.length){
-					System.out.println("|");
+				else if(i == 0 || i == board.length -1){
+					System.out.printf("|");
 				}
 				else{
-					System.out.println(board[i][j].toString() + "|");
+					System.out.println(board[i][j].toString());
 				}
 			}
 		}
