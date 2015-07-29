@@ -40,9 +40,9 @@ public class MoveCommand implements Command {
 
 		int command;
 
-		do {
-			command = scan.nextInt();
-		}while(!command);
+//		do {
+//			command = scan.nextInt();
+//		}while(!command);
 
 	}
 
