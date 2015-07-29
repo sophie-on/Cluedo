@@ -29,4 +29,11 @@ public class StarterSquare implements Square{
 		return isOcuppied;
 	}
 
+	public String toString(){
+		if(isOcuppied){
+			return c.toString().substring(0, 1);
+		}
+		return "?";
+	}
+
 }

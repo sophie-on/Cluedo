@@ -2,6 +2,7 @@ package cluedo.model.board;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
@@ -28,6 +29,7 @@ public class Board {
 	private int y_size;
 	private Map<String,Room> places;
 	private int character;
+	private Map<Room, Room> passages;
 
 	public Board(String fileName){
 		try {
@@ -42,6 +44,7 @@ public class Board {
 	}
 
 	private void setUpMap() {
+		places = new HashMap<String, Room>();
 		places.put("k",Room.KITCHEN);
 		places.put("b",Room.BALL_ROOM);
 		places.put("B",Room.BILLIARD_ROOM);
@@ -51,6 +54,14 @@ public class Board {
 		places.put("L",Room.LOUNGE);
 		places.put("S",Room.STUDY);
 		places.put("C", Room.CONSERVATORY);
+	}
+
+	private void setUpPassage(){
+		passages = new HashMap<Room,Room>();
+		passages.put(Room.STUDY,Room.KITCHEN);
+		passages.put(Room.KITCHEN,Room.STUDY);
+		passages.put(Room.LOUNGE,Room.CONSERVATORY);
+		passages.put(Room.CONSERVATORY,Room.LOUNGE);
 	}
 
 	/**
@@ -71,10 +82,10 @@ public class Board {
 					board[i][j] = new CorridorSquare(i,j);
 					break;
 				case "p":
-					// board[i][j] = new PassageWaySquare(i,j, findRoom(i,j), ?);
+					 board[i][j] = new PassageWaySquare(i,j, findRoom(i,j,s), passages.get(findRoom(i,j,s)));
 					break;
 				case "d":
-					board[i][j] = new DoorSquare(i,j,findRoom(i,j)); // Need to deal with how to find room it is related to
+					board[i][j] = new DoorSquare(i,j,findRoom(i,j,s)); // Need to deal with how to find room it is related to
 					break;
 				case "k|b|B|D|l|L|H|S|C":
 					board[i][j] = new RoomSquare(i,j,places.get(key));
@@ -84,7 +95,7 @@ public class Board {
 
 	}
 
-	private Room findRoom(int i, int j) {
+	private Room findRoom(int i, int j, Scanner s) {
 		if(i > 0){
 			if(board[i-1][j] instanceof RoomSquare){
 				return ((RoomSquare)(board[i-1][j])).getRoom();
@@ -95,7 +106,16 @@ public class Board {
 				return ((RoomSquare)(board[i][j-1])).getRoom();
 			}
 		}
-		return null; // NOTE: need to figure out case where there is no left or above room
+		if(s.hasNext("k")){return Room.KITCHEN;	}
+		if(s.hasNext("b")){return Room.BALL_ROOM;}
+		if(s.hasNext("B")){return Room.BILLIARD_ROOM;}
+		if(s.hasNext("D")){return Room.DINING_ROOM;	}
+		if(s.hasNext("l")){return Room.LIBRARY;	}
+		if(s.hasNext("L")){return Room.LOUNGE;	}
+		if(s.hasNext("H")){return Room.HALL;	}
+		if(s.hasNext("S")){return Room.STUDY;	}
+		if(s.hasNext("C")){return Room.CONSERVATORY;}
+		return null;
 	}
 
 	/**
