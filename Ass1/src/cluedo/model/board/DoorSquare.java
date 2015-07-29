@@ -47,6 +47,10 @@ public class DoorSquare implements Square{
 	public boolean isOccupied() {
 		return false;
 	}
+	
+	public String toString(){
+		return "d";
+	}
 
 
 }

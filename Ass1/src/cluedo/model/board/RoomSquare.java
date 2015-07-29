@@ -49,4 +49,28 @@ public class RoomSquare implements Square{
 		return r;
 	}
 
+	public String toString(){
+		switch(r){
+		case BALL_ROOM:
+			return "b";
+		case BILLIARD_ROOM:
+			return "B";
+		case HALL:
+			return "h";
+		case LOUNGE:
+			return "L";
+		case LIBRARY:
+			return "l";
+		case DINING_ROOM:
+			return "D";
+		case STUDY:
+			return "S";
+		case KITCHEN:
+			return "K";
+		case CONSERVATORY:
+			return "C";
+		}
+		return "";
+	}
+
 }

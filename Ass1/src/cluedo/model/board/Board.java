@@ -154,16 +154,16 @@ public class Board {
 	}
 
 	public void drawBoard(){
-		for(int i = 0; i < board.length + 2; i++){
-			for(int j = 0; j < board[i].length + 2; j++){
-				if(j == 0 || j == board[i].length){
+		for(int i = 0; i < board.length + 1; i++){
+			for(int j = 0; j < board[i].length + 1; j++){
+				if(j == 0){
 					System.out.println("_");
 				}
 				else if(i == 0 || i == board.length){
 					System.out.println("|");
 				}
 				else{
-					// Need to do this
+					System.out.println(board[i][j].toString() + "|");
 				}
 			}
 		}
