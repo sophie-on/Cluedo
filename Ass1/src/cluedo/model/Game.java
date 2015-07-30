@@ -35,12 +35,12 @@ public class Game {
 	public static final Point MRS_WHITE_START = new Point(0, 9);
 	public static final Point MR_GREEN_START = new Point(0, 14);
 	public static final Point MRS_PEACOCK_START = new Point(6, 24);
-	public static final Point COLONEL_MUSTARD_START = new Point(17,0);
+	public static final Point COLONEL_MUSTARD_START = new Point(17, 0);
 	public static final Point MISS_SCARLET_START = new Point(24, 7);
 	public static final Point PROFESSOR_PLUM_START = new Point(19, 24);
 
 	public static final boolean DEBUG = false;
-	public final int NUM_OF_DICE;
+	public static int NUM_OF_DICE;
 
 	// The game board
 	private Board m_board;
@@ -88,14 +88,23 @@ public class Game {
 		m_board = new Board("cluedo.txt");
 		m_board.addPlayers(players);
 
+		// Set up dice
+		setupDice();
+
+		// TODO start the game
+		startGame();
+	}
+
+	private void setupDice() {
+
+		Scanner reader = new Scanner(System.in);
+
 		// Create dice
 		System.out
 				.println("*** How many dice are you playing with? (min = 1, max = 2) ***");
 
-		Scanner reader = new Scanner(System.in);
-
 		// Wait for proper response
-		while (!reader.hasNextInt()) {
+		while (!reader.hasNextInt() && reader.hasNext()) {
 			System.out.println("*** That is not a valid number of dice ***");
 			reader.next();
 		}
@@ -103,9 +112,6 @@ public class Game {
 		NUM_OF_DICE = reader.nextInt();
 
 		reader.close();
-
-		// TODO start the game
-		startGame();
 	}
 
 	/**
@@ -147,11 +153,8 @@ public class Game {
 				// TODO parse commands
 
 				/**
-				 * Move
-				 * if (inRoom)
-				 *  Suggestion
-				 * else if (inSwimmingPool)
-				 *  Accusation
+				 * Move if (inRoom) Suggestion else if (inSwimmingPool)
+				 * Accusation
 				 */
 
 				// Move Command
@@ -166,9 +169,9 @@ public class Game {
 							roll)) {
 						move.execute(this);
 						isValid = true;
-					}
-					else
-						System.out.println("*** Sorry that is not a valid move, try again ***");
+					} else
+						System.out
+								.println("*** Sorry that is not a valid move, try again ***");
 				}
 
 				// Suggestion Command
