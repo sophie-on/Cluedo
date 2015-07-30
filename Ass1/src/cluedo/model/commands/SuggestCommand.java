@@ -6,6 +6,7 @@ import cluedo.model.Game;
 import cluedo.model.Player;
 import cluedo.model.gameObjects.CluedoCharacter.Suspect;
 import cluedo.model.gameObjects.Location.Room;
+import cluedo.model.gameObjects.Weapon;
 import cluedo.model.gameObjects.Weapon.WeaponType;
 
 /**
@@ -34,8 +35,9 @@ public class SuggestCommand implements Command {
 		boolean isValid = false;
 		int command = 0;
 
+		// Wait for a proper response
 		while (!isValid) {
-			// Wait for a proper response
+
 			while (!scan.hasNextInt()) {
 				System.out.println("*** Please enter an integer ***");
 				scan.next();
@@ -55,7 +57,28 @@ public class SuggestCommand implements Command {
 		System.out.println("*** Please enter a weapon ***");
 
 		for (WeaponType w : WeaponType.values())
-			System.out.println(w.toString() + " (" + ") ");
+			System.out.println(w.toString() + " (" + w.getValue() + ") ");
+
+		isValid = false;
+		command = 0;
+
+		// Wait for a proper response
+		while (!isValid) {
+
+			while (!scan.hasNextInt()) {
+				System.out.println("*** Please enter an integer ***");
+				scan.next();
+			}
+
+			command = scan.nextInt() - 1;
+
+			if (command >= 0 && command <= 5)
+				isValid = true;
+			else
+				System.out.println("*** That is not a valid weapon ***");
+		}
+
+		weapon = WeaponType.values()[command];
 	}
 
 	@Override
