@@ -1,5 +1,7 @@
 package cluedo.model.board;
 
+import cluedo.model.Player;
+
 /**
  * A CorridorSquare is a type of square on the board that is a tile
  * that players can move on. They exist as the main part of the board
@@ -9,12 +11,12 @@ package cluedo.model.board;
  *
  */
 
-public class CorridorSquare implements Square{
+public class CorridorSquare implements Square, InhabitableSquare{
 
 	private int m_x;
 	private int m_y;
 	private boolean isOccupied;
-	//private Player p;
+	private Player p;
 
 	public CorridorSquare(int x, int y){
 		m_x = x;
@@ -47,15 +49,12 @@ public class CorridorSquare implements Square{
 		return "_";
 	}
 
-	/**
-	 * Returns the player that resides on this square.
-	 * In the case it is vacant, null will be returned
-	 *
-	 * @return Player p on this square
-	 */
 
-//	private Player p(){
-//		return p;
-//	}
+
+
+	@Override
+	public Player getPlayer() {
+		return p;
+	}
 
 }
