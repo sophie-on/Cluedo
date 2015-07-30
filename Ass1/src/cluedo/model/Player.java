@@ -22,24 +22,24 @@ public class Player {
 	// private CheckList checkList;
 
 	// Player's character token
-	private Suspect m_character;
+	private final Suspect m_character;
 
 	// Player's gamertag
-	private String m_name;
+	private final String m_name;
 
 	// Player's position on the board
 	int m_x, m_y;
 
 	public Player(Set<Card> hand, String name, Suspect character, int start_x, int start_y) {
 		this.hand = hand;
-		this.setName(name);
+		this.m_name = name;
 		this.m_character = character;
 		this.m_x = start_x;
 		this.m_y = start_y;
 	}
 
 	public Player(String name, Suspect character, Point start) {
-		this.setName(name);
+		this.m_name = name;
 		this.m_character = character;
 		this.m_x = start.x;
 		this.m_y = start.y;
@@ -64,10 +64,6 @@ public class Player {
 
 	public String getName() {
 		return m_name;
-	}
-
-	public void setName(String m_name) {
-		this.m_name = m_name;
 	}
 
 	public final Suspect getCharacter() {

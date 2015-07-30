@@ -57,12 +57,6 @@ public class MoveCommand implements Command {
 
 	}
 
-	// Probably gonna get rid of this
-	@Override
-	public boolean check(Game game) {
-		return true;
-	}
-
 	@Override
 	public void execute(Game game) {
 		game.move(m_x, m_y);

@@ -72,7 +72,5 @@ public interface Command {
 //		return null;
 //	}
 
-	public abstract boolean check(Game game);
-
-	public void execute(Game game);
+	public abstract void execute(Game game);
 }

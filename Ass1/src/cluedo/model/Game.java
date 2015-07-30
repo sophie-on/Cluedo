@@ -84,7 +84,7 @@ public class Game {
 		// Deal cards
 		deal();
 
-		// TODO Load board
+		// Load board
 		m_board = new Board("cluedo.txt");
 
 		// Create dice
@@ -125,6 +125,8 @@ public class Game {
 		while (!gameOver) {
 			for (Player p : players) {
 
+				System.out.println("*** " + p.getName() + "it's your turn ***");
+
 				// Roll the die/ dice
 				roll = randomNumber(1 * NUM_OF_DICE, 6 * NUM_OF_DICE);
 
@@ -142,22 +144,33 @@ public class Game {
 				// TODO parse commands
 
 				/**
-				 * Move if (inRoom) Suggestion else if (inSwimmingPool)
-				 * Accusation
+				 * Move
+				 * if (inRoom)
+				 *  Suggestion
+				 * else if (inSwimmingPool)
+				 *  Accusation
 				 */
 
 				// Move Command
 				boolean isValid = false;
 
+				// Wait for a valid response
 				while (!isValid) {
 
 					MoveCommand move = new MoveCommand(reader, this);
+
 					if (getBoard().isValid(current, move.getX(), move.getY(),
 							roll)) {
-						this.move(move.getX(), move.getY());
+						move.execute(this);
 						isValid = true;
 					}
+					else
+						System.out.println("*** Sorry that is not a valid move, try again ***");
 				}
+
+				// Suggestion Command
+
+				// Accusation Command
 				// Update board
 				m_board.drawBoard();
 			}
