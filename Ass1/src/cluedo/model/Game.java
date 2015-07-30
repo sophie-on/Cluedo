@@ -132,7 +132,8 @@ public class Game {
 				System.out.print("***");
 
 				for (CommandType c : CommandType.values())
-					System.out.print(" " + c.toString() + " (" + c.getValue() + ") *");
+					System.out.print(" " + c.toString() + " (" + c.getValue()
+							+ ") *");
 				System.out.println("**\n");
 
 				// TODO parse command
@@ -242,6 +243,13 @@ public class Game {
 		// Get the number of players first
 		do {
 			System.out.println("*** How many players? (min = 3, max = 6) ***");
+
+			// Wait for a proper response
+			while (!reader.hasNextInt()) {
+				System.out.println("*** Please enter an integer you scrub ***");
+				reader.next();
+			}
+
 			numOfPlayers = reader.nextInt();
 
 			// Error message
@@ -292,6 +300,12 @@ public class Game {
 					if (!usedSuspects.contains(Suspect.values()[j]))
 						System.out.println(Suspect.values()[j].toString()
 								+ ": " + (j + 1));
+
+				// Wait for a proper response
+				while (!reader.hasNextInt()) {
+					System.out.println("*** Please enter integer you scrub ***");
+					reader.next();
+				}
 
 				int character = reader.nextInt();
 
