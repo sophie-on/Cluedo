@@ -101,6 +101,8 @@ public class Game {
 
 		NUM_OF_DICE = reader.nextInt();
 
+		reader.close();
+
 		// TODO start the game
 		startGame();
 	}
