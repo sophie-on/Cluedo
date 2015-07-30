@@ -47,7 +47,28 @@ public class CluedoCharacter extends GameObject {
 				return "Error";
 			}
 		}
+
+		public String toMiniString(){
+			switch (value) {
+			case 2:
+				return "M";
+			case 1:
+				return "S";
+			case 5:
+				return "p";
+			case 3:
+				return "W";
+			case 6:
+				return "P";
+			case 4:
+				return "G";
+			default:
+				return "Error";
+			}
+		}
 	}
+
+
 
 	private Suspect m_suspect;
 
