@@ -219,6 +219,9 @@ public class Board {
 					System.out.printf("|");
 				}
 				else{
+					if(board[i-1][j-1].isOccupied()){
+						System.out.println(board[i-1][i-j]+"|");
+					}
 					System.out.print(board[i-1][j-1].toString() + "|");
 				}
 			}
@@ -226,7 +229,7 @@ public class Board {
 		}
 	}
 
-	public static void main(String args[]){
-		new Board("cluedo.txt").drawBoard();
-	}
+//	public static void main(String args[]){
+//		new Board("cluedo.txt").drawBoard();
+//	}
 }
