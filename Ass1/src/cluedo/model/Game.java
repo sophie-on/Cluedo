@@ -1,9 +1,7 @@
 package cluedo.model;
 
 import java.awt.Point;
-import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -16,13 +14,13 @@ import cluedo.model.cards.Card;
 import cluedo.model.cards.CharacterCard;
 import cluedo.model.cards.RoomCard;
 import cluedo.model.cards.WeaponCard;
-import cluedo.model.commands.Command;
-import cluedo.model.commands.Command.CommandType;
-import cluedo.model.commands.CommandHandler;
 import cluedo.model.commands.MoveCommand;
-import cluedo.model.gameObjects.*;
+import cluedo.model.gameObjects.CluedoCharacter;
 import cluedo.model.gameObjects.CluedoCharacter.Suspect;
+import cluedo.model.gameObjects.Die;
+import cluedo.model.gameObjects.Location;
 import cluedo.model.gameObjects.Location.Room;
+import cluedo.model.gameObjects.Weapon;
 import cluedo.model.gameObjects.Weapon.WeaponType;
 
 /**
@@ -149,22 +147,19 @@ public class Game {
 				 */
 
 				// Move Command
-				boolean isValid;
+				boolean isValid = false;
 
 				while (!isValid) {
 
 					MoveCommand move = new MoveCommand(reader, this);
 					if (getBoard().isValid(current, move.getX(), move.getY(),
-							roll))
+							roll)) {
 						this.move(move.getX(), move.getY());
+						isValid = true;
+					}
 				}
-
-				// TODO validate command
-				if (CommandHandler.validateCommand(this, action, reader, p))
-					// action.execute(this);
-
-					// Update board
-					m_board.drawBoard();
+				// Update board
+				m_board.drawBoard();
 			}
 		}
 	}
