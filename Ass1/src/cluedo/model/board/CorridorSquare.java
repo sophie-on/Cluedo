@@ -57,4 +57,9 @@ public class CorridorSquare implements Square, InhabitableSquare{
 		return p;
 	}
 
+	@Override
+	public void addPlayer(Player p) {
+		this.p = p;
+	}
+
 }

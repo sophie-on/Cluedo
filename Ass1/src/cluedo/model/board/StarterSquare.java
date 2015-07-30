@@ -14,7 +14,6 @@ public class StarterSquare implements Square, InhabitableSquare{
 	public StarterSquare(int x, int y, Suspect suspect) {
 		m_x = x;
 		m_y = y;
-		isOccupied = true;
 		s = suspect;
 	}
 
@@ -43,6 +42,16 @@ public class StarterSquare implements Square, InhabitableSquare{
 	@Override
 	public Player getPlayer() {
 		return p;
+	}
+
+	public Suspect getSuspect(){
+		return s;
+	}
+
+	@Override
+	public void addPlayer(Player p) {
+		isOccupied = true;
+		this.p = p;
 	}
 
 }

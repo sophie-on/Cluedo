@@ -18,7 +18,7 @@ public interface InhabitableSquare {
 	 */
 
 	public boolean isOccupied();
-	
+
 	/**
 	 * Gets the player occupying this square
 	 * Returns null if no occupant
@@ -26,5 +26,7 @@ public interface InhabitableSquare {
 	 */
 
 	public Player getPlayer();
+
+	public void addPlayer(Player p);
 
 }

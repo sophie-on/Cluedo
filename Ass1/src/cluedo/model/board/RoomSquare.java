@@ -84,4 +84,9 @@ public class RoomSquare implements Square, InhabitableSquare{
 		return p;
 	}
 
+	@Override
+	public void addPlayer(Player p) {
+		this.p = p;
+	}
+
 }

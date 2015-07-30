@@ -120,6 +120,25 @@ public class Board {
 
 	}
 
+	/**
+	 * Adds players to the board at the start of a game
+	 * @param players
+	 */
+
+	private void addPlayers(Set<Player> players){
+		for(Player p : players){
+			int i = p.getX();
+			int j = p.getY();
+			Square s = board[i][j];
+			if(s instanceof InhabitableSquare){
+				((InhabitableSquare)s).addPlayer(p);
+			}
+			else{
+				throw new RuntimeException("Player cannot move here");
+			}
+		}
+	}
+
 	private Room findRoom(int i, int j, Scanner s) {
 		if (DEBUG) System.out.println("FR");
 		if(i > 0){
