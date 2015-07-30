@@ -125,7 +125,7 @@ public class Board {
 	 * @param players
 	 */
 
-	private void addPlayers(Set<Player> players){
+	public void addPlayers(Set<Player> players){
 		if(players == null){
 			throw new RuntimeException("Cannot add null players to the board");
 		}
