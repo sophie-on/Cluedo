@@ -26,13 +26,8 @@ public class BlankSquare implements Square{
 		return m_y;
 	}
 
-	@Override
-	public boolean isOccupied() { // should never be occupied
-		return false;
-	}
-
 	public String toString(){
-		return " ";
+		return "_";
 	}
 
 }

@@ -1,10 +1,11 @@
 package cluedo.model.board;
 
+import cluedo.model.Player;
 import cluedo.model.gameObjects.CluedoCharacter.Suspect;
 
-public class StarterSquare implements Square{
+public class StarterSquare implements Square, InhabitableSquare{
 
-	private Suspect c;
+	private Player p;
 	private int m_x;
 	private int m_y;
 	private boolean isOcuppied;
@@ -31,9 +32,14 @@ public class StarterSquare implements Square{
 
 	public String toString(){
 		if(isOcuppied){
-			return c.toString().substring(0, 1);
+			return p.getCharacter().toMiniString();
 		}
 		return "?";
+	}
+
+	@Override
+	public Player getPlayer() {
+		return p;
 	}
 
 }

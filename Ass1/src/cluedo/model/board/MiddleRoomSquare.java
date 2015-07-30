@@ -29,11 +29,6 @@ public class MiddleRoomSquare implements Square{
 		return m_y;
 	}
 
-	@Override
-	public boolean isOccupied() { // should never be occupied
-		return false;
-	}
-
 	public String toString(){
 		return "X";
 	}

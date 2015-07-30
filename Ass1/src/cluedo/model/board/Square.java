@@ -25,12 +25,7 @@ public interface Square {
 
 	public int getY() ;
 
-	/**
-	 * Indicates whether a player is occuping a square
-	 * @return boolean indicating if occupied
-	 */
 
-	public boolean isOccupied();
 
 	public String toString();
 }

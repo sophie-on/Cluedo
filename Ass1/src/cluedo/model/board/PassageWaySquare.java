@@ -42,13 +42,8 @@ public class PassageWaySquare implements Square{
 		return m_y;
 	}
 
-	@Override
-	public boolean isOccupied() { // Should never be used, can never be occupied
-		return false;
-	}
-
 	public String toString(){
-		return "p";
+		return "t";
 	}
 
 }

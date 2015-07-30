@@ -212,9 +212,6 @@ public class Board {
 				if(i == 0  ){
 					System.out.printf("__");
 				}
-				else if(i == board.length+1){
-
-				}
 				else if(j == 0 ){
 					System.out.printf("|");
 				}
@@ -232,7 +229,7 @@ public class Board {
 		}
 	}
 
-//	public static void main(String args[]){
-//		new Board("cluedo.txt").drawBoard();
-//	}
+	public static void main(String args[]){
+		new Board("cluedo.txt").drawBoard();
+	}
 }

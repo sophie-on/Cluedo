@@ -1,4 +1,5 @@
 package cluedo.model.board;
+import cluedo.model.Player;
 import cluedo.model.gameObjects.Location;
 import cluedo.model.gameObjects.Location.Room;
 
@@ -11,11 +12,14 @@ import cluedo.model.gameObjects.Location.Room;
  *
  */
 
-public class RoomSquare implements Square{
+public class RoomSquare implements Square, InhabitableSquare{
 
 	private int m_x;
 	private int m_y;
 	private Room r;
+	private Player p;
+	private boolean isOccupied;
+
 
 	public RoomSquare(int x, int y, Room room){
 		this.m_x = x;
@@ -35,7 +39,7 @@ public class RoomSquare implements Square{
 
 	@Override
 	public boolean isOccupied() {
-		return false;
+		return isOccupied;
 	}
 
 	/**
@@ -64,13 +68,18 @@ public class RoomSquare implements Square{
 		case DINING_ROOM:
 			return "D";
 		case STUDY:
-			return "S";
+			return "s";
 		case KITCHEN:
 			return "K";
 		case CONSERVATORY:
 			return "C";
 		}
 		return "";
+	}
+
+	@Override
+	public Player getPlayer() {
+		return p;
 	}
 
 }
