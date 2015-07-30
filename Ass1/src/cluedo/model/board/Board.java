@@ -126,6 +126,9 @@ public class Board {
 	 */
 
 	private void addPlayers(Set<Player> players){
+		if(players == null){
+			throw new RuntimeException("Cannot add null players to the board");
+		}
 		for(Player p : players){
 			int i = p.getX();
 			int j = p.getY();
