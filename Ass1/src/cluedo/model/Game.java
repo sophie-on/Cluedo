@@ -105,7 +105,6 @@ public class Game {
 
 		// Wait for proper response
 		while (!reader.hasNextInt()) {
-			if(reader.hasNext()){
 			System.out.println("*** That is not a valid number of dice ***");
 			reader.next();
 			}
