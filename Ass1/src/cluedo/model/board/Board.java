@@ -100,15 +100,15 @@ public class Board {
 					break;
 				case 'p':
 					Room r = findRoom(i,j,s);
-					System.out.println("R is " + r );//+ "passages.get(r) is " + passages.get(r));
+					if (DEBUG) System.out.println("R is " + r );//+ "passages.get(r) is " + passages.get(r));
 					board[i][j] = new PassageWaySquare(i,j, r , passages.get(r));
 					break;
 				case 'd':
 					board[i][j] = new DoorSquare(i,j,findRoom(i,j,s)); // Need to deal with how to find room it is related to
 					break;
-					
+
 				default:
-					System.out.println("Making room square " + key);
+					if (DEBUG) System.out.println("Making room square " + key);
 					assert places.get(key) != null;
 					board[i][j] = new RoomSquare(i,j,places.get(key));
 					break;
