@@ -38,13 +38,19 @@ public class MoveCommand implements Command {
 		System.out
 				.println("*** Which option do you want? ***\n*** Jump(1) * Manual(2) ***");
 
+		// if(scan.hasNext()) scan.nextLine();
+
 		// Wait for a proper response
 		while (!scan.hasNextInt()) {
-			System.out.println("*** Please enter an integer ***");
-			scan.next();
+
+				System.out.println("*** Please enter an integer ***");
+				scan.nextLine();
+
 		}
 
 		int command = scan.nextInt();
+		scan.nextLine();
+		System.out.println("COMMAND: " + command);
 
 		switch (command) {
 		case 2:
@@ -69,7 +75,5 @@ public class MoveCommand implements Command {
 	public final int getY() {
 		return this.getY();
 	}
-
-
 
 }

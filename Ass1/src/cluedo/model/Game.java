@@ -286,10 +286,11 @@ public class Game {
 			// Wait for a proper response
 			while (!reader.hasNextInt()) {
 				System.out.println("*** Please enter an integer you scrub ***");
-				reader.next();
+				reader.nextLine();
 			}
 
 			numOfPlayers = reader.nextInt();
+			reader.nextLine();
 
 			// Error message
 			if (numOfPlayers < 3 || numOfPlayers > 6)
@@ -311,7 +312,7 @@ public class Game {
 				// Get name
 				System.out.println("*** Player " + (i + 1)
 						+ " please enter a name ***");
-				name = reader.next();
+				name = reader.nextLine();
 
 				// Check if name is valid
 				for (Player p : players)
@@ -344,10 +345,11 @@ public class Game {
 				while (!reader.hasNextInt()) {
 					System.out
 							.println("*** Please enter integer you scrub ***");
-					reader.next();
+					reader.nextLine();
 				}
 
 				int character = reader.nextInt();
+				reader.nextLine();
 
 				switch (character) {
 				case 1:
