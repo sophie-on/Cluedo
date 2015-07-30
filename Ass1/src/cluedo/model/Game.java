@@ -89,9 +89,12 @@ public class Game {
 		m_board.addPlayers(players);
 
 		// Set up dice
-		setupDice();
+		// setupDice();
+
+		NUM_OF_DICE = 1;
 
 		// TODO start the game
+		System.out.println("Here");
 		startGame();
 	}
 
@@ -105,8 +108,10 @@ public class Game {
 
 		// Wait for proper response
 		while (!reader.hasNextInt()) {
-			System.out.println("*** That is not a valid number of dice ***");
-			reader.next();
+			if (reader.hasNext()) {
+				System.out
+						.println("*** That is not a valid number of dice ***");
+				reader.next();
 			}
 		}
 
