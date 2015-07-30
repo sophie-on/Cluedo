@@ -86,6 +86,7 @@ public class Game {
 
 		// Load board
 		m_board = new Board("cluedo.txt");
+		m_board.addPlayers(players);
 
 		// Create dice
 		System.out
