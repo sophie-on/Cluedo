@@ -35,7 +35,7 @@ public class MiddleRoomSquare implements Square{
 	}
 
 	public String toString(){
-		return "x";
+		return "X";
 	}
 
 }

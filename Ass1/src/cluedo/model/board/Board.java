@@ -27,7 +27,7 @@ public class Board {
 
 	private int x_size;
 	private int y_size;
-	private Map<String,Room> places;
+	private Map<Character,Room> places;
 	private int character;
 	private Map<Room, Room> passages;
 
@@ -45,16 +45,16 @@ public class Board {
 	}
 
 	private void setUpMap() {
-		places = new HashMap<String, Room>();
-		places.put("k",Room.KITCHEN);
-		places.put("b",Room.BALL_ROOM);
-		places.put("B",Room.BILLIARD_ROOM);
-		places.put("D",Room.DINING_ROOM);
-		places.put("l",Room.LIBRARY);
-		places.put("H",Room.HALL);
-		places.put("L",Room.LOUNGE);
-		places.put("S",Room.STUDY);
-		places.put("C", Room.CONSERVATORY);
+		places = new HashMap<Character, Room>();
+		places.put('k',Room.KITCHEN);
+		places.put('b',Room.BALL_ROOM);
+		places.put('B',Room.BILLIARD_ROOM);
+		places.put('D',Room.DINING_ROOM);
+		places.put('l',Room.LIBRARY);
+		places.put('H',Room.HALL);
+		places.put('L',Room.LOUNGE);
+		places.put('S',Room.STUDY);
+		places.put('C', Room.CONSERVATORY);
 	}
 
 	private void setUpPassage(){
@@ -69,44 +69,50 @@ public class Board {
 	 * Takes input from the Scanner and generates the Squares for the board
 	 * @param s
 	 */
-	private void parseBoard(Scanner s) {	
-		s.next(); 		
+	private void parseBoard(Scanner s) {
+		s.next();
 		for(int i = 0; i < board.length; i++){
 			for(int j = 0; j< board[i].length; j++){
-				String key = s.next();
+				char key = s.next().charAt(0);
 				System.out.println("Key "+key + "i " + i + " j " + j);
 				switch(key){
-				case "\n": // Does nothing, end of line character to indicate new row
-					j--; 
+				case '\r':
+				case '\n': // Does nothing, end of line character to indicate new row
+					j--;
 					System.out.println("Newline found");
 					break;
-				case " ": // Does nothing, end of line character to indicate new row
+				case ' ': // Does nothing, end of line character to indicate new row
 					j--;
 					System.out.println("Space found");
 					break;
-				case "!": // Does nothing, a non-used square for decoration
+				case '!': // Does nothing, a non-used square for decoration
 					board[i][j] = new BlankSquare(i,j);
 					break;
-				case "s": // Generates a starting square
+				case 's': // Generates a starting square
 					board[i][j] = new StarterSquare(i,j,Suspect.values()[character++]);
+					System.out.println("Character is " + character);
 					break;
-				case "c":
+				case 'c':
 					board[i][j] = new CorridorSquare(i,j);
 					break;
-				case "p":
+				case 'p':
 					 Room r = findRoom(i,j,s);
 					 System.out.println("R is " + r );//+ "passages.get(r) is " + passages.get(r));
 					 board[i][j] = new PassageWaySquare(i,j, r , passages.get(r));
 					break;
-				case "d":
+				case 'd':
 					board[i][j] = new DoorSquare(i,j,findRoom(i,j,s)); // Need to deal with how to find room it is related to
+					break;
+				case 'x':
+					board[i][j] = new MiddleRoomSquare(i,j);
 					break;
 				//case ("k"|"b"|"B"|"D"|"l"|"L"|"H"|"S"|"C"):
 					default:
 					System.out.println("Making room square " + key);
+					assert places.get(key) != null;
 					board[i][j] = new RoomSquare(i,j,places.get(key));
 					break;
-					
+
 				}
 			}
 			//s.next(); // to skip newline character
@@ -130,7 +136,7 @@ public class Board {
 				return ((RoomSquare)(board[i][j-1])).getRoom();
 			}
 		}
-		
+
 		if(s.hasNext("k")){return Room.KITCHEN;	}
 		if(s.hasNext("b")){return Room.BALL_ROOM;}
 		if(s.hasNext("B")){return Room.BILLIARD_ROOM;}
@@ -140,7 +146,7 @@ public class Board {
 		if(s.hasNext("H")){return Room.HALL;	}
 		if(s.hasNext("S")){return Room.STUDY;	}
 		if(s.hasNext("C")){return Room.CONSERVATORY;}
-		return null;
+		throw new RuntimeException("Not a valid room");
 	}
 
 	/**
@@ -199,18 +205,22 @@ public class Board {
 	}
 
 	public void drawBoard(){
-		for(int i = 0; i < board.length; i++){
-			for(int j = 0; j < board[i].length; j++){
-				if(j == 0){
-					System.out.printf("_");
+		for(int i = 0; i < board.length + 2; i++){
+			for(int j = 0; j < board[0].length; j++){
+				if(i == 0  ){
+					System.out.printf("__");
 				}
-				else if(i == 0 || i == board.length -1){
+				else if(i == board.length+1){
+
+				}
+				else if(j == 0){
 					System.out.printf("|");
 				}
 				else{
-					System.out.println(board[i][j].toString());
+					System.out.print(board[i-1][j].toString() + "|");
 				}
 			}
+			System.out.println("");
 		}
 	}
 
