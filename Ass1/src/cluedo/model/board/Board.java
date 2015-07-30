@@ -206,18 +206,18 @@ public class Board {
 
 	public void drawBoard(){
 		for(int i = 0; i < board.length + 2; i++){
-			for(int j = 0; j < board[0].length; j++){
+			for(int j = 0; j < board[0].length + 1; j++){
 				if(i == 0  ){
 					System.out.printf("__");
 				}
 				else if(i == board.length+1){
 
 				}
-				else if(j == 0){
+				else if(j == 0 ){
 					System.out.printf("|");
 				}
 				else{
-					System.out.print(board[i-1][j].toString() + "|");
+					System.out.print(board[i-1][j-1].toString() + "|");
 				}
 			}
 			System.out.println("");
