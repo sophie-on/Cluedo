@@ -248,7 +248,7 @@ public class Board {
 					if(board[i-1][j-1] instanceof InhabitableSquare){
 						InhabitableSquare sq = (InhabitableSquare)board[i-1][j-1];
 						if(sq.isOccupied()){
-							System.out.println(sq.getPlayer().getCharacter().toMiniString());
+							System.out.print(sq.getPlayer().getCharacter().toMiniString());
 						}
 					}
 					System.out.print(board[i-1][j-1].toString() + "|");
