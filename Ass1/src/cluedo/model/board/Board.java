@@ -23,7 +23,7 @@ import cluedo.model.gameObjects.CluedoCharacter.Suspect;
 
 public class Board {
 
-	private final static boolean DEBUG = true;
+	private final static boolean DEBUG = false;
 
 	private Square[][] board;
 
