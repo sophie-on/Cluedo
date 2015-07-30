@@ -23,6 +23,8 @@ import cluedo.model.gameObjects.CluedoCharacter.Suspect;
 
 public class Board {
 
+	private final static boolean DEBUG = false;
+
 	private Square[][] board;
 
 	private int x_size;
@@ -74,30 +76,30 @@ public class Board {
 		for(int i = 0; i < board.length; i++){
 			for(int j = 0; j< board[i].length; j++){
 				char key = s.next().charAt(0);
-				System.out.println("Key "+key + "i " + i + " j " + j);
+				if (DEBUG) System.out.println("Key "+key + "i " + i + " j " + j);
 				switch(key){
 				case '\r':
 				case '\n': // Does nothing, end of line character to indicate new row
 					j--;
-					System.out.println("Newline found");
+					if (DEBUG) System.out.println("Newline found");
 					break;
 				case ' ': // Does nothing, end of line character to indicate new row
 					j--;
-					System.out.println("Space found");
+					if (DEBUG) System.out.println("Space found");
 					break;
 				case '!': // Does nothing, a non-used square for decoration
 					board[i][j] = new BlankSquare(i,j);
 					break;
 				case 's': // Generates a starting square
 					board[i][j] = new StarterSquare(i,j,Suspect.values()[character++]);
-					System.out.println("Character is " + character);
+					if (DEBUG) System.out.println("Character is " + character);
 					break;
 				case 'c':
 					board[i][j] = new CorridorSquare(i,j);
 					break;
 				case 'p':
 					 Room r = findRoom(i,j,s);
-					 System.out.println("R is " + r );//+ "passages.get(r) is " + passages.get(r));
+					 if (DEBUG) System.out.println("R is " + r );//+ "passages.get(r) is " + passages.get(r));
 					 board[i][j] = new PassageWaySquare(i,j, r , passages.get(r));
 					break;
 				case 'd':
@@ -108,7 +110,7 @@ public class Board {
 					break;
 				//case ("k"|"b"|"B"|"D"|"l"|"L"|"H"|"S"|"C"):
 					default:
-					System.out.println("Making room square " + key);
+					if (DEBUG) System.out.println("Making room square " + key);
 					assert places.get(key) != null;
 					board[i][j] = new RoomSquare(i,j,places.get(key));
 					break;
@@ -121,18 +123,18 @@ public class Board {
 	}
 
 	private Room findRoom(int i, int j, Scanner s) {
-		System.out.println("FR");
+		if (DEBUG) System.out.println("FR");
 		if(i > 0){
-			System.out.println("i > 0 ");
+			if (DEBUG) System.out.println("i > 0 ");
 			if(board[i-1][j] instanceof RoomSquare){
-				System.out.println("Returning room square 2");
+				if (DEBUG) System.out.println("Returning room square 2");
 				return ((RoomSquare)(board[i-1][j])).getRoom();
 			}
 		}
 		if(j > 0){
-			System.out.println("j > 0 ");
+			if (DEBUG) System.out.println("j > 0 ");
 			if(board[i][j-1] instanceof RoomSquare){
-				System.out.println("Returning room square 2");
+				if (DEBUG) System.out.println("Returning room square 2");
 				return ((RoomSquare)(board[i][j-1])).getRoom();
 			}
 		}
