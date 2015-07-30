@@ -40,7 +40,7 @@ public class Game {
 	public static final Point PROFESSOR_PLUM_START = new Point(19, 24);
 
 	public static final boolean DEBUG = false;
-	public static int NUM_OF_DICE;
+	private int NUM_OF_DICE = 2;
 
 	// The game board
 	private Board m_board;
@@ -104,7 +104,7 @@ public class Game {
 				.println("*** How many dice are you playing with? (min = 1, max = 2) ***");
 
 		// Wait for proper response
-		while (!reader.hasNextInt() && reader.hasNext()) {
+		while (!reader.hasNextInt()) {
 			System.out.println("*** That is not a valid number of dice ***");
 			reader.next();
 		}
