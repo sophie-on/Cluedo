@@ -38,27 +38,26 @@ public class MoveCommand implements Command {
 		System.out
 				.println("*** Which option do you want? ***\n*** Jump(1) * Manual(2) ***");
 
-		int command;
-
-//		do {
-//			command = scan.nextInt();
-//		}while(!command);
-
-	}
-
-	public int readInt(Scanner scan) {
-		boolean isValid;
-		int value = 0;
-
-		try {
-			value = scan.nextInt();
-		} catch (Exception e) {
-			System.out.println("*** Invalid entry, please try again ***");
+		// Wait for a proper response
+		while (!scan.hasNextInt()) {
+			System.out.println("*** Please enter an integer ***");
+			scan.next();
 		}
 
-		return value;
+		int command = scan.nextInt();
+
+		switch (command) {
+		case 2:
+			option = MoveOption.MANUAL;
+			break;
+		default:
+			option = MoveOption.JUMP;
+			break;
+		}
+
 	}
 
+	// Probably gonna get rid of this
 	@Override
 	public boolean check(Game game) {
 		return true;
@@ -68,5 +67,15 @@ public class MoveCommand implements Command {
 	public void execute(Game game) {
 		game.move(m_x, m_y);
 	}
+
+	public final int getX() {
+		return this.m_x;
+	}
+
+	public final int getY() {
+		return this.getY();
+	}
+
+
 
 }

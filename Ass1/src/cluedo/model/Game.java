@@ -18,6 +18,8 @@ import cluedo.model.cards.RoomCard;
 import cluedo.model.cards.WeaponCard;
 import cluedo.model.commands.Command;
 import cluedo.model.commands.Command.CommandType;
+import cluedo.model.commands.CommandHandler;
+import cluedo.model.commands.MoveCommand;
 import cluedo.model.gameObjects.*;
 import cluedo.model.gameObjects.CluedoCharacter.Suspect;
 import cluedo.model.gameObjects.Location.Room;
@@ -39,7 +41,8 @@ public class Game {
 	public static final Point MISS_SCARLET_START = new Point(7, 24);
 	public static final Point PROFESSOR_PLUM_START = new Point(24, 19);
 
-	private static final boolean DEBUG = false;
+	public static final boolean DEBUG = false;
+	public final int NUM_OF_DICE;
 
 	// The game board
 	private Board m_board;
@@ -84,11 +87,21 @@ public class Game {
 		deal();
 
 		// TODO Load board
+		m_board = new Board("cluedo.txt");
 
 		// Create dice
-		dice = new HashSet<Die>();
-		// System.out.println("How many dice are you playing with?");
-		// TODO read number of dice
+		System.out
+				.println("*** How many dice are you playing with? (min = 1, max = 2) ***");
+
+		Scanner reader = new Scanner(System.in);
+
+		// Wait for proper response
+		while (!reader.hasNextInt()) {
+			System.out.println("*** That is not a valid number of dice ***");
+			reader.next();
+		}
+
+		NUM_OF_DICE = reader.nextInt();
 
 		// TODO start the game
 		startGame();
@@ -106,13 +119,16 @@ public class Game {
 		 */
 
 		// Draw the board
-		// m_board.drawBoard();
+		m_board.drawBoard();
 
 		boolean gameOver = false;
 		Scanner reader = new Scanner(System.in);
 
 		while (!gameOver) {
 			for (Player p : players) {
+
+				// Roll the die/ dice
+				roll = randomNumber(1 * NUM_OF_DICE, 6 * NUM_OF_DICE);
 
 				current = p;
 				next = getNextPlayer();
@@ -125,27 +141,30 @@ public class Game {
 					break;
 				}
 
-				// Ask for a command
-				System.out.println("*** " + p.getName()
-						+ " please enter a command ***");
+				// TODO parse commands
 
-				System.out.print("***");
+				/**
+				 * Move if (inRoom) Suggestion else if (inSwimmingPool)
+				 * Accusation
+				 */
 
-				for (CommandType c : CommandType.values())
-					System.out.print(" " + c.toString() + " (" + c.getValue()
-							+ ") *");
-				System.out.println("**\n");
+				// Move Command
+				boolean isValid;
 
-				// TODO parse command
-				boolean validCommand = false;
+				while (!isValid) {
 
-				// Loop until command is valid
-				do {
-					Command c = parseCommand(reader);
-				} while (!validCommand);
+					MoveCommand move = new MoveCommand(reader, this);
+					if (getBoard().isValid(current, move.getX(), move.getY(),
+							roll))
+						this.move(move.getX(), move.getY());
+				}
 
-				// Update board
-				m_board.drawBoard();
+				// TODO validate command
+				if (CommandHandler.validateCommand(this, action, reader, p))
+					// action.execute(this);
+
+					// Update board
+					m_board.drawBoard();
 			}
 		}
 	}
@@ -181,8 +200,8 @@ public class Game {
 
 		criminal = randomNumber(0, 8);
 
-		// Create the rooms
-		for (int i = 0; i < Room.values().length; i++) {
+		// Create the rooms (minus the swimming pool)
+		for (int i = 0; i < Room.values().length - 1; i++) {
 
 			Location room;
 
@@ -303,7 +322,8 @@ public class Game {
 
 				// Wait for a proper response
 				while (!reader.hasNextInt()) {
-					System.out.println("*** Please enter integer you scrub ***");
+					System.out
+							.println("*** Please enter integer you scrub ***");
 					reader.next();
 				}
 
@@ -460,12 +480,12 @@ public class Game {
 		return envelope;
 	}
 
-	public Board getBoard() {
+	public final Board getBoard() {
 		return this.m_board;
 	}
 
-	public Command parseCommand(Scanner s) {
-		return null;
+	public final int getRoll() {
+		return this.roll;
 	}
 
 	/**
