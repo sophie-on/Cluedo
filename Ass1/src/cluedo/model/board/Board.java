@@ -93,7 +93,10 @@ public class Board {
 					break;
 				case 's': // Generates a starting square
 					board[i][j] = new StarterSquare(i,j,Suspect.values()[character++]);
-					if (DEBUG) System.out.println("Character is " + character);
+					if (DEBUG) {
+						System.out.println("Character is " + character);
+						System.out.println("Coordinates are " + i + " " + j);
+					}
 					break;
 				case 'c':
 					board[i][j] = new CorridorSquare(i,j);
@@ -137,7 +140,7 @@ public class Board {
 				((InhabitableSquare)s).addPlayer(p);
 			}
 			else{
-				throw new RuntimeException("Player cannot move here");
+				throw new RuntimeException("Player cannot move here " + i + " " + j + " " + s.getClass());
 			}
 		}
 	}
