@@ -194,10 +194,12 @@ public class Board {
 		Square square = squareAt(player.getX() + dx, player.getY() + dy);
 
 		// If the square is occupied
-		if (square.isOccupied())
-			return false;
+		if(square instanceof InhabitableSquare){
+		if (!((InhabitableSquare)square).isOccupied())
+			return true;
+		}
 
-		return true;
+		return false;
 	}
 
 	public final Square squareAt(int x, int y) {
@@ -217,8 +219,11 @@ public class Board {
 					System.out.printf("|");
 				}
 				else{
-					if(board[i-1][j-1].isOccupied()){
-						System.out.println(board[i-1][i-j]+"|");
+					if(board[i-1][j-1] instanceof InhabitableSquare){
+						InhabitableSquare sq = (InhabitableSquare)board[i-1][j-1];
+						if(sq.isOccupied()){
+						System.out.println(sq.getPlayer().getCharacter().toMiniString());
+						}
 					}
 					System.out.print(board[i-1][j-1].toString() + "|");
 				}
