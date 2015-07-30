@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package cluedo.model.gameObjects;
 
@@ -8,7 +8,7 @@ import java.util.Set;
 
 /**
  * Class that represents a room on the board.
- * 
+ *
  * @author Cameron Bryers, Hannah Craighead.
  *
  */
@@ -16,12 +16,12 @@ public class Location extends GameObject {
 
 	/**
 	 * List of possible crime scenes.
-	 * 
+	 *
 	 * @author Cameron Bryers, Hannah Craighead.
-	 * 
+	 *
 	 */
 	public enum Room {
-		KITCHEN, BALL_ROOM, CONSERVATORY, DINING_ROOM, BILLIARD_ROOM, LIBRARY, LOUNGE, HALL, STUDY;
+		KITCHEN, BALL_ROOM, CONSERVATORY, DINING_ROOM, BILLIARD_ROOM, LIBRARY, LOUNGE, HALL, STUDY, SWIMMING_POOL;
 	}
 
 	private Room m_room;
@@ -41,7 +41,7 @@ public class Location extends GameObject {
 
 	/**
 	 * Adds a character to that room.
-	 * 
+	 *
 	 * @param character
 	 * @return
 	 */
@@ -51,7 +51,7 @@ public class Location extends GameObject {
 
 	/**
 	 * Remove a character from the room.
-	 * 
+	 *
 	 * @param character
 	 * @return
 	 */
@@ -61,7 +61,7 @@ public class Location extends GameObject {
 
 	/**
 	 * Add a weapon to the room.
-	 * 
+	 *
 	 * @param weapon
 	 * @return
 	 */
@@ -71,7 +71,7 @@ public class Location extends GameObject {
 
 	/**
 	 * Remove a weapon from the room.
-	 * 
+	 *
 	 * @param weapon
 	 * @return
 	 */

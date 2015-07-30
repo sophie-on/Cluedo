@@ -1,4 +1,7 @@
 package cluedo.model.board;
+
+import cluedo.model.Player;
+
 /**
  * This type of square is used to represent the middle room of the cluedo board.
  * This is to differentiate it from a regular corridor square, but it cannot
@@ -9,10 +12,12 @@ package cluedo.model.board;
  */
 
 
-public class MiddleRoomSquare implements Square{
+public class MiddleRoomSquare implements Square, InhabitableSquare{
 
 	private int m_x;
 	private int m_y;
+	private boolean isOccupied;
+	private Player p;
 
 	public MiddleRoomSquare(int x, int y){
 		m_x = x;
@@ -31,6 +36,16 @@ public class MiddleRoomSquare implements Square{
 
 	public String toString(){
 		return "X";
+	}
+
+	@Override
+	public boolean isOccupied() {
+		return isOccupied;
+	}
+
+	@Override
+	public Player getPlayer() {
+		return p;
 	}
 
 }

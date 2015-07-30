@@ -146,6 +146,7 @@ public class Board {
 		if(s.hasNext("H")){return Room.HALL;	}
 		if(s.hasNext("S")){return Room.STUDY;	}
 		if(s.hasNext("C")){return Room.CONSERVATORY;}
+		if(s.hasNext("x")){return Room.SWIMMING_POOL;}
 		throw new RuntimeException("Not a valid room");
 	}
 
