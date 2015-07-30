@@ -55,6 +55,7 @@ public class Board {
 		places.put('L',Room.LOUNGE);
 		places.put('S',Room.STUDY);
 		places.put('C', Room.CONSERVATORY);
+		places.put('x', Room.SWIMMING_POOL);
 	}
 
 	private void setUpPassage(){
@@ -96,18 +97,15 @@ public class Board {
 					board[i][j] = new CorridorSquare(i,j);
 					break;
 				case 'p':
-					 Room r = findRoom(i,j,s);
-					 System.out.println("R is " + r );//+ "passages.get(r) is " + passages.get(r));
-					 board[i][j] = new PassageWaySquare(i,j, r , passages.get(r));
+					Room r = findRoom(i,j,s);
+					System.out.println("R is " + r );//+ "passages.get(r) is " + passages.get(r));
+					board[i][j] = new PassageWaySquare(i,j, r , passages.get(r));
 					break;
 				case 'd':
 					board[i][j] = new DoorSquare(i,j,findRoom(i,j,s)); // Need to deal with how to find room it is related to
 					break;
-				case 'x':
-					board[i][j] = new MiddleRoomSquare(i,j);
-					break;
-				//case ("k"|"b"|"B"|"D"|"l"|"L"|"H"|"S"|"C"):
-					default:
+
+				default:
 					System.out.println("Making room square " + key);
 					assert places.get(key) != null;
 					board[i][j] = new RoomSquare(i,j,places.get(key));
@@ -196,8 +194,8 @@ public class Board {
 
 		// If the square is occupied
 		if(square instanceof InhabitableSquare){
-		if (!((InhabitableSquare)square).isOccupied())
-			return true;
+			if (!((InhabitableSquare)square).isOccupied())
+				return true;
 		}
 
 		return false;
@@ -208,7 +206,7 @@ public class Board {
 	}
 
 	public void drawBoard(){
-		for(int i = 0; i < board.length + 2; i++){
+		for(int i = 0; i < board.length + 1; i++){
 			for(int j = 0; j < board[0].length + 1; j++){
 				if(i == 0  ){
 					System.out.printf("__");
@@ -220,7 +218,7 @@ public class Board {
 					if(board[i-1][j-1] instanceof InhabitableSquare){
 						InhabitableSquare sq = (InhabitableSquare)board[i-1][j-1];
 						if(sq.isOccupied()){
-						System.out.println(sq.getPlayer().getCharacter().toMiniString());
+							System.out.println(sq.getPlayer().getCharacter().toMiniString());
 						}
 					}
 					System.out.print(board[i-1][j-1].toString() + "|");

@@ -73,6 +73,8 @@ public class RoomSquare implements Square, InhabitableSquare{
 			return "K";
 		case CONSERVATORY:
 			return "C";
+		case SWIMMING_POOL:
+			return "x";
 		}
 		return "";
 	}
