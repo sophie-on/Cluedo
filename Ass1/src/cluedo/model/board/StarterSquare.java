@@ -5,14 +5,17 @@ import cluedo.model.gameObjects.CluedoCharacter.Suspect;
 
 public class StarterSquare implements Square, InhabitableSquare{
 
-	private Player p;
+	private Suspect s;
 	private int m_x;
 	private int m_y;
-	private boolean isOcuppied;
+	private boolean isOccupied;
+	private Player p;
 
 	public StarterSquare(int x, int y, Suspect suspect) {
 		m_x = x;
 		m_y = y;
+		isOccupied = true;
+		s = suspect;
 	}
 
 	@Override
@@ -27,12 +30,12 @@ public class StarterSquare implements Square, InhabitableSquare{
 
 	@Override
 	public boolean isOccupied() {
-		return isOcuppied;
+		return isOccupied;
 	}
 
 	public String toString(){
-		if(isOcuppied){
-			return p.getCharacter().toMiniString();
+		if(isOccupied){
+			return s.toMiniString();
 		}
 		return "?";
 	}
