@@ -68,7 +68,11 @@ public class Game {
 	// Current roll
 	private int roll;
 
+	private final Scanner READER;
+
 	public Game() {
+
+		READER = new Scanner(System.in);
 
 		System.out.println("*** Welcome to Cluedo (Pre - Alpha Version) ***");
 		System.out.println("*** By Cameron Bryers and Hannah Craighead ***");
@@ -89,35 +93,32 @@ public class Game {
 		m_board.addPlayers(players);
 
 		// Set up dice
-		// setupDice();
+		setupDice();
 
-		NUM_OF_DICE = 1;
+		// NUM_OF_DICE = 1;
 
 		// TODO start the game
-		System.out.println("Here");
 		startGame();
+
+		READER.close();
 	}
 
 	private void setupDice() {
 
-		Scanner reader = new Scanner(System.in);
+		// Scanner reader = new Scanner(System.in);
 
 		// Create dice
-		System.out
-				.println("*** How many dice are you playing with? (min = 1, max = 2) ***");
+		System.out.println("*** How many dice are you playing with? (min = 1, max = 2) ***");
 
 		// Wait for proper response
-		while (!reader.hasNextInt()) {
-			if (reader.hasNext()) {
-				System.out
-						.println("*** That is not a valid number of dice ***");
-				reader.next();
-			}
+		while (!READER.hasNextInt()) {
+			System.out.println("*** That is not a valid number of dice ***");
+			READER.nextLine();
 		}
 
-		NUM_OF_DICE = reader.nextInt();
+		NUM_OF_DICE = READER.nextInt();
 
-		reader.close();
+		// READER.close();
 	}
 
 	/**
@@ -135,26 +136,25 @@ public class Game {
 		m_board.drawBoard();
 
 		boolean gameOver = false;
-		Scanner reader = new Scanner(System.in);
+		// Scanner reader = new Scanner(System.in);
 
 		while (!gameOver) {
 			for (Player p : players) {
+				
+				// Check for game over
+				if (players.size() == 1) {
+					gameOver = true;
+					System.out.println("*** Congragulations " + p.getName() + " You won! ***");
+					break;
+				}
 
-				System.out.println("*** " + p.getName() + "it's your turn ***");
+				System.out.println("*** " + p.getName() + " it's your turn ***");
 
 				// Roll the die/ dice
 				roll = randomNumber(1 * NUM_OF_DICE, 6 * NUM_OF_DICE);
 
 				current = p;
 				next = getNextPlayer();
-
-				// Check for game over
-				if (players.size() == 1) {
-					gameOver = true;
-					System.out.println("*** Congragulations " + p.getName()
-							+ " You won! ***");
-					break;
-				}
 
 				// TODO parse commands
 
@@ -169,20 +169,19 @@ public class Game {
 				// Wait for a valid response
 				while (!isValid) {
 
-					MoveCommand move = new MoveCommand(reader, this);
+					MoveCommand move = new MoveCommand(READER, this);
 
-					if (getBoard().isValid(current, move.getX(), move.getY(),
-							roll)) {
+					if (getBoard().isValid(current, move.getX(), move.getY(), roll)) {
 						move.execute(this);
 						isValid = true;
 					} else
-						System.out
-								.println("*** Sorry that is not a valid move, try again ***");
+						System.out.println("*** Sorry that is not a valid move, try again ***");
 				}
 
 				// Suggestion Command
 
 				// Accusation Command
+				
 				// Update board
 				m_board.drawBoard();
 			}
@@ -274,7 +273,7 @@ public class Game {
 		usedSuspects = new HashSet<Suspect>();
 
 		// Create a scanner
-		Scanner reader = new Scanner(System.in);
+		// Scanner READER = new Scanner(System.in);
 
 		// Number of players (min = 3, max = 6)
 		int numOfPlayers = 0;
@@ -284,18 +283,17 @@ public class Game {
 			System.out.println("*** How many players? (min = 3, max = 6) ***");
 
 			// Wait for a proper response
-			while (!reader.hasNextInt()) {
+			while (!READER.hasNextInt()) {
 				System.out.println("*** Please enter an integer you scrub ***");
-				reader.nextLine();
+				READER.nextLine();
 			}
 
-			numOfPlayers = reader.nextInt();
-			reader.nextLine();
+			numOfPlayers = READER.nextInt();
+			READER.nextLine();
 
 			// Error message
 			if (numOfPlayers < 3 || numOfPlayers > 6)
-				System.out
-						.println("*** That is not a valid number of players ***");
+				System.out.println("*** That is not a valid number of players ***");
 
 		} while (numOfPlayers < 3 || numOfPlayers > 6);
 
@@ -310,15 +308,13 @@ public class Game {
 				isValidName = true;
 
 				// Get name
-				System.out.println("*** Player " + (i + 1)
-						+ " please enter a name ***");
-				name = reader.nextLine();
+				System.out.println("*** Player " + (i + 1) + " please enter a name ***");
+				name = READER.nextLine();
 
 				// Check if name is valid
 				for (Player p : players)
 					if (p.getName().equalsIgnoreCase(name)) {
-						System.out
-								.println("*** Name is already being used! ***");
+						System.out.println("*** Name is already being used! ***");
 						isValidName = false;
 						break;
 					}
@@ -334,22 +330,19 @@ public class Game {
 				suspect = null;
 
 				// Print out characters
-				System.out.println("*** " + name
-						+ " please choose a character ***\n");
+				System.out.println("*** " + name + " please choose a character ***\n");
 				for (int j = 0; j < Suspect.values().length; j++)
 					if (!usedSuspects.contains(Suspect.values()[j]))
-						System.out.println(Suspect.values()[j].toString()
-								+ ": " + (j + 1));
+						System.out.println(Suspect.values()[j].toString() + ": " + (j + 1));
 
 				// Wait for a proper response
-				while (!reader.hasNextInt()) {
-					System.out
-							.println("*** Please enter integer you scrub ***");
-					reader.nextLine();
+				while (!READER.hasNextInt()) {
+					System.out.println("*** Please enter integer you scrub ***");
+					READER.nextLine();
 				}
 
-				int character = reader.nextInt();
-				reader.nextLine();
+				int character = READER.nextInt();
+				READER.nextLine();
 
 				switch (character) {
 				case 1:
@@ -386,8 +379,7 @@ public class Game {
 					}
 
 				if (!isValidCharacter)
-					System.out
-							.println("*** Character is not valid or is already taken ***");
+					System.out.println("*** Character is not valid or is already taken ***");
 				else
 					break;
 
@@ -429,7 +421,7 @@ public class Game {
 			if (players.add(player))
 				playersList.add(player);
 		}
-		reader.close();
+		// READER.close();
 	}
 
 	/**
@@ -517,6 +509,14 @@ public class Game {
 	public final Player getNextPlayer() {
 		int curIndex = playersList.indexOf(current);
 		return playersList.get((curIndex + 1) % playersList.size());
+	}
+	
+	public final Player getCurrent() {
+		return current;
+	}
+	
+	public final Set<Location> getRoomsInReach() {
+		return m_board.roomsInReach(current, roll);
 	}
 
 	public static void main(String args[]) {

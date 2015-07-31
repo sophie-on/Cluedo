@@ -34,24 +34,27 @@ public class MoveCommand implements Command {
 
 	public MoveCommand(Scanner scan, Game game) {
 
+		// Scanner reader = new Scanner(System.in);
+
 		// Ask for which option they want to take
-		System.out
-				.println("*** Which option do you want? ***\n*** Jump(1) * Manual(2) ***");
+		System.out.println("*** Which option do you want? ***\n*** Jump(1) * Manual(2) ***");
 
 		// if(scan.hasNext()) scan.nextLine();
 
-		// Wait for a proper response
-		while (!scan.hasNextInt()) {
-
+		boolean isValid = false;
+		int command = 0;
+		do {
+			// Wait for a proper response
+			while (!scan.hasNextInt()) {
 				System.out.println("*** Please enter an integer ***");
 				scan.nextLine();
+			}
 
-		}
+			command = scan.nextInt();
+			scan.nextLine();
+			System.out.println("COMMAND: " + command);
 
-		int command = scan.nextInt();
-		scan.nextLine();
-		System.out.println("COMMAND: " + command);
-
+		} while (!isValid);
 		switch (command) {
 		case 2:
 			option = MoveOption.MANUAL;
@@ -60,6 +63,34 @@ public class MoveCommand implements Command {
 			option = MoveOption.JUMP;
 			break;
 		}
+
+		calculateMove(scan, game);
+	}
+
+	private void calculateMove(Scanner scan, Game game) {
+
+		switch (option) {
+		case JUMP:
+			jumpMove(scan, game);
+			break;
+		case MANUAL:
+			manualMove(scan, game);
+			break;
+		default:
+			break;
+
+		}
+	}
+
+	private void jumpMove(Scanner scan, Game game) {
+
+		// Get list of rooms available
+		game.getRoomsInReach();
+		
+		
+	}
+
+	private void manualMove(Scanner scan, Game game) {
 
 	}
 
