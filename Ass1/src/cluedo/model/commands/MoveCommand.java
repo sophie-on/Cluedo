@@ -92,6 +92,7 @@ public class MoveCommand implements Command {
 
 	private void manualMove(Scanner scan, Game game) {
 
+		System.out.println("*** Please enter the coordinates for your move ***");
 	}
 
 	@Override
