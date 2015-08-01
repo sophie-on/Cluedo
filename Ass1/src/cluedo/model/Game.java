@@ -38,21 +38,21 @@ public class Game {
 	public static final Point COLONEL_MUSTARD_START = new Point(17, 0);
 	public static final Point MISS_SCARLET_START = new Point(24, 7);
 	public static final Point PROFESSOR_PLUM_START = new Point(19, 24);
-	
+
 	// Locations for doors
 	public static final Point KITCHEN_DOOR_SOUTH = new Point(6, 4);
-	
+
 	public static final Point BALLROOM_DOOR_WEST = new Point(5, 8);
 	public static final Point BALLROOM_DOOR_EAST = new Point(5, 15);
 	public static final Point BALLROOM_DOOR_SOUTH_1 = new Point(11, 9);
 	public static final Point BALLROOM_DOOR_SOUTH_2 = new Point(11, 14);
-	
+
 	public static final Point CONSERVATORY_DOOR_WEST = new Point(4, 18);
-	
+
 	public static final Point DINING_ROOM_DOOR_EAST = new Point(12, 8);
 	public static final Point DINING_ROOOM_DOOR_SOUTH = new Point(15, 7);
-	
-	
+
+
 
 	public static final boolean DEBUG = false;
 	public static int NUM_OF_DICE;
@@ -155,7 +155,7 @@ public class Game {
 
 		while (!gameOver) {
 			for (Player p : players) {
-				
+
 				// Check for game over
 				if (players.size() == 1) {
 					gameOver = true;
@@ -163,7 +163,7 @@ public class Game {
 					break;
 				}
 
-				System.out.println("*** " + p.getName() + " it's your turn ***");
+				System.out.println("\n*** " + p.getName() + " it's your turn to move ***");
 
 				// Roll the die/ dice
 				roll = randomNumber(1 * NUM_OF_DICE, 6 * NUM_OF_DICE);
@@ -193,10 +193,13 @@ public class Game {
 						System.out.println("*** Sorry that is not a valid move, try again ***");
 				}
 
+				// Update board
+				m_board.drawBoard();
+
 				// Suggestion Command
 
 				// Accusation Command
-				
+
 				// Update board
 				m_board.drawBoard();
 			}
@@ -525,11 +528,11 @@ public class Game {
 		int curIndex = playersList.indexOf(current);
 		return playersList.get((curIndex + 1) % playersList.size());
 	}
-	
+
 	public final Player getCurrent() {
 		return current;
 	}
-	
+
 	public final Set<Location> getRoomsInReach() {
 		return m_board.roomsInReach(current, roll);
 	}
