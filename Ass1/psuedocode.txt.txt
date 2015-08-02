@@ -1,0 +1,50 @@
+Algorithm for finding rooms in reach
+
+
+public class Node {
+
+	public final int nodeID;
+	public final Square square;
+
+	// Will have to put in neigbouring traversable squares
+	public final Collection<Node> neighbours;
+
+	private boolean isVisited;
+	private Node pathFrom;
+	private double cost;
+	private int depth;
+
+	public Node(blah blah blah);
+
+}
+
+public class AStarAlgo {
+
+	private Node start, goal;
+	private Set<Node> visited;
+	private List<Node> path;
+
+	public final List<Node> getPath(Node target) {
+
+		path = new ArrayList<Node>();
+		for (Node node = target; node != null; node = node.pathFrom)
+			path.add(node);
+
+		Collections.reverse(path);
+
+		return path;
+	}
+
+	public void AStarSearch(Node start, Node goal) {
+
+		this.start = start;
+		this.goal = goal;
+
+		visited = new HashSet<Node>();
+
+		for (Node n : board.getNodes()) {
+			n.setVisited(false);
+			n.setPathFrom(null);
+		}
+
+		You get the idea
