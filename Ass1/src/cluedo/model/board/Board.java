@@ -2,8 +2,10 @@ package cluedo.model.board;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
@@ -179,9 +181,9 @@ public class Board {
 	 * Brute force method to find which rooms a player can move to according to
 	 * the roll they made.
 	 **/
-	public Set<Location> roomsInReach(Player player, int roll) {
+	public final List<Room> roomsInReach(Player player, int roll) {
 
-		Set<Location> rooms = new HashSet<Location>();
+		List<Room> rooms = new ArrayList<Room>();
 
 		for (int i = player.getX(); i < x_size; i++) {
 			for (int j = player.getY(); j < y_size; j++) {
@@ -191,7 +193,7 @@ public class Board {
 					Square square = squareAt(i, j);
 					if (square instanceof DoorSquare) {
 						DoorSquare door = (DoorSquare) square;
-						// rooms.add(door.getLocation());
+						rooms.add(door.getRoom());
 					}
 				}
 			}

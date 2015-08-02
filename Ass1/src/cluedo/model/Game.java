@@ -114,7 +114,7 @@ public class Game {
 		// NUM_OF_DICE = 1;
 
 		// TODO start the game
-		// startGame();
+		startGame();
 
 		READER.close();
 	}
@@ -537,7 +537,7 @@ public class Game {
 		return current;
 	}
 
-	public final Set<Location> getRoomsInReach() {
+	public final List<Room> getRoomsInReach() {
 		return m_board.roomsInReach(current, roll);
 	}
 
