@@ -2,6 +2,7 @@ package cluedo.model;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -54,7 +55,7 @@ public class Game {
 
 
 
-	public static final boolean DEBUG = false;
+	public static final boolean DEBUG = true;
 	public static int NUM_OF_DICE;
 
 	// The game board
@@ -66,7 +67,7 @@ public class Game {
 	private List<Player> playersList;
 
 	// Cards to be distributed to players
-	private Set<Card> deck;
+	private List<Card> deck;
 
 	// Cards in the envelope
 	private Set<Card> envelope;
@@ -93,7 +94,7 @@ public class Game {
 		System.out.println("*** By Cameron Bryers and Hannah Craighead ***");
 
 		// Initialize the deck and the envelope
-		deck = new HashSet<Card>();
+		deck = new ArrayList<Card>();
 		envelope = new HashSet<Card>();
 		createDeck();
 
@@ -113,7 +114,7 @@ public class Game {
 		// NUM_OF_DICE = 1;
 
 		// TODO start the game
-		startGame();
+		// startGame();
 
 		READER.close();
 	}
@@ -279,6 +280,9 @@ public class Game {
 			else
 				deck.add(card);
 		}
+
+		// Finally shuffle the deck
+		Collections.shuffle(deck);
 	}
 
 	/**
@@ -504,7 +508,7 @@ public class Game {
 		return new Random().nextInt((max - min) + 1) + min;
 	}
 
-	public final Set<Card> getDeck() {
+	public final List<Card> getDeck() {
 		return deck;
 	}
 
