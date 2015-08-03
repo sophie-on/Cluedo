@@ -29,6 +29,9 @@ public class Location extends GameObject {
 		//RoomSquares that belong to this room
 		private Set<RoomSquare> squares;
 
+		//Whether it contains a passage or not
+		private boolean hasPassage;
+
 		// Characters that are in this room.
 		private Set<Player> characters;
 
@@ -54,6 +57,10 @@ public class Location extends GameObject {
 		public void addPlayer(Player p){
 			characters.add(p);
 			addPlayerToRoom(p);
+		}
+
+		public void setPassage(){
+			hasPassage = true;
 		}
 	}
 

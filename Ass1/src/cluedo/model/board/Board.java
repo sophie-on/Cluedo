@@ -119,6 +119,7 @@ public class Board {
 					break;
 				case 'p':
 					Room r = findRoom(i, j, s);
+					r.setPassage();
 					if (DEBUG)
 						System.out.println("R is " + r);// +
 					// "passages.get(r) is "
