@@ -263,11 +263,20 @@ public class Board {
 			return false;
 
 		Square square = squareAt(player.getX() + dx, player.getY() + dy);
+		
+		if(square instanceof RoomSquare){
+			return false;
+		}
 
 		// If the square is occupied
 		if (square instanceof InhabitableSquare) {
 			if (!((InhabitableSquare) square).isOccupied())
 				return true;
+		}
+		
+		if(square instanceof DoorSquare){
+			((DoorSquare)square).getRoom().addPlayer(player);
+			return true;
 		}
 
 		return false;
