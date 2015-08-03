@@ -45,6 +45,8 @@ public class Location extends GameObject {
 			for(RoomSquare r: squares){
 				if(!r.isOccupied()){
 					r.addPlayer(p);
+					p.move(r.getX(), r.getY());
+					return;
 				}
 			}
 		}
@@ -69,27 +71,7 @@ public class Location extends GameObject {
 		this.m_room = room;
 		
 		weapons = new HashSet<Weapon>();		
-	}
-
-	/**
-	 * Adds a character to that room.
-	 *
-	 * @param character
-	 * @return
-	 */
-	public boolean addCharacter(CluedoCharacter character) {
-		return characters.add(character);
-	}
-
-	/**
-	 * Remove a character from the room.
-	 *
-	 * @param character
-	 * @return
-	 */
-	public boolean removeCharacter(CluedoCharacter character) {
-		return characters.remove(character);
-	}
+	}	
 
 	/**
 	 * Add a weapon to the room.
