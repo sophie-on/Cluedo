@@ -195,6 +195,8 @@ public class Game {
 				// Wait for a valid response
 				while (true) {
 
+					if(DEBUG) System.out.println("curX: " + p.getX() + " curY: " + p.getY());
+					
 					MoveCommand move = new MoveCommand(READER, this);
 
 					if (getBoard().isValid(current, move.getX(), move.getY(), roll)) {

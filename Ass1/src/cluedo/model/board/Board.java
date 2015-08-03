@@ -259,7 +259,7 @@ public class Board {
 	public boolean isValid(Player player, int dx, int dy, int roll) {
 
 		// If the move is too far
-		if ((dx + dy) != roll)
+		if ((dx + dy) > roll)
 			return false;
 
 		Square square = squareAt(player.getX() + dx, player.getY() + dy);
