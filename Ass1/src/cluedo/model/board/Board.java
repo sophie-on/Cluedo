@@ -91,13 +91,13 @@ public class Board {
 				switch (key) {
 				case '\r':
 				case '\n': // Does nothing, end of line character to indicate
-							// new row
+					// new row
 					j--;
 					if (DEBUG)
 						System.out.println("Newline found");
 					break;
 				case ' ': // Does nothing, end of line character to indicate new
-							// row
+					// row
 					j--;
 					if (DEBUG)
 						System.out.println("Space found");
@@ -120,23 +120,23 @@ public class Board {
 					Room r = findRoom(i, j, s);
 					if (DEBUG)
 						System.out.println("R is " + r);// +
-														// "passages.get(r) is "
-														// + passages.get(r));
+					// "passages.get(r) is "
+					// + passages.get(r));
 					board[i][j] = new PassageWaySquare(i, j, r, passages.get(r));
 					break;
 				case 'd':
 					board[i][j] = new DoorSquare(i, j, findRoom(i, j, s)); // Need
-																			// to
-																			// deal
-																			// with
-																			// how
-																			// to
-																			// find
-																			// room
-																			// it
-																			// is
-																			// related
-																			// to
+					// to
+					// deal
+					// with
+					// how
+					// to
+					// find
+					// room
+					// it
+					// is
+					// related
+					// to
 					break;
 
 				default:
@@ -289,15 +289,15 @@ public class Board {
 	}
 
 	public void drawBoard() {
-
+		System.out.printf("   ");
 		// Print out y coordinates
 		for (Alphabet a : Alphabet.values())
-			System.out.print("|" + a.name());
+			System.out.printf(a.name()+" ");
 
 		System.out.println();
 
-		for (int i = 0; i < board.length + 1; i++) {
-			for (int j = 0; j < board[0].length + 1; j++) {
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[0].length; j++) {
 
 				// Print out the x coordinates
 				if (j == 0 && i < 10) {
@@ -305,37 +305,33 @@ public class Board {
 						System.out.print(" " + Alphabet.values()[i].ordinal());
 					else
 						System.out.print(" " + Alphabet.values()[i].ordinal());
-				} else if (j == 0 && i < 25)
+				} 
+				else if (j == 0 && i < 25)
 					System.out.print(Alphabet.values()[i].ordinal());
 
-				if (i == 0) {
-					// System.out.printf("__");
-				} else if (i == board.length + 1) {
-
-				} else if (j == 0) {
+				if (j == 0) {
 					System.out.printf("|");
-				} else {
-					if (board[i - 1][j - 1] instanceof InhabitableSquare) {
-						InhabitableSquare sq = (InhabitableSquare) board[i - 1][j - 1];
+				} 
+				
+					if (board[i ][j ] instanceof InhabitableSquare) {
+						InhabitableSquare sq = (InhabitableSquare) board[i][j];
 						if (sq.isOccupied()) {
 							System.out.print(sq.getPlayer().getCharacter()
 									.toMiniString()
-									+ "|");
-							// System.out.println("Mini statement is " +
-							// sq.getPlayer().getCharacter().toMiniString() +
-							// "***");
+									+ "|");							
 						} else {
-							System.out.print(board[i - 1][j - 1].toString()
+							System.out.print(board[i][j].toString()
 									+ "|");
 						}
 					} else {
-						System.out.print(board[i - 1][j - 1].toString() + "|");
+						System.out.print(board[i][j].toString() + "|");
 					}
 				}
-			}
 			System.out.println("");
+			}
+			
 		}
-	}
+	
 
 	public static void main(String args[]) {
 		new Board("cluedo.txt").drawBoard();
