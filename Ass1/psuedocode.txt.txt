@@ -1,0 +1,45 @@
+abstract class Command {
+ 
+ enum CommandType {
+  MOVE, SUGGESTION, ACCUSATION, HELP, QUIT, CHECK;
+ }
+ 
+ private Command m_command;
+ 
+ public Command(Scanner s, Game g) {
+  switch (s.next()) {
+  case "MOVE":
+  	m_command = new MoveCommand(s, g);
+  	break;
+  case "SUGGESTION":
+  	m_command = new SuggestCommand(s, g);
+    break;
+  case "ACCUSATION": blah blah blah
+  }
+ }
+ 
+ public void execute(Game g) {
+  m_command.execute(g);
+ }
+}
+
+class MoveCommand extends Command {
+ 
+ private int m_dx, m_dy;
+ 
+ public MoveCommand(Scanner s, Game g) {
+ 
+  while (s.hasNext()) {
+  
+   
+   // Game class will show a list of rooms that they
+   // can go to
+   
+   
+  }
+ }
+ 
+ public void execute(Game g) {
+  g.move(m_dx, m_dy);
+ }
+}
