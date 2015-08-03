@@ -125,32 +125,21 @@ public class Board {
 					board[i][j] = new PassageWaySquare(i, j, r, passages.get(r));
 					break;
 				case 'd':
-					board[i][j] = new DoorSquare(i, j, findRoom(i, j, s)); // Need
-					// to
-					// deal
-					// with
-					// how
-					// to
-					// find
-					// room
-					// it
-					// is
-					// related
-					// to
+					board[i][j] = new DoorSquare(i, j, findRoom(i, j, s)); 
 					break;
 
 				default:
-					if (DEBUG)
-						System.out.println("Making room square " + key);
-					assert places.get(key) != null;
-					board[i][j] = new RoomSquare(i, j, places.get(key));
+					if (DEBUG){
+					 System.out.println("Making room square " + key);
+					}
+					Room room = places.get(key);
+					board[i][j] = new RoomSquare(i, j, room);
+					room.addSquare((RoomSquare) board[i][j]);					
 					break;
 
 				}
-			}
-			// s.next(); // to skip newline character
+			}			
 		}
-
 	}
 
 	/**
