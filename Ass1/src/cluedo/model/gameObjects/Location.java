@@ -6,6 +6,8 @@ package cluedo.model.gameObjects;
 import java.util.HashSet;
 import java.util.Set;
 
+import cluedo.model.board.RoomSquare;
+
 /**
  * Class that represents a room on the board.
  *
@@ -31,12 +33,16 @@ public class Location extends GameObject {
 
 	// Characters that are in this room.
 	private Set<CluedoCharacter> characters;
+	
+	//RoomSquares that belong to this room
+	private Set<RoomSquare> squares;
 
 	public Location(boolean isCrimeScene, Room room) {
 		super(isCrimeScene);
 		this.m_room = room;
 		characters = new HashSet<CluedoCharacter>();
 		weapons = new HashSet<Weapon>();
+		squares = new HashSet<RoomSquare>();
 	}
 
 	/**
@@ -99,6 +105,10 @@ public class Location extends GameObject {
 		if (m_room != other.m_room)
 			return false;
 		return true;
+	}
+	
+	public void addSquare(RoomSquare r){
+		squares.add(r);
 	}
 
 	@Override
