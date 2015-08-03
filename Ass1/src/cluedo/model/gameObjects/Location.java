@@ -45,7 +45,7 @@ public class Location extends GameObject {
 			for(RoomSquare r: squares){
 				if(!r.isOccupied()){
 					r.addPlayer(p);
-					p.move(r.getX(), r.getY());
+					//p.move(r.getX(), r.getY());
 					return;
 				}
 			}
