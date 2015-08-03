@@ -23,34 +23,34 @@ public class Location extends GameObject {
 	 * @author Cameron Bryers, Hannah Craighead.
 	 *
 	 */
-	public enum Room {		
+	public enum Room {
 		KITCHEN, BALL_ROOM, CONSERVATORY, DINING_ROOM, BILLIARD_ROOM, LIBRARY, LOUNGE, HALL, STUDY, SWIMMING_POOL;
-		
+
 		//RoomSquares that belong to this room
 		private Set<RoomSquare> squares;
-		
+
 		// Characters that are in this room.
 		private Set<Player> characters;
-		
+
 		private Room(){
 			squares = new HashSet<RoomSquare>();
 			characters = new HashSet<Player>();
 		}
-		
+
 		public void addSquare(RoomSquare r){
 			squares.add(r);
 		}
-		
+
 		public void addPlayerToRoom(Player p){
 			for(RoomSquare r: squares){
 				if(!r.isOccupied()){
 					r.addPlayer(p);
-					//p.move(r.getX(), r.getY());
+					p.move(r.getX(), r.getY());
 					return;
 				}
 			}
 		}
-		
+
 		public void addPlayer(Player p){
 			characters.add(p);
 			addPlayerToRoom(p);
@@ -62,16 +62,16 @@ public class Location extends GameObject {
 	// Weapons that are in this room.
 	private Set<Weapon> weapons;
 
-	
-	
-	
+
+
+
 
 	public Location(boolean isCrimeScene, Room room) {
 		super(isCrimeScene);
 		this.m_room = room;
-		
-		weapons = new HashSet<Weapon>();		
-	}	
+
+		weapons = new HashSet<Weapon>();
+	}
 
 	/**
 	 * Add a weapon to the room.
@@ -114,8 +114,8 @@ public class Location extends GameObject {
 			return false;
 		return true;
 	}
-	
-	
+
+
 
 	@Override
 	public String getName() {

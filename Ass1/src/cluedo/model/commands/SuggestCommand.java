@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 import cluedo.model.Game;
 import cluedo.model.Player;
+import cluedo.model.board.RoomSquare;
+import cluedo.model.board.Square;
 import cluedo.model.gameObjects.CluedoCharacter.Suspect;
 import cluedo.model.gameObjects.Location.Room;
 import cluedo.model.gameObjects.Weapon;
@@ -25,6 +27,10 @@ public class SuggestCommand implements Command {
 	private WeaponType weapon;
 
 	public SuggestCommand(Game game, Scanner scan) {
+		// Room must be that of which the character is in
+		Square sq = game.getBoard().squareAt(game.getCurrent().getX(), game.getCurrent().getY());
+		assert sq instanceof RoomSquare;
+		room = ((RoomSquare)sq).getRoom();
 
 		// Ask for suspect
 		System.out.println("*** Please enter a suspect ***");
