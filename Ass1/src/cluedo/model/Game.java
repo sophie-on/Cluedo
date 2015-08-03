@@ -2,6 +2,7 @@ package cluedo.model;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -10,11 +11,13 @@ import java.util.Scanner;
 import java.util.Set;
 
 import cluedo.model.board.Board;
+import cluedo.model.board.RoomSquare;
 import cluedo.model.cards.Card;
 import cluedo.model.cards.CharacterCard;
 import cluedo.model.cards.RoomCard;
 import cluedo.model.cards.WeaponCard;
 import cluedo.model.commands.MoveCommand;
+import cluedo.model.commands.SuggestCommand;
 import cluedo.model.gameObjects.CluedoCharacter;
 import cluedo.model.gameObjects.CluedoCharacter.Suspect;
 import cluedo.model.gameObjects.Die;
@@ -38,23 +41,21 @@ public class Game {
 	public static final Point COLONEL_MUSTARD_START = new Point(17, 0);
 	public static final Point MISS_SCARLET_START = new Point(24, 7);
 	public static final Point PROFESSOR_PLUM_START = new Point(19, 24);
-	
+
 	// Locations for doors
 	public static final Point KITCHEN_DOOR_SOUTH = new Point(6, 4);
-	
+
 	public static final Point BALLROOM_DOOR_WEST = new Point(5, 8);
 	public static final Point BALLROOM_DOOR_EAST = new Point(5, 15);
 	public static final Point BALLROOM_DOOR_SOUTH_1 = new Point(11, 9);
 	public static final Point BALLROOM_DOOR_SOUTH_2 = new Point(11, 14);
-	
+
 	public static final Point CONSERVATORY_DOOR_WEST = new Point(4, 18);
-	
+
 	public static final Point DINING_ROOM_DOOR_EAST = new Point(12, 8);
 	public static final Point DINING_ROOOM_DOOR_SOUTH = new Point(15, 7);
-	
-	
 
-	public static final boolean DEBUG = false;
+	public static final boolean DEBUG = true;
 	public static int NUM_OF_DICE;
 
 	// The game board
@@ -66,13 +67,10 @@ public class Game {
 	private List<Player> playersList;
 
 	// Cards to be distributed to players
-	private Set<Card> deck;
+	private List<Card> deck;
 
 	// Cards in the envelope
 	private Set<Card> envelope;
-
-	// Dice in the game
-	private Set<Die> dice;
 
 	// Current player and next
 	private Player current, next;
@@ -91,9 +89,11 @@ public class Game {
 
 		System.out.println("*** Welcome to Cluedo (Pre - Alpha Version) ***");
 		System.out.println("*** By Cameron Bryers and Hannah Craighead ***");
+		System.out
+				.println("\n*** Please note that since this version of the game is played a single screen, \n you should only look at the screen when it's your turn ***");
 
 		// Initialize the deck and the envelope
-		deck = new HashSet<Card>();
+		deck = new ArrayList<Card>();
 		envelope = new HashSet<Card>();
 		createDeck();
 
@@ -123,7 +123,8 @@ public class Game {
 		// Scanner reader = new Scanner(System.in);
 
 		// Create dice
-		System.out.println("*** How many dice are you playing with? (min = 1, max = 2) ***");
+		System.out
+				.println("*** How many dice are you playing with? (min = 1, max = 2) ***");
 
 		// Wait for proper response
 		while (!READER.hasNextInt()) {
@@ -154,19 +155,31 @@ public class Game {
 		// Scanner reader = new Scanner(System.in);
 
 		while (!gameOver) {
-			for (Player p : players) {
-				
+
+			for (Player p : playersList) {
+
 				// Check for game over
 				if (players.size() == 1) {
 					gameOver = true;
-					System.out.println("*** Congragulations " + p.getName() + " You won! ***");
+					System.out.println("*** Congragulations " + p.getName()
+							+ " You won! ***");
 					break;
 				}
 
-				System.out.println("*** " + p.getName() + " it's your turn ***");
+				// Display the player's cards
+				System.out.println("*** Your cards ***\n");
+				for (Card c : p.getHand())
+					System.out.println(c.getObject().getName());
+
+				System.out.println("\n*** " + p.getName()
+						+ " it's your turn to move ***");
+				System.out.println("*** Your character is "
+						+ p.getCharacter().toMiniString() + " ***");
 
 				// Roll the die/ dice
 				roll = randomNumber(1 * NUM_OF_DICE, 6 * NUM_OF_DICE);
+
+				System.out.println("*** You rolled a " + roll + " ***");
 
 				current = p;
 				next = getNextPlayer();
@@ -182,21 +195,54 @@ public class Game {
 				boolean isValid = false;
 
 				// Wait for a valid response
-				while (!isValid) {
+				while (true) {
 
 					MoveCommand move = new MoveCommand(READER, this);
 
-					if (getBoard().isValid(current, move.getX(), move.getY(), roll)) {
+					if (getBoard().isValid(current, move.getX(), move.getY(),
+							roll)) {
+						System.out.println("*** I just went there ***");
 						move.execute(this);
-						isValid = true;
+						break;
 					} else
-						System.out.println("*** Sorry that is not a valid move, try again ***");
+						System.out
+								.println("*** Sorry that is not a valid move, try again ***");
 				}
 
-				// Suggestion Command
+				// Update board
+				m_board.drawBoard();
 
-				// Accusation Command
-				
+				// Do suggestion or accusation
+				if (m_board.squareAt(p.getX(), p.getY()) instanceof RoomSquare) {
+
+					RoomSquare room = (RoomSquare) m_board.squareAt(p.getX(),
+							p.getY());
+
+					// Accusation
+					if (room.getRoom().equals(Room.SWIMMING_POOL)) {
+						SuggestCommand accuse = new SuggestCommand(this, READER);
+
+						// Wrong accusation
+						if (!checkAccusation(accuse)) {
+							System.out.println("*** Sorry that accusation was wrong ***");
+							playersList.remove(p);
+							break;
+						}
+
+						// Correct accusation
+						else {
+							System.out.println("*** That accusation was correct! You won ***");
+							System.exit(0);
+						}
+
+					}
+
+					// Suggestion
+					else {
+						SuggestCommand suggest = new SuggestCommand(this, READER);
+					}
+				}
+
 				// Update board
 				m_board.drawBoard();
 			}
@@ -276,6 +322,9 @@ public class Game {
 			else
 				deck.add(card);
 		}
+
+		// Finally shuffle the deck
+		Collections.shuffle(deck);
 	}
 
 	/**
@@ -295,7 +344,8 @@ public class Game {
 
 		// Get the number of players first
 		do {
-			System.out.println("*** How many players? (min = 3, max = 6) ***");
+			System.out
+					.println("\n*** How many players? (min = 3, max = 6) ***");
 
 			// Wait for a proper response
 			while (!READER.hasNextInt()) {
@@ -308,7 +358,8 @@ public class Game {
 
 			// Error message
 			if (numOfPlayers < 3 || numOfPlayers > 6)
-				System.out.println("*** That is not a valid number of players ***");
+				System.out
+						.println("*** That is not a valid number of players ***");
 
 		} while (numOfPlayers < 3 || numOfPlayers > 6);
 
@@ -323,13 +374,15 @@ public class Game {
 				isValidName = true;
 
 				// Get name
-				System.out.println("*** Player " + (i + 1) + " please enter a name ***");
+				System.out.println("*** Player " + (i + 1)
+						+ " please enter a name ***");
 				name = READER.nextLine();
 
 				// Check if name is valid
 				for (Player p : players)
 					if (p.getName().equalsIgnoreCase(name)) {
-						System.out.println("*** Name is already being used! ***");
+						System.out
+								.println("*** Name is already being used! ***");
 						isValidName = false;
 						break;
 					}
@@ -345,14 +398,17 @@ public class Game {
 				suspect = null;
 
 				// Print out characters
-				System.out.println("*** " + name + " please choose a character ***\n");
+				System.out.println("*** " + name
+						+ " please choose a character ***\n");
 				for (int j = 0; j < Suspect.values().length; j++)
 					if (!usedSuspects.contains(Suspect.values()[j]))
-						System.out.println(Suspect.values()[j].toString() + ": " + (j + 1));
+						System.out.println(Suspect.values()[j].toString()
+								+ ": " + (j + 1));
 
 				// Wait for a proper response
 				while (!READER.hasNextInt()) {
-					System.out.println("*** Please enter integer you scrub ***");
+					System.out
+							.println("*** Please enter integer you scrub ***");
 					READER.nextLine();
 				}
 
@@ -394,7 +450,8 @@ public class Game {
 					}
 
 				if (!isValidCharacter)
-					System.out.println("*** Character is not valid or is already taken ***");
+					System.out
+							.println("*** Character is not valid or is already taken ***");
 				else
 					break;
 
@@ -501,7 +558,7 @@ public class Game {
 		return new Random().nextInt((max - min) + 1) + min;
 	}
 
-	public final Set<Card> getDeck() {
+	public final List<Card> getDeck() {
 		return deck;
 	}
 
@@ -525,13 +582,34 @@ public class Game {
 		int curIndex = playersList.indexOf(current);
 		return playersList.get((curIndex + 1) % playersList.size());
 	}
-	
+
 	public final Player getCurrent() {
 		return current;
 	}
-	
-	public final Set<Location> getRoomsInReach() {
+
+	public final List<Room> getRoomsInReach() {
 		return m_board.roomsInReach(current, roll);
+	}
+
+	private boolean checkAccusation(SuggestCommand accuse) {
+
+		// Check if the accusation is correct
+		for (Card c : envelope) {
+
+			if (c instanceof CharacterCard) {
+				if (!c.getObject().getName().equals(accuse.getSuspect().toString()))
+					return false;
+			}
+			else if (c instanceof RoomCard) {
+				if (!c.getObject().getName().equals(accuse.getRoom().toString()))
+					return false;
+			}
+			else if (c instanceof WeaponCard) {
+				if (!c.getObject().getName().equals(accuse.getWeapon().toString()))
+					return false;
+			}
+		}
+		return true;
 	}
 
 	public static void main(String args[]) {

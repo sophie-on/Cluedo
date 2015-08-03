@@ -78,6 +78,31 @@ public class CluedoCharacter extends GameObject {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((m_suspect == null) ? 0 : m_suspect.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CluedoCharacter other = (CluedoCharacter) obj;
+		if (m_suspect != other.m_suspect)
+			return false;
+		return true;
+	}
+
+
+
+	@Override
 	public String getName() {
 		switch (m_suspect) {
 		case COLONEL_MUSTARD:

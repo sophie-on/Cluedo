@@ -87,4 +87,16 @@ public class SuggestCommand implements Command {
 
 	}
 
+	public final Suspect getSuspect() {
+		return suspect;
+	}
+
+	public final Room getRoom() {
+		return room;
+	}
+
+	public final WeaponType getWeapon() {
+		return weapon;
+	}
+
 }
