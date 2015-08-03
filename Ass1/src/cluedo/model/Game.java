@@ -12,6 +12,8 @@ import java.util.Set;
 
 import cluedo.model.board.Board;
 import cluedo.model.board.RoomSquare;
+import cluedo.model.board.InhabitableSquare;
+import cluedo.model.board.Square;
 import cluedo.model.cards.Card;
 import cluedo.model.cards.CharacterCard;
 import cluedo.model.cards.RoomCard;
@@ -542,8 +544,11 @@ public class Game {
 	public boolean move(int dx, int dy) {
 		if (!m_board.isValid(current, dx, dy, roll))
 			return false;
-
+		Square s = m_board.squareAt(current.getX(),current.getY());
+		((InhabitableSquare)s).addPlayer(null);
 		current.move(dx, dy);
+		s =  m_board.squareAt(current.getX(),current.getY());
+		((InhabitableSquare)s).addPlayer(current);
 		return true;
 	}
 
