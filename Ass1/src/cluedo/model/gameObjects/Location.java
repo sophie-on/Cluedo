@@ -42,6 +42,7 @@ public class Location extends GameObject {
 		private Room(){
 			squares = new HashSet<RoomSquare>();
 			characters = new HashSet<Player>();
+			doors = new HashSet<DoorSquare>();
 		}
 
 		public void addSquare(RoomSquare r){
