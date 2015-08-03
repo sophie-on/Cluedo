@@ -259,6 +259,12 @@ public class Board {
 	 */
 	public boolean isValid(Player player, int newX, int newY, int roll) {
 
+		//If the move is not on the board
+		if(newX < 0 || newX > 24 || newY < 0 || newY> 24){
+			return false;
+		}
+
+
 		// If the move is too far
 		if (Math.abs((newX - player.getX()) + (newY - player.getY())) > roll) {
 			if (DEBUG)
