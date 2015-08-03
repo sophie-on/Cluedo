@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+import cluedo.model.Game;
 import cluedo.model.Player;
 import cluedo.model.gameObjects.Location;
 import cluedo.model.gameObjects.Location.Room;
@@ -29,7 +30,7 @@ public class Board {
 		A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y;
 	}
 
-	private final static boolean DEBUG = false;
+	private final static boolean DEBUG = Game.DEBUG;
 
 	private Square[][] board;
 
@@ -125,20 +126,20 @@ public class Board {
 					board[i][j] = new PassageWaySquare(i, j, r, passages.get(r));
 					break;
 				case 'd':
-					board[i][j] = new DoorSquare(i, j, findRoom(i, j, s)); 
+					board[i][j] = new DoorSquare(i, j, findRoom(i, j, s));
 					break;
 
 				default:
-					if (DEBUG){
-					 System.out.println("Making room square " + key);
+					if (DEBUG) {
+						System.out.println("Making room square " + key);
 					}
 					Room room = places.get(key);
 					board[i][j] = new RoomSquare(i, j, room);
-					room.addSquare((RoomSquare) board[i][j]);					
+					room.addSquare((RoomSquare) board[i][j]);
 					break;
 
 				}
-			}			
+			}
 		}
 	}
 
@@ -256,33 +257,41 @@ public class Board {
 	 *            the roll that the player got
 	 * @return true if move was valid
 	 */
-	public boolean isValid(Player player, int dx, int dy, int roll) {
+	public boolean isValid(Player player, int newX, int newY, int roll) {
 
 		// If the move is too far
-		if ((dx + dy) > roll)
+		if (Math.abs((newX - player.getX()) + (newY - player.getY())) > roll) {
+			if (DEBUG)
+				System.out.println("*** ROLL TUMEKE ***");
 			return false;
+		}
 
-		Square square = squareAt(player.getX() + dx, player.getY() + dy);
-		
-		if(square instanceof RoomSquare){
+		Square square = squareAt(newX, newY);
+
+		// TODO fix this
+		if (square instanceof RoomSquare) {
 			return false;
 		}
 
 		// If the square is occupied
 		if (square instanceof InhabitableSquare) {
-			if (!((InhabitableSquare) square).isOccupied())
-				return true;
-		}
-		
-		if(square instanceof DoorSquare){
-			((DoorSquare)square).getRoom().addPlayer(player);
-			return true;
+			if (((InhabitableSquare) square).isOccupied()) {
+				if (DEBUG) System.out.println("*** SQUARE IS OCCUPIED ***");
+				return false;
+			}
 		}
 
-		return false;
+//		if (square instanceof DoorSquare) {
+//			((DoorSquare) square).getRoom().addPlayer(player);
+//			return true;
+//		}
+
+		return true;
 	}
 
 	public final Square squareAt(int x, int y) {
+		if (DEBUG)
+			System.out.println("*** SQUARE AT [" + x + "][" + y + "] ***");
 		return board[x][y];
 	}
 
@@ -290,7 +299,7 @@ public class Board {
 		System.out.printf("   ");
 		// Print out y coordinates
 		for (Alphabet a : Alphabet.values())
-			System.out.printf(a.name()+" ");
+			System.out.printf(a.name() + " ");
 
 		System.out.println();
 
@@ -303,33 +312,30 @@ public class Board {
 						System.out.print(" " + Alphabet.values()[i].ordinal());
 					else
 						System.out.print(" " + Alphabet.values()[i].ordinal());
-				} 
-				else if (j == 0 && i < 25)
+				} else if (j == 0 && i < 25)
 					System.out.print(Alphabet.values()[i].ordinal());
 
 				if (j == 0) {
 					System.out.printf("|");
-				} 
-				
-					if (board[i ][j ] instanceof InhabitableSquare) {
-						InhabitableSquare sq = (InhabitableSquare) board[i][j];
-						if (sq.isOccupied()) {
-							System.out.print(sq.getPlayer().getCharacter()
-									.toMiniString()
-									+ "|");							
-						} else {
-							System.out.print(board[i][j].toString()
-									+ "|");
-						}
+				}
+
+				if (board[i][j] instanceof InhabitableSquare) {
+					InhabitableSquare sq = (InhabitableSquare) board[i][j];
+					if (sq.isOccupied()) {
+						System.out.print(sq.getPlayer().getCharacter()
+								.toMiniString()
+								+ "|");
 					} else {
 						System.out.print(board[i][j].toString() + "|");
 					}
+				} else {
+					System.out.print(board[i][j].toString() + "|");
 				}
-			System.out.println("");
 			}
-			
+			System.out.println("");
 		}
-	
+
+	}
 
 	public static void main(String args[]) {
 		new Board("cluedo.txt").drawBoard();

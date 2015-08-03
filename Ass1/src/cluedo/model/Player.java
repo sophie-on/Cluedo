@@ -30,7 +30,7 @@ public class Player {
 	private final String m_name;
 
 	// Player's position on the board
-	int m_x, m_y;
+	private int m_x, m_y;
 
 	public Player(Set<Card> hand, String name, Suspect character, int start_x, int start_y) {
 		this.hand = hand;
@@ -48,8 +48,8 @@ public class Player {
 	}
 
 	public void move(int x, int y) {
-		m_x += x;
-		m_y += y;
+		m_x = x;
+		m_y = y;
 	}
 
 	public void setHand(Set<Card> hand) {
@@ -74,6 +74,6 @@ public class Player {
 
 	public final Set<Card> getHand() {
 		return hand;
-	}	
-	
+	}
+
 }

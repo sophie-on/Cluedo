@@ -32,7 +32,7 @@ public class CorridorSquare implements Square, InhabitableSquare{
 
 	@Override
 	public boolean isOccupied(){
-		return isOccupied;
+		return p != null;
 	}
 
 	@Override

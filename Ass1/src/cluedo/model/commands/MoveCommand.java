@@ -41,7 +41,8 @@ public class MoveCommand implements Command {
 		// Scanner reader = new Scanner(System.in);
 
 		// Ask for which option they want to take
-		System.out.println("*** Which option do you want? ***\n*** Jump(1) * Manual(2) ***");
+		System.out
+				.println("*** Which option do you want? ***\n*** Jump(1) * Manual(2) ***");
 
 		// if(scan.hasNext()) scan.nextLine();
 
@@ -82,7 +83,8 @@ public class MoveCommand implements Command {
 		case JUMP:
 
 			if (game.getRoomsInReach().isEmpty()) {
-				System.out.println("*** Sorry you cannot jump to any rooms ***");
+				System.out
+						.println("*** Sorry you cannot jump to any rooms ***");
 				manualMove(scan, game);
 			} else
 				jumpMove(scan, game);
@@ -131,13 +133,18 @@ public class MoveCommand implements Command {
 
 	}
 
+	/**
+	 * Create a move given user input. Note x and y are swapped around give the
+	 * design of the board
+	 */
 	private void manualMove(Scanner scan, Game game) {
 
 		int x, y;
 
 		while (true) {
 
-			System.out.println("*** Please enter the x coordinate for your move ***");
+			System.out
+					.println("*** Please enter the x coordinate for your move ***");
 
 			// while (!scan.hasNextInt()) {
 			// System.out.println("*** Please enter an integer ***");
@@ -145,28 +152,29 @@ public class MoveCommand implements Command {
 			// }
 
 			if (scan.hasNextInt())
-				x = scan.nextInt();
+				y = scan.nextInt();
 			else {
 				String ch = scan.next();
 				char input = ch.charAt(0);
 				System.out.println((int) ch.charAt(0));
 
 				if (Character.isUpperCase(input))
-					x = (int) input - 65;
+					y = (int) input - 65;
 				else
-					x = input - 97;
+					y = input - 97;
 			}
 
 			scan.nextLine();
 
-			System.out.println("*** Please enter the y coordinate for your move ***");
+			System.out
+					.println("*** Please enter the y coordinate for your move ***");
 
 			while (!scan.hasNextInt()) {
 				System.out.println("*** Please enter an integer ***");
 				scan.nextLine();
 			}
 
-			y = scan.nextInt();
+			x = scan.nextInt();
 			scan.nextLine();
 
 			System.out.println("X: " + x + " Y: " + y);

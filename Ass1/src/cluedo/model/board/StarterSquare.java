@@ -29,7 +29,7 @@ public class StarterSquare implements Square, InhabitableSquare{
 
 	@Override
 	public boolean isOccupied() {
-		return isOccupied;
+		return p != null;
 	}
 
 	public String toString(){
