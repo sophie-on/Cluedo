@@ -6,6 +6,7 @@ package cluedo.model.gameObjects;
 import java.util.HashSet;
 import java.util.Set;
 
+import cluedo.model.Player;
 import cluedo.model.board.RoomSquare;
 
 /**
@@ -22,8 +23,36 @@ public class Location extends GameObject {
 	 * @author Cameron Bryers, Hannah Craighead.
 	 *
 	 */
-	public enum Room {
+	public enum Room {		
 		KITCHEN, BALL_ROOM, CONSERVATORY, DINING_ROOM, BILLIARD_ROOM, LIBRARY, LOUNGE, HALL, STUDY, SWIMMING_POOL;
+		
+		//RoomSquares that belong to this room
+		private Set<RoomSquare> squares;
+		
+		// Characters that are in this room.
+		private Set<Player> characters;
+		
+		private Room(){
+			squares = new HashSet<RoomSquare>();
+			characters = new HashSet<Player>();
+		}
+		
+		public void addSquare(RoomSquare r){
+			squares.add(r);
+		}
+		
+		public void addPlayerToRoom(Player p){
+			for(RoomSquare r: squares){
+				if(!r.isOccupied()){
+					r.addPlayer(p);
+				}
+			}
+		}
+		
+		public void addPlayer(Player p){
+			characters.add(p);
+			addPlayerToRoom(p);
+		}
 	}
 
 	private Room m_room;
@@ -31,18 +60,15 @@ public class Location extends GameObject {
 	// Weapons that are in this room.
 	private Set<Weapon> weapons;
 
-	// Characters that are in this room.
-	private Set<CluedoCharacter> characters;
 	
-	//RoomSquares that belong to this room
-	private Set<RoomSquare> squares;
+	
+	
 
 	public Location(boolean isCrimeScene, Room room) {
 		super(isCrimeScene);
 		this.m_room = room;
-		characters = new HashSet<CluedoCharacter>();
-		weapons = new HashSet<Weapon>();
-		squares = new HashSet<RoomSquare>();
+		
+		weapons = new HashSet<Weapon>();		
 	}
 
 	/**
@@ -107,9 +133,7 @@ public class Location extends GameObject {
 		return true;
 	}
 	
-	public void addSquare(RoomSquare r){
-		squares.add(r);
-	}
+	
 
 	@Override
 	public String getName() {
