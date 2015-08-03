@@ -80,6 +80,28 @@ public class Location extends GameObject {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((m_room == null) ? 0 : m_room.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Location other = (Location) obj;
+		if (m_room != other.m_room)
+			return false;
+		return true;
+	}
+
+	@Override
 	public String getName() {
 		switch (m_room) {
 		case BALL_ROOM:

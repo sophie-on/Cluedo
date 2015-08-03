@@ -273,15 +273,7 @@ public class Board {
 		if ((dx + dy) != roll)
 			return false;
 
-		Square square = squareAt(player.getX() + dx, player.getY// Print out the x coordinates
-				if (j == 0 && i < 10) {
-					if (i == 0)
-						System.out
-								.print(" " + Alphabet.values()[i].ordinal());
-					else
-						System.out.print(" " + Alphabet.values()[i].ordinal());
-				} else if (j == 0 && i < 25)
-				() + dy);
+		Square square = squareAt(player.getX() + dx, player.getY() + dy);
 
 		// If the square is occupied
 		if (square instanceof InhabitableSquare) {
@@ -307,16 +299,17 @@ public class Board {
 		for (int i = 0; i < board.length + 1; i++) {
 			for (int j = 0; j < board[0].length + 1; j++) {
 
-				/*
-				 * // Print out the x coordinates if (j == 0 && i < 10) { if (i
-				 * == 0) System.out .print(" " +
-				 * Alphabet.values()[i].ordinal()); else System.out.print(" " +
-				 * Alphabet.values()[i].ordinal()); } else if (j == 0 && i < 25)
-				 * System.out.print(Alphabet.values()[i].ordinal());
-				 */
+				// Print out the x coordinates
+				if (j == 0 && i < 10) {
+					if (i == 0)
+						System.out.print(" " + Alphabet.values()[i].ordinal());
+					else
+						System.out.print(" " + Alphabet.values()[i].ordinal());
+				} else if (j == 0 && i < 25)
+					System.out.print(Alphabet.values()[i].ordinal());
 
 				if (i == 0) {
-					System.out.printf("__");
+					// System.out.printf("__");
 				} else if (i == board.length + 1) {
 
 				} else if (j == 0) {

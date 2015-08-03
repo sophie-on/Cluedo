@@ -11,11 +11,13 @@ import java.util.Scanner;
 import java.util.Set;
 
 import cluedo.model.board.Board;
+import cluedo.model.board.RoomSquare;
 import cluedo.model.cards.Card;
 import cluedo.model.cards.CharacterCard;
 import cluedo.model.cards.RoomCard;
 import cluedo.model.cards.WeaponCard;
 import cluedo.model.commands.MoveCommand;
+import cluedo.model.commands.SuggestCommand;
 import cluedo.model.gameObjects.CluedoCharacter;
 import cluedo.model.gameObjects.CluedoCharacter.Suspect;
 import cluedo.model.gameObjects.Die;
@@ -87,7 +89,8 @@ public class Game {
 
 		System.out.println("*** Welcome to Cluedo (Pre - Alpha Version) ***");
 		System.out.println("*** By Cameron Bryers and Hannah Craighead ***");
-		System.out.println("\n*** Please note that since this version of the game is played a single screen, \n you should only look at the screen when it's your turn ***");
+		System.out
+				.println("\n*** Please note that since this version of the game is played a single screen, \n you should only look at the screen when it's your turn ***");
 
 		// Initialize the deck and the envelope
 		deck = new ArrayList<Card>();
@@ -170,7 +173,8 @@ public class Game {
 
 				System.out.println("\n*** " + p.getName()
 						+ " it's your turn to move ***");
-				System.out.println("*** Your character is " + p.getCharacter().toMiniString() + " ***");
+				System.out.println("*** Your character is "
+						+ p.getCharacter().toMiniString() + " ***");
 
 				// Roll the die/ dice
 				roll = randomNumber(1 * NUM_OF_DICE, 6 * NUM_OF_DICE);
@@ -208,9 +212,36 @@ public class Game {
 				// Update board
 				m_board.drawBoard();
 
-				// Suggestion Command
+				// Do suggestion or accusation
+				if (m_board.squareAt(p.getX(), p.getY()) instanceof RoomSquare) {
 
-				// Accusation Command
+					RoomSquare room = (RoomSquare) m_board.squareAt(p.getX(),
+							p.getY());
+
+					// Accusation
+					if (room.getRoom().equals(Room.SWIMMING_POOL)) {
+						SuggestCommand accuse = new SuggestCommand(this, READER);
+
+						// Wrong accusation
+						if (!checkAccusation(accuse)) {
+							System.out.println("*** Sorry that accusation was wrong ***");
+							playersList.remove(p);
+							break;
+						}
+
+						// Correct accusation
+						else {
+							System.out.println("*** That accusation was correct! You won ***");
+							System.exit(0);
+						}
+
+					}
+
+					// Suggestion
+					else {
+						SuggestCommand suggest = new SuggestCommand(this, READER);
+					}
+				}
 
 				// Update board
 				m_board.drawBoard();
@@ -313,7 +344,8 @@ public class Game {
 
 		// Get the number of players first
 		do {
-			System.out.println("\n*** How many players? (min = 3, max = 6) ***");
+			System.out
+					.println("\n*** How many players? (min = 3, max = 6) ***");
 
 			// Wait for a proper response
 			while (!READER.hasNextInt()) {
@@ -557,6 +589,27 @@ public class Game {
 
 	public final List<Room> getRoomsInReach() {
 		return m_board.roomsInReach(current, roll);
+	}
+
+	private boolean checkAccusation(SuggestCommand accuse) {
+
+		// Check if the accusation is correct
+		for (Card c : envelope) {
+
+			if (c instanceof CharacterCard) {
+				if (!c.getObject().getName().equals(accuse.getSuspect().toString()))
+					return false;
+			}
+			else if (c instanceof RoomCard) {
+				if (!c.getObject().getName().equals(accuse.getRoom().toString()))
+					return false;
+			}
+			else if (c instanceof WeaponCard) {
+				if (!c.getObject().getName().equals(accuse.getWeapon().toString()))
+					return false;
+			}
+		}
+		return true;
 	}
 
 	public static void main(String args[]) {
