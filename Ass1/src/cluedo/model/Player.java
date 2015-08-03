@@ -6,6 +6,8 @@ import java.util.Set;
 import cluedo.model.cards.Card;
 import cluedo.model.gameObjects.CluedoCharacter;
 import cluedo.model.gameObjects.CluedoCharacter.Suspect;
+import cluedo.model.gameObjects.Location.Room;
+import cluedo.model.gameObjects.Weapon;
 
 /**
  * Class that represents the player
@@ -72,5 +74,6 @@ public class Player {
 
 	public final Set<Card> getHand() {
 		return hand;
-	}
+	}	
+	
 }

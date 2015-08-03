@@ -237,11 +237,21 @@ public class Game {
 						// Go through the other players, if a player has at
 						// least one of the cards the suggestion can not be
 						// refuted. Otherwise refute it
+						int refutes = 0;
 						for (Player c : playersList) {
-							if
+							if(!c.equals(current)){
+								if(checkSuggestion(suggest, c)){
+									System.out.println(c.getName() + " can refute this suggestion");
+									refutes++;
+								}
+							}
+						}
+						if(refutes == 0){
+							System.out.println("No one could refute your suggestion");
 						}
 					}
 				}
+				
 
 				// Update board
 				m_board.drawBoard();
@@ -606,6 +616,31 @@ public class Game {
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * Check if a player can refute a suggestion
+	 * 
+	 * @param accuse
+	 * @return
+	 */
+	private boolean checkSuggestion(SuggestCommand suggest, Player p) {
+		
+			// Check if the accusation is correct
+			for (Card c : p.getHand()) {
+				if (c instanceof CharacterCard) {
+					if (c.getObject().getName().equals(suggest.getSuspect().toString()))
+						return true;
+				} else if (c instanceof RoomCard) {
+					if (c.getObject().getName().equals(suggest.getRoom().toString()))
+						return true;
+				} else if (c instanceof WeaponCard) {
+					if (c.getObject().getName().equals(suggest.getWeapon().toString()))
+						return true;
+				}
+			}
+		
+		return false;
 	}
 
 	public static void main(String args[]) {
