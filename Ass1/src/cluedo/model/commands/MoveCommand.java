@@ -41,8 +41,7 @@ public class MoveCommand implements Command {
 		// Scanner reader = new Scanner(System.in);
 
 		// Ask for which option they want to take
-		System.out
-				.println("*** Which option do you want? ***\n*** Jump(1) * Manual(2) ***");
+		System.out.println("*** Which option do you want? ***\n*** Jump(1) * Manual(2) ***");
 
 		// if(scan.hasNext()) scan.nextLine();
 
@@ -83,8 +82,7 @@ public class MoveCommand implements Command {
 		case JUMP:
 
 			if (game.getRoomsInReach().isEmpty()) {
-				System.out
-						.println("*** Sorry you cannot jump to any rooms ***");
+				System.out.println("*** Sorry you cannot jump to any rooms ***");
 				manualMove(scan, game);
 			} else
 				jumpMove(scan, game);
@@ -139,19 +137,29 @@ public class MoveCommand implements Command {
 
 		while (true) {
 
-			System.out
-					.println("*** Please enter the x coordinate for your move ***");
+			System.out.println("*** Please enter the x coordinate for your move ***");
 
-			while (!scan.hasNextInt()) {
-				System.out.println("*** Please enter an integer ***");
-				scan.nextLine();
+			// while (!scan.hasNextInt()) {
+			// System.out.println("*** Please enter an integer ***");
+			// scan.nextLine();
+			// }
+
+			if (scan.hasNextInt())
+				x = scan.nextInt();
+			else {
+				String ch = scan.next();
+				char input = ch.charAt(0);
+				System.out.println((int) ch.charAt(0));
+
+				if (Character.isUpperCase(input))
+					x = (int) input - 65;
+				else
+					x = input - 97;
 			}
 
-			x = scan.nextInt();
 			scan.nextLine();
 
-			System.out
-					.println("*** Please enter the y coordinate for your move ***");
+			System.out.println("*** Please enter the y coordinate for your move ***");
 
 			while (!scan.hasNextInt()) {
 				System.out.println("*** Please enter an integer ***");
@@ -160,6 +168,8 @@ public class MoveCommand implements Command {
 
 			y = scan.nextInt();
 			scan.nextLine();
+
+			System.out.println("X: " + x + " Y: " + y);
 
 			// Check for a valid input
 			if (x <= 0 || x > 25 || y <= 0 || y > 25)

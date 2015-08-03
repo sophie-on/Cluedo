@@ -239,19 +239,18 @@ public class Game {
 						// refuted. Otherwise refute it
 						int refutes = 0;
 						for (Player c : playersList) {
-							if(!c.equals(current)){
-								if(checkSuggestion(suggest, c)){
+							if (!c.equals(current)) {
+								if (checkSuggestion(suggest, c)) {
 									System.out.println(c.getName() + " can refute this suggestion");
 									refutes++;
 								}
 							}
 						}
-						if(refutes == 0){
+						if (refutes == 0) {
 							System.out.println("No one could refute your suggestion");
 						}
 					}
 				}
-				
 
 				// Update board
 				m_board.drawBoard();
@@ -625,21 +624,21 @@ public class Game {
 	 * @return
 	 */
 	private boolean checkSuggestion(SuggestCommand suggest, Player p) {
-		
-			// Check if the accusation is correct
-			for (Card c : p.getHand()) {
-				if (c instanceof CharacterCard) {
-					if (c.getObject().getName().equals(suggest.getSuspect().toString()))
-						return true;
-				} else if (c instanceof RoomCard) {
-					if (c.getObject().getName().equals(suggest.getRoom().toString()))
-						return true;
-				} else if (c instanceof WeaponCard) {
-					if (c.getObject().getName().equals(suggest.getWeapon().toString()))
-						return true;
-				}
+
+		// Check if the accusation is correct
+		for (Card c : p.getHand()) {
+			if (c instanceof CharacterCard) {
+				if (c.getObject().getName().equals(suggest.getSuspect().toString()))
+					return true;
+			} else if (c instanceof RoomCard) {
+				if (c.getObject().getName().equals(suggest.getRoom().toString()))
+					return true;
+			} else if (c instanceof WeaponCard) {
+				if (c.getObject().getName().equals(suggest.getWeapon().toString()))
+					return true;
 			}
-		
+		}
+
 		return false;
 	}
 

@@ -11,6 +11,8 @@ import cluedo.model.Game;
 public class Main {
 
 	public static void main(String args[]) {
-		Game cluedo = new Game();
+		char a = 'a';
+		System.out.println((int)a);
+		// Game cluedo = new Game();
 	}
 }
