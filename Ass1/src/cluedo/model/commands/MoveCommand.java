@@ -101,6 +101,7 @@ public class MoveCommand implements Command {
 
 	/**
 	 * Allows a player to jump to any room in range
+	 *
 	 * @param scan
 	 * @param game
 	 */
@@ -134,8 +135,41 @@ public class MoveCommand implements Command {
 
 	private void manualMove(Scanner scan, Game game) {
 
-		System.out
-				.println("*** Please enter the coordinates for your move ***");
+		int x, y;
+
+		while (true) {
+
+			System.out
+					.println("*** Please enter the x coordinate for your move ***");
+
+			while (!scan.hasNextInt()) {
+				System.out.println("*** Please enter an integer ***");
+				scan.nextLine();
+			}
+
+			x = scan.nextInt();
+			scan.nextLine();
+
+			System.out
+					.println("*** Please enter the y coordinate for your move ***");
+
+			while (!scan.hasNextInt()) {
+				System.out.println("*** Please enter an integer ***");
+				scan.nextLine();
+			}
+
+			y = scan.nextInt();
+			scan.nextLine();
+
+			// Check for a valid input
+			if (x <= 0 || x > 25 || y <= 0 || y > 25)
+				System.out.println("*** That is not a valid input ***");
+			else
+				break;
+		}
+
+		this.m_x = x;
+		this.m_y = y;
 	}
 
 	@Override
@@ -148,7 +182,7 @@ public class MoveCommand implements Command {
 	}
 
 	public final int getY() {
-		return this.getY();
+		return this.m_y;
 	}
 
 }

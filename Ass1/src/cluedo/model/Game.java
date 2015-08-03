@@ -53,8 +53,6 @@ public class Game {
 	public static final Point DINING_ROOM_DOOR_EAST = new Point(12, 8);
 	public static final Point DINING_ROOOM_DOOR_SOUTH = new Point(15, 7);
 
-
-
 	public static final boolean DEBUG = true;
 	public static int NUM_OF_DICE;
 
@@ -71,9 +69,6 @@ public class Game {
 
 	// Cards in the envelope
 	private Set<Card> envelope;
-
-	// Dice in the game
-	private Set<Die> dice;
 
 	// Current player and next
 	private Player current, next;
@@ -92,6 +87,7 @@ public class Game {
 
 		System.out.println("*** Welcome to Cluedo (Pre - Alpha Version) ***");
 		System.out.println("*** By Cameron Bryers and Hannah Craighead ***");
+		System.out.println("\n*** Please note that since this version of the game is played a single screen, \n you should only look at the screen when it's your turn ***");
 
 		// Initialize the deck and the envelope
 		deck = new ArrayList<Card>();
@@ -124,7 +120,8 @@ public class Game {
 		// Scanner reader = new Scanner(System.in);
 
 		// Create dice
-		System.out.println("*** How many dice are you playing with? (min = 1, max = 2) ***");
+		System.out
+				.println("*** How many dice are you playing with? (min = 1, max = 2) ***");
 
 		// Wait for proper response
 		while (!READER.hasNextInt()) {
@@ -155,19 +152,30 @@ public class Game {
 		// Scanner reader = new Scanner(System.in);
 
 		while (!gameOver) {
-			for (Player p : players) {
+
+			for (Player p : playersList) {
 
 				// Check for game over
 				if (players.size() == 1) {
 					gameOver = true;
-					System.out.println("*** Congragulations " + p.getName() + " You won! ***");
+					System.out.println("*** Congragulations " + p.getName()
+							+ " You won! ***");
 					break;
 				}
 
-				System.out.println("\n*** " + p.getName() + " it's your turn to move ***");
+				// Display the player's cards
+				System.out.println("*** Your cards ***\n");
+				for (Card c : p.getHand())
+					System.out.println(c.getObject().getName());
+
+				System.out.println("\n*** " + p.getName()
+						+ " it's your turn to move ***");
+				System.out.println("*** Your character is " + p.getCharacter().toMiniString() + " ***");
 
 				// Roll the die/ dice
 				roll = randomNumber(1 * NUM_OF_DICE, 6 * NUM_OF_DICE);
+
+				System.out.println("*** You rolled a " + roll + " ***");
 
 				current = p;
 				next = getNextPlayer();
@@ -183,15 +191,18 @@ public class Game {
 				boolean isValid = false;
 
 				// Wait for a valid response
-				while (!isValid) {
+				while (true) {
 
 					MoveCommand move = new MoveCommand(READER, this);
 
-					if (getBoard().isValid(current, move.getX(), move.getY(), roll)) {
+					if (getBoard().isValid(current, move.getX(), move.getY(),
+							roll)) {
+						System.out.println("*** I just went there ***");
 						move.execute(this);
-						isValid = true;
+						break;
 					} else
-						System.out.println("*** Sorry that is not a valid move, try again ***");
+						System.out
+								.println("*** Sorry that is not a valid move, try again ***");
 				}
 
 				// Update board
@@ -302,7 +313,7 @@ public class Game {
 
 		// Get the number of players first
 		do {
-			System.out.println("*** How many players? (min = 3, max = 6) ***");
+			System.out.println("\n*** How many players? (min = 3, max = 6) ***");
 
 			// Wait for a proper response
 			while (!READER.hasNextInt()) {
@@ -315,7 +326,8 @@ public class Game {
 
 			// Error message
 			if (numOfPlayers < 3 || numOfPlayers > 6)
-				System.out.println("*** That is not a valid number of players ***");
+				System.out
+						.println("*** That is not a valid number of players ***");
 
 		} while (numOfPlayers < 3 || numOfPlayers > 6);
 
@@ -330,13 +342,15 @@ public class Game {
 				isValidName = true;
 
 				// Get name
-				System.out.println("*** Player " + (i + 1) + " please enter a name ***");
+				System.out.println("*** Player " + (i + 1)
+						+ " please enter a name ***");
 				name = READER.nextLine();
 
 				// Check if name is valid
 				for (Player p : players)
 					if (p.getName().equalsIgnoreCase(name)) {
-						System.out.println("*** Name is already being used! ***");
+						System.out
+								.println("*** Name is already being used! ***");
 						isValidName = false;
 						break;
 					}
@@ -352,14 +366,17 @@ public class Game {
 				suspect = null;
 
 				// Print out characters
-				System.out.println("*** " + name + " please choose a character ***\n");
+				System.out.println("*** " + name
+						+ " please choose a character ***\n");
 				for (int j = 0; j < Suspect.values().length; j++)
 					if (!usedSuspects.contains(Suspect.values()[j]))
-						System.out.println(Suspect.values()[j].toString() + ": " + (j + 1));
+						System.out.println(Suspect.values()[j].toString()
+								+ ": " + (j + 1));
 
 				// Wait for a proper response
 				while (!READER.hasNextInt()) {
-					System.out.println("*** Please enter integer you scrub ***");
+					System.out
+							.println("*** Please enter integer you scrub ***");
 					READER.nextLine();
 				}
 
@@ -401,7 +418,8 @@ public class Game {
 					}
 
 				if (!isValidCharacter)
-					System.out.println("*** Character is not valid or is already taken ***");
+					System.out
+							.println("*** Character is not valid or is already taken ***");
 				else
 					break;
 
