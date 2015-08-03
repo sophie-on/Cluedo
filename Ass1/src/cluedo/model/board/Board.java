@@ -127,7 +127,10 @@ public class Board {
 					board[i][j] = new PassageWaySquare(i, j, r, passages.get(r));
 					break;
 				case 'd':
-					board[i][j] = new DoorSquare(i, j, findRoom(i, j, s));
+					Room dr = findRoom(i, j, s);
+					DoorSquare d = new DoorSquare(i, j, dr);
+					dr.addDoor(d);
+					board[i][j] = d;
 					break;
 
 				default:

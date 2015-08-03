@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import cluedo.model.Player;
+import cluedo.model.board.DoorSquare;
 import cluedo.model.board.RoomSquare;
 
 /**
@@ -25,6 +26,9 @@ public class Location extends GameObject {
 	 */
 	public enum Room {
 		KITCHEN, BALL_ROOM, CONSERVATORY, DINING_ROOM, BILLIARD_ROOM, LIBRARY, LOUNGE, HALL, STUDY, SWIMMING_POOL;
+
+		//DoorSquares that a room can be entered through
+		private Set<DoorSquare> doors;
 
 		//RoomSquares that belong to this room
 		private Set<RoomSquare> squares;
@@ -61,6 +65,10 @@ public class Location extends GameObject {
 
 		public void setPassage(){
 			hasPassage = true;
+		}
+
+		public void addDoor(DoorSquare d){
+			doors.add(d);
 		}
 	}
 
