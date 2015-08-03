@@ -8,7 +8,6 @@ public class StarterSquare implements Square, InhabitableSquare{
 	private Suspect s;
 	private int m_x;
 	private int m_y;
-	private boolean isOccupied;
 	private Player p;
 
 	public StarterSquare(int x, int y, Suspect suspect) {
@@ -33,7 +32,7 @@ public class StarterSquare implements Square, InhabitableSquare{
 	}
 
 	public String toString(){
-		if(isOccupied){
+		if(p != null){
 			return s.toMiniString();
 		}
 		return "?";
@@ -50,7 +49,6 @@ public class StarterSquare implements Square, InhabitableSquare{
 
 	@Override
 	public void addPlayer(Player p) {
-		isOccupied = true;
 		this.p = p;
 	}
 

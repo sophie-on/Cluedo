@@ -11,6 +11,7 @@ import java.util.Scanner;
 import java.util.Set;
 
 import cluedo.model.board.Board;
+import cluedo.model.board.DoorSquare;
 import cluedo.model.board.RoomSquare;
 import cluedo.model.board.InhabitableSquare;
 import cluedo.model.board.Square;
@@ -583,9 +584,16 @@ public class Game {
 		// Move the player's position
 		current.move(newX, newY);
 
+		// Lets player enter a room if landed on a door quare
+		if(s instanceof DoorSquare){
+			((DoorSquare)s).getRoom().addPlayer(current);
+		}
+
 		// Find the square that the player lands on and add the player to it
-		s = m_board.squareAt(current.getX(), current.getY());
+		else{
+			s = m_board.squareAt(current.getX(), current.getY());
 		((InhabitableSquare) s).addPlayer(current);
+		}
 	}
 
 	/**
