@@ -109,11 +109,11 @@ public class MoveCommand implements Command {
 	private void jumpMove(Scanner scan, Game game) {
 
 		// Get list of rooms available
-		List<Room> rooms = game.getRoomsInReach();
+		List<DoorSquare> rooms = game.getRoomsInReach();
 
 		System.out.println("*** Please select a room ***");
 		for (int i = 0; i < rooms.size(); i++)
-			System.out.println(rooms.get(i).toString() + " (" + i + ") ");
+			System.out.println(rooms.get(i).getRoom().toString() + " (" + i + ") ");
 
 		// Check for a valid input
 		int command = 0;
@@ -133,13 +133,9 @@ public class MoveCommand implements Command {
 		}
 
 		// Put in coordinates of room
-		Room jumpTo = rooms.get(command);
-
-		for (DoorSquare d : jumpTo.getDoors()) {
-			this.m_x = d.getX();
-			this.m_y = d.getY();
-			break;
-		}
+		DoorSquare jumpTo = rooms.get(command);
+		this.m_x = jumpTo.getX();
+		this.m_y = jumpTo.getY();
 	}
 
 	/**

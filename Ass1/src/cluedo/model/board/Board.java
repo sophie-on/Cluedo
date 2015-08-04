@@ -229,9 +229,9 @@ public class Board {
 	 * Brute force method to find which rooms a player can move to according to
 	 * the roll they made.
 	 **/
-	public final List<Room> roomsInReach(Player player, int roll) {
+	public final List<DoorSquare> roomsInReach(Player player, int roll) {
 
-		List<Room> rooms = new ArrayList<Room>();
+		List<DoorSquare> rooms = new ArrayList<DoorSquare>();
 
 		// Calculate search limits
 		int a = player.getX() - roll;
@@ -252,7 +252,7 @@ public class Board {
 					Square square = squareAt(i, j);
 					if (square instanceof DoorSquare) {
 						DoorSquare door = (DoorSquare) square;
-						rooms.add(door.getRoom());
+						rooms.add(door);
 					}
 				}
 			}

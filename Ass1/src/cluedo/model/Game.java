@@ -637,7 +637,7 @@ public class Game {
 		return current;
 	}
 
-	public final List<Room> getRoomsInReach() {
+	public final List<DoorSquare> getRoomsInReach() {
 		return m_board.roomsInReach(current, roll);
 	}
 
