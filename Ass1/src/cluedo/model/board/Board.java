@@ -121,12 +121,13 @@ public class Board {
 					board[i][j] = new CorridorSquare(i, j);
 					break;
 				case 'p':
-					Room r = findRoom(i, j, s);					
-					PassageWaySquare pws = new PassageWaySquare(i, j, r, passages.get(r));
+					Room r = findRoom(i, j, s);
+					PassageWaySquare pws = new PassageWaySquare(i, j, r,
+							passages.get(r));
 					r.setPassage(pws);
 					if (DEBUG)
 						System.out.println("R is " + r);// +
-					board[i][j] = pws;					
+					board[i][j] = pws;
 					break;
 				case 'd':
 					Room dr = findRoom(i, j, s);
@@ -253,7 +254,7 @@ public class Board {
 				if ((Math.abs(player.getX() - i) + Math.abs(player.getY() - j)) <= roll) {
 					Square square = squareAt(i, j);
 					if (square instanceof DoorSquare) {
-						if(! (square instanceof PassageWaySquare)){
+						if (!(square instanceof PassageWaySquare)) {
 							DoorSquare door = (DoorSquare) square;
 							rooms.add(door);
 						}
@@ -264,151 +265,210 @@ public class Board {
 
 		// Tunnel or secret passageways to rooms
 		Square s = board[player.getX()][player.getY()];
-		if(s instanceof RoomSquare){
-			if(((RoomSquare)s).getRoom().hasPassage()){
-				rooms.add(passages.get(((RoomSquare)s).getRoom()).getPassage());
+		if (s instanceof RoomSquare) {
+			if (((RoomSquare) s).getRoom().hasPassage()) {
+				rooms.add(passages.get(((RoomSquare) s).getRoom()).getPassage());
 			}
 		}
 
 		return rooms;
 	}
 
-	private class dStore{
+	public final List<DoorSquare> getJumpLocations(Player player, int roll) {
+
+		List<DoorSquare> jumps = new ArrayList<DoorSquare>();
+
+		// Get list of all possible locations
+		Set<Square> possible = djikstra(player, roll);
+
+		// Get player's current location
+		Square playerAt = squareAt(player.getX(), player.getY());
+
+		// Go through each square, if it is a door square add it to the list
+		for (Square sq : possible) {
+
+			// If the door is a passage way add it to the list iff the passage
+			// way is in the room the player is currently in
+			if (sq instanceof PassageWaySquare) {
+				if (playerAt instanceof RoomSquare) {
+					RoomSquare room = (RoomSquare) playerAt;
+					PassageWaySquare passage = (PassageWaySquare) sq;
+					if (room.getRoom().equals(passage.getRoom()))
+						jumps.add(passage);
+				}
+			}
+
+			// If the door is contained in a room that the player is currently
+			// in do not add it to the list
+			else if (sq instanceof DoorSquare
+					&& !(sq instanceof PassageWaySquare)) {
+				if (playerAt instanceof RoomSquare) {
+					RoomSquare room = (RoomSquare) playerAt;
+					DoorSquare door = (DoorSquare) sq;
+					if (!room.getRoom().equals(door.getRoom()))
+						jumps.add((DoorSquare) sq);
+				}
+			}
+		}
+		return jumps;
+	}
+
+	private class dStore {
 		private int moves;
 		private Square s;
 
-		public dStore(int m, Square s){
+		public dStore(int m, Square s) {
 			moves = m;
 			this.s = s;
 		}
 
-		public int getMoves(){
+		public int getMoves() {
 			return moves;
 		}
 
-		public Square getSquare(){
+		public Square getSquare() {
 			return s;
 		}
 	}
-
 
 	/**
 	 * Djikstra's algorithm for path finding
 	 */
 
-	public Set<Square> djikstra(Player p, int roll){
+	public Set<Square> djikstra(Player p, int roll) {
 		Set<Square> squares = new HashSet<Square>();
 		// Sets all squares to unvisited
-		for(int i = 0; i < board.length; i ++){
-			for(int j = 0; j < board[i].length; j++){
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[i].length; j++) {
 				Square s = board[i][j];
-				if(s instanceof InhabitableSquare){
-					((InhabitableSquare)s).setVisited(false);
+				if (s instanceof InhabitableSquare) {
+					((InhabitableSquare) s).setVisited(false);
 				}
 			}
 		}
 
 		// create comparator for priority queue
 
-		Comparator<dStore> comparator= new Comparator<dStore>() {
-			public int compare(dStore o1, dStore o2) { 
+		Comparator<dStore> comparator = new Comparator<dStore>() {
+			public int compare(dStore o1, dStore o2) {
 				return o1.getMoves() - o2.getMoves();
-			} 
+			}
 		};
 
-		//set up fringe
+		// set up fringe
 
 		Queue<dStore> fringe = new PriorityQueue<dStore>(comparator);
 		Square start = squareAt(p.getX(), p.getY());
-		dStore first = new dStore(0,start);
+		dStore first = new dStore(0, start);
 		fringe.offer(first);
 
 		// continue until all possible landing squares found
 
-		while(!fringe.isEmpty()){
+		while (!fringe.isEmpty()) {
 			dStore current = fringe.poll(); // removes shortest path so far
-			InhabitableSquare currentSquare = (InhabitableSquare)current.getSquare();
+			InhabitableSquare currentSquare = (InhabitableSquare) current
+					.getSquare();
 
-			if(!currentSquare.visited()){
+			if (!currentSquare.visited()) {
 				currentSquare.setVisited(true);
 
-				if(current.getMoves() == roll){ // add as final destination square
-					squares.add((Square)currentSquare);
+				if (current.getMoves() == roll) { // add as final destination
+													// square
+					squares.add((Square) currentSquare);
 				}
 
-				else{ // add all neighbours onto the fringe, if they are a door square add to squares (ends turn early)
+				else { // add all neighbours onto the fringe, if they are a door
+						// square add to squares (ends turn early)
 
 					// add square above
-					if(currentSquare.getY() != 0){
-						Square above = squareAt(currentSquare.getX(),currentSquare.getY()-1);
-						if(above instanceof InhabitableSquare ){
-							InhabitableSquare a = (InhabitableSquare)above;
-							if(!a.visited() && !a.isOccupied()){ //only visit square if it hasn't already been or is unoccupied
-								fringe.offer(new dStore(current.getMoves()+1, above));
+					if (currentSquare.getY() != 0) {
+						Square above = squareAt(currentSquare.getX(),
+								currentSquare.getY() - 1);
+						if (above instanceof InhabitableSquare) {
+							InhabitableSquare a = (InhabitableSquare) above;
+							if (!a.visited() && !a.isOccupied()) { // only visit
+																	// square if
+																	// it hasn't
+																	// already
+																	// been or
+																	// is
+																	// unoccupied
+								fringe.offer(new dStore(current.getMoves() + 1,
+										above));
 							}
-						}
-						else if(above instanceof DoorSquare){ 
+						} else if (above instanceof DoorSquare) {
 							squares.add(above);
 						}
 					}
 
 					// add square below
-					if(currentSquare.getY() < board[0].length -1){
-						Square below = squareAt(currentSquare.getX(),currentSquare.getY()+1);
-						if(below instanceof InhabitableSquare){
-							InhabitableSquare b = (InhabitableSquare)below;
-							if(!b.visited() && !b.isOccupied()){ //only visit square if it hasn't already been or is unoccupied
-								fringe.offer(new dStore(current.getMoves()+1, below));
+					if (currentSquare.getY() < board[0].length - 1) {
+						Square below = squareAt(currentSquare.getX(),
+								currentSquare.getY() + 1);
+						if (below instanceof InhabitableSquare) {
+							InhabitableSquare b = (InhabitableSquare) below;
+							if (!b.visited() && !b.isOccupied()) { // only visit
+																	// square if
+																	// it hasn't
+																	// already
+																	// been or
+																	// is
+																	// unoccupied
+								fringe.offer(new dStore(current.getMoves() + 1,
+										below));
 							}
-						}
-						else if(below instanceof DoorSquare){ 
+						} else if (below instanceof DoorSquare) {
 							squares.add(below);
 						}
 					}
 
 					// add square left
-					if(currentSquare.getX() != 0){
-						Square left = squareAt(currentSquare.getX()-1,currentSquare.getY());
-						if(left instanceof InhabitableSquare){
-							InhabitableSquare l = (InhabitableSquare)left;
-							if(!l.visited() && !l.isOccupied()){ //only visit square if it hasn't already been or is unoccupied
-								fringe.offer(new dStore(current.getMoves()+1, left));
+					if (currentSquare.getX() != 0) {
+						Square left = squareAt(currentSquare.getX() - 1,
+								currentSquare.getY());
+						if (left instanceof InhabitableSquare) {
+							InhabitableSquare l = (InhabitableSquare) left;
+							if (!l.visited() && !l.isOccupied()) { // only visit
+																	// square if
+																	// it hasn't
+																	// already
+																	// been or
+																	// is
+																	// unoccupied
+								fringe.offer(new dStore(current.getMoves() + 1,
+										left));
 							}
-						}
-						else if(left instanceof DoorSquare){ 
+						} else if (left instanceof DoorSquare) {
 							squares.add(left);
 						}
 					}
 
 					// add square right
-					if(currentSquare.getX() < board[0].length -1){
-						Square right = squareAt(currentSquare.getX()+1,currentSquare.getY());
-						if(right instanceof InhabitableSquare){
-							InhabitableSquare r = (InhabitableSquare)right;
-							if(!r.visited() && !r.isOccupied()){ //only visit square if it hasn't already been or is unoccupied
-								fringe.offer(new dStore(current.getMoves()+1, right));
+					if (currentSquare.getX() < board[0].length - 1) {
+						Square right = squareAt(currentSquare.getX() + 1,
+								currentSquare.getY());
+						if (right instanceof InhabitableSquare) {
+							InhabitableSquare r = (InhabitableSquare) right;
+							if (!r.visited() && !r.isOccupied()) { // only visit
+																	// square if
+																	// it hasn't
+																	// already
+																	// been or
+																	// is
+																	// unoccupied
+								fringe.offer(new dStore(current.getMoves() + 1,
+										right));
 							}
-						}
-						else if(right instanceof DoorSquare){ 
+						} else if (right instanceof DoorSquare) {
 							squares.add(right);
 						}
 					}
 				}
 
-			}			
+			}
 		}
 		return squares;
 	}
-
-
-
-
-
-
-
-
-
-
 
 	/**
 	 * Check if the player's move is valid
@@ -423,76 +483,78 @@ public class Board {
 	 * @return true if move was valid
 	 */
 	public boolean isValid(Player player, int newX, int newY, int roll) {
-		
+
 		Set<Square> tiles = djikstra(player, roll);
-		
+
 		Square dest = squareAt(newX, newY);
 		return tiles.contains(dest);
 
-//		// If the move is not on the board
-//		if (newX < 0 || newX > 24 || newY < 0 || newY > 24) {
-//			return false;
-//		}
-//
-//		Square current = squareAt(player.getX(),player.getY());
-//		Square future = squareAt(newX, newY);
-//		// if the player is in a room
-//
-//		if(current instanceof RoomSquare){	
-//			Room currentRoom = ((RoomSquare)current).getRoom();
-//			PassageWaySquare p = (currentRoom.getPassage());
-//			if(p != null && future instanceof PassageWaySquare){ // if the current room has a tunnel and the future square is a tunnel
-//				if(passages.get(currentRoom).equals(((PassageWaySquare)future).getRoom())){
-//					return true;
-//				}
-//				else{
-//					return false;
-//				}
-//			}
-//			else{ // Room does not contain a secret tunnel
-//				for(DoorSquare d: currentRoom.getDoors()){
-//					if (Math.abs((newX - d.getX()) + (newY - d.getY())) <= roll) {							
-//						return true;
-//					}
-//				}
-//				System.out.println("*** ROLL TUMEKE ***");
-//				return false; // destination could not be reached by leaving any door
-//
-//			}
-//
-//		}
-//
-//
-//
-//		// If the move is too far
-//		if (Math.abs((newX - player.getX()) + (newY - player.getY())) > roll) {
-//			if (DEBUG)
-//				System.out.println("*** ROLL TUMEKE ***");
-//			return false;
-//		}
-//
-//
-//
-//		// TODO fix this
-//		if (future instanceof RoomSquare) {
-//			return false;
-//		}
-//
-//		// If the square is occupied
-//		if (future instanceof InhabitableSquare) {
-//			if (((InhabitableSquare) future).isOccupied()) {
-//				if (DEBUG)
-//					System.out.println("*** SQUARE IS OCCUPIED ***");
-//				return false;
-//			}
-//		}
-//
-//		if (future instanceof DoorSquare) {
-//			((DoorSquare) future).getRoom().addPlayer(player);
-//			return true;
-//		}
-//
-//		return true;
+		// // If the move is not on the board
+		// if (newX < 0 || newX > 24 || newY < 0 || newY > 24) {
+		// return false;
+		// }
+		//
+		// Square current = squareAt(player.getX(),player.getY());
+		// Square future = squareAt(newX, newY);
+		// // if the player is in a room
+		//
+		// if(current instanceof RoomSquare){
+		// Room currentRoom = ((RoomSquare)current).getRoom();
+		// PassageWaySquare p = (currentRoom.getPassage());
+		// if(p != null && future instanceof PassageWaySquare){ // if the
+		// current room has a tunnel and the future square is a tunnel
+		// if(passages.get(currentRoom).equals(((PassageWaySquare)future).getRoom())){
+		// return true;
+		// }
+		// else{
+		// return false;
+		// }
+		// }
+		// else{ // Room does not contain a secret tunnel
+		// for(DoorSquare d: currentRoom.getDoors()){
+		// if (Math.abs((newX - d.getX()) + (newY - d.getY())) <= roll) {
+		// return true;
+		// }
+		// }
+		// System.out.println("*** ROLL TUMEKE ***");
+		// return false; // destination could not be reached by leaving any door
+		//
+		// }
+		//
+		// }
+		//
+		//
+		//
+		// // If the move is too far
+		// if (Math.abs((newX - player.getX()) + (newY - player.getY())) > roll)
+		// {
+		// if (DEBUG)
+		// System.out.println("*** ROLL TUMEKE ***");
+		// return false;
+		// }
+		//
+		//
+		//
+		// // TODO fix this
+		// if (future instanceof RoomSquare) {
+		// return false;
+		// }
+		//
+		// // If the square is occupied
+		// if (future instanceof InhabitableSquare) {
+		// if (((InhabitableSquare) future).isOccupied()) {
+		// if (DEBUG)
+		// System.out.println("*** SQUARE IS OCCUPIED ***");
+		// return false;
+		// }
+		// }
+		//
+		// if (future instanceof DoorSquare) {
+		// ((DoorSquare) future).getRoom().addPlayer(player);
+		// return true;
+		// }
+		//
+		// return true;
 	}
 
 	public final Square squareAt(int x, int y) {

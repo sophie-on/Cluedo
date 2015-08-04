@@ -270,8 +270,8 @@ public class Game {
 						for (Player c : players) {
 							if (!c.equals(current)) {
 								if (checkSuggestion(suggest, c)) {
-									System.out.println(c.getName()
-											+ " can refute this suggestion");
+									System.out.println("*** " + c.getName()
+											+ " can refute this suggestion ***");
 									refutes++;
 								}
 							}
@@ -649,6 +649,9 @@ public class Game {
 		return m_board.roomsInReach(current, roll);
 	}
 
+	public final List<DoorSquare> getJumpLocations() {
+		return m_board.getJumpLocations(current, getRoll());
+	}
 	/**
 	 * Check if the accusation was correct
 	 *

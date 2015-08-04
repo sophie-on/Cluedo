@@ -109,7 +109,7 @@ public class MoveCommand implements Command {
 	private void jumpMove(Scanner scan, Game game) {
 
 		// Get list of rooms available
-		List<DoorSquare> rooms = game.getRoomsInReach();
+		List<DoorSquare> rooms = game.getJumpLocations();
 
 		System.out.println("*** Please select a room ***");
 		for (int i = 0; i < rooms.size(); i++)
@@ -161,7 +161,7 @@ public class MoveCommand implements Command {
 			else {
 				String ch = scan.next();
 				char input = ch.charAt(0);
-				System.out.println((int) ch.charAt(0));
+				// System.out.println((int) ch.charAt(0));
 
 				if (Character.isUpperCase(input))
 					y = (int) input - 65;
@@ -182,7 +182,7 @@ public class MoveCommand implements Command {
 			x = scan.nextInt();
 			scan.nextLine();
 
-			System.out.println("X: " + x + " Y: " + y);
+			// System.out.println("X: " + x + " Y: " + y);
 
 			// Check for a valid input
 			if (x <= 0 || x > 25 || y <= 0 || y > 25)
