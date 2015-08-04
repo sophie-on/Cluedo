@@ -342,7 +342,8 @@ public class Board {
 					if(currentSquare.getY() != 0){
 						Square above = squareAt(currentSquare.getX(),currentSquare.getY()-1);
 						if(above instanceof InhabitableSquare ){
-							if(!((InhabitableSquare)above).visited()){ //only visit square if it hasn't already been
+							InhabitableSquare a = (InhabitableSquare)above;
+							if(!a.visited() && !a.isOccupied()){ //only visit square if it hasn't already been or is unoccupied
 								fringe.offer(new dStore(current.getMoves()+1, above));
 							}
 						}
@@ -355,7 +356,8 @@ public class Board {
 					if(currentSquare.getY() < board[0].length -1){
 						Square below = squareAt(currentSquare.getX(),currentSquare.getY()+1);
 						if(below instanceof InhabitableSquare){
-							if(!((InhabitableSquare)below).visited()){ //only visit square if it hasn't already been
+							InhabitableSquare b = (InhabitableSquare)below;
+							if(!b.visited() && !b.isOccupied()){ //only visit square if it hasn't already been or is unoccupied
 								fringe.offer(new dStore(current.getMoves()+1, below));
 							}
 						}
@@ -368,7 +370,8 @@ public class Board {
 					if(currentSquare.getX() != 0){
 						Square left = squareAt(currentSquare.getX()-1,currentSquare.getY());
 						if(left instanceof InhabitableSquare){
-							if(!((InhabitableSquare)left).visited()){ //only visit square if it hasn't already been
+							InhabitableSquare l = (InhabitableSquare)left;
+							if(!l.visited() && !l.isOccupied()){ //only visit square if it hasn't already been or is unoccupied
 								fringe.offer(new dStore(current.getMoves()+1, left));
 							}
 						}
@@ -381,7 +384,8 @@ public class Board {
 					if(currentSquare.getX() < board[0].length -1){
 						Square right = squareAt(currentSquare.getX()+1,currentSquare.getY());
 						if(right instanceof InhabitableSquare){
-							if(!((InhabitableSquare)right).visited()){ //only visit square if it hasn't already been
+							InhabitableSquare r = (InhabitableSquare)right;
+							if(!r.visited() && !r.isOccupied()){ //only visit square if it hasn't already been or is unoccupied
 								fringe.offer(new dStore(current.getMoves()+1, right));
 							}
 						}
