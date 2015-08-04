@@ -48,6 +48,16 @@ public class Location extends GameObject {
 		public void addSquare(RoomSquare r){
 			squares.add(r);
 		}
+		
+		public void removePlayer(Player p){
+			characters.remove(p);
+			for(RoomSquare rs: squares){
+				if(rs.getPlayer() != null && rs.getPlayer().equals(p)){
+					rs.addPlayer(null);
+					return;
+				}
+			}
+		}
 
 		public void addPlayerToRoom(Player p){
 			for(RoomSquare r: squares){

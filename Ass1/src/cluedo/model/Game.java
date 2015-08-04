@@ -238,6 +238,7 @@ public class Game {
 							System.out
 									.println("*** Sorry that accusation was wrong ***");
 							playersList.remove(p);
+							Room.SWIMMING_POOL.removePlayer(p);
 
 							// Update board
 							m_board.drawBoard();
@@ -265,7 +266,7 @@ public class Game {
 						// least one of the cards the suggestion can not be
 						// refuted. Otherwise refute it
 						int refutes = 0;
-						for (Player c : playersList) {
+						for (Player c : players) {
 							if (!c.equals(current)) {
 								if (checkSuggestion(suggest, c)) {
 									System.out.println(c.getName()
