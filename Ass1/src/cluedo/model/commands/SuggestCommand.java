@@ -106,7 +106,7 @@ public class SuggestCommand implements Command {
 
 			command = scan.nextInt() - 1;
 
-			if (command >= 0 && command <= 5)
+			if (command >= 0 && command <= 8)
 				isValid = true;
 			else
 				System.out.println("*** That is not a valid room ***");
