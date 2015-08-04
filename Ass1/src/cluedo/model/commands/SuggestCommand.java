@@ -91,8 +91,10 @@ public class SuggestCommand implements Command {
 			// Ask for a room
 			System.out.println("*** Please enter a room ***");
 
-			for (Room r : Room.values())
+			for (int i = 0; i < 9; i++){
+				Room r = Room.values()[i];
 				System.out.println(r.toString() + " (" + r.getValue() + ") ");
+			}
 			
 		isValid = false;
 		command = 0;

@@ -26,8 +26,8 @@ public class Location extends GameObject {
 	 *
 	 */
 	public enum Room {
-		KITCHEN(0), BALL_ROOM(1), CONSERVATORY(2), DINING_ROOM(3), BILLIARD_ROOM(4), LIBRARY(5),
-		LOUNGE(6), HALL(7), STUDY(8), SWIMMING_POOL(9);
+		KITCHEN(1), BALL_ROOM(2), CONSERVATORY(3), DINING_ROOM(4), BILLIARD_ROOM(5), LIBRARY(6),
+		LOUNGE(7), HALL(8), STUDY(9), SWIMMING_POOL(10);
 
 		//DoorSquares that a room can be entered through
 		private Set<DoorSquare> doors;

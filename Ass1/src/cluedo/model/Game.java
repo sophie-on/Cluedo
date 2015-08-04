@@ -280,6 +280,7 @@ public class Game {
 									.println("No one could refute your suggestion");
 						}
 					}
+					m_board.drawBoard();
 				}
 			}
 		}
@@ -591,14 +592,13 @@ public class Game {
 		// Get new Square
 		s = m_board.squareAt(current.getX(), current.getY());
 
-		// Lets player enter a room if landed on a door quare
+		// Lets player enter a room if landed on a door square
 		if(s instanceof DoorSquare){
 			((DoorSquare)s).getRoom().addPlayer(current);
 		}
 
 		// Find the square that the player lands on and add the player to it
 		else{
-
 		((InhabitableSquare) s).addPlayer(current);
 		}
 	}

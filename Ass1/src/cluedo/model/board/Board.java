@@ -283,21 +283,41 @@ public class Board {
 	 * @return true if move was valid
 	 */
 	public boolean isValid(Player player, int newX, int newY, int roll) {
-		
-		// Moving through passage
-		if(board[player.getX()][player.getY()] instanceof RoomSquare){
-			//System.out.println("Finding secret passage ...s");
-			PassageWaySquare p = ((RoomSquare)squareAt(player.getX(), player.getY())).getRoom().getPassage();
-			if(p != null && (board[newX][newY] instanceof PassageWaySquare && 
-					((PassageWaySquare)board[newX][newY]).getRoom().equals(passages.get(p.getRoom())))){
-				return true;
-			}
-		}
 
 		// If the move is not on the board
 		if (newX < 0 || newX > 24 || newY < 0 || newY > 24) {
 			return false;
 		}
+
+		Square current = squareAt(player.getX(),player.getY());
+		Square future = squareAt(newX, newY);
+		// if the player is in a room
+
+		if(current instanceof RoomSquare){	
+			Room currentRoom = ((RoomSquare)current).getRoom();
+			PassageWaySquare p = (currentRoom.getPassage());
+			if(p != null && future instanceof PassageWaySquare){ // if the current room has a tunnel and the future square is a tunnel
+				if(passages.get(currentRoom).equals(((PassageWaySquare)future).getRoom())){
+					return true;
+				}
+				else{
+					return false;
+				}
+			}
+			else{ // Room does not contain a secret tunnel
+				for(DoorSquare d: currentRoom.getDoors()){
+					if (Math.abs((newX - d.getX()) + (newY - d.getY())) <= roll) {							
+						return true;
+					}
+				}
+				System.out.println("*** ROLL TUMEKE ***");
+				return false; // destination could not be reached by leaving any door
+
+			}
+
+		}
+
+
 
 		// If the move is too far
 		if (Math.abs((newX - player.getX()) + (newY - player.getY())) > roll) {
@@ -306,26 +326,26 @@ public class Board {
 			return false;
 		}
 
-		Square square = squareAt(newX, newY);
+
 
 		// TODO fix this
-		if (square instanceof RoomSquare) {
+		if (future instanceof RoomSquare) {
 			return false;
 		}
 
 		// If the square is occupied
-		if (square instanceof InhabitableSquare) {
-			if (((InhabitableSquare) square).isOccupied()) {
+		if (future instanceof InhabitableSquare) {
+			if (((InhabitableSquare) future).isOccupied()) {
 				if (DEBUG)
 					System.out.println("*** SQUARE IS OCCUPIED ***");
 				return false;
 			}
 		}
 
-		// if (square instanceof DoorSquare) {
-		// ((DoorSquare) square).getRoom().addPlayer(player);
-		// return true;
-		// }
+		if (future instanceof DoorSquare) {
+			((DoorSquare) future).getRoom().addPlayer(player);
+			return true;
+		}
 
 		return true;
 	}
