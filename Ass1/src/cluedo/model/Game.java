@@ -228,6 +228,9 @@ public class Game {
 
 					// Accusation
 					if (room.getRoom().equals(Room.SWIMMING_POOL)) {
+
+						System.out.println("\n*** Accusation ***");
+
 						SuggestCommand accuse = new SuggestCommand(this, READER);
 
 						// Wrong accusation
@@ -252,6 +255,9 @@ public class Game {
 
 					// Suggestion
 					else {
+
+						System.out.println("\n*** Suggestion ***");
+
 						SuggestCommand suggest = new SuggestCommand(this,
 								READER);
 
