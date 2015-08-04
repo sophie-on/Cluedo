@@ -9,6 +9,7 @@ public class StarterSquare implements Square, InhabitableSquare{
 	private int m_x;
 	private int m_y;
 	private Player p;
+	private boolean visited;
 
 	public StarterSquare(int x, int y, Suspect suspect) {
 		m_x = x;
@@ -50,6 +51,16 @@ public class StarterSquare implements Square, InhabitableSquare{
 	@Override
 	public void addPlayer(Player p) {
 		this.p = p;
+	}
+
+	@Override
+	public void setVisited(boolean v) {
+		visited = v;		
+	}
+
+	@Override
+	public boolean visited() {
+		return visited;
 	}
 
 }

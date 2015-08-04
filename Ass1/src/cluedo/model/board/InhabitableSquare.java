@@ -29,4 +29,12 @@ public interface InhabitableSquare {
 
 	public void addPlayer(Player p);
 
+	public void setVisited(boolean v);
+
+	public boolean visited();
+	
+	public int getX();
+	
+	public int getY();
+
 }

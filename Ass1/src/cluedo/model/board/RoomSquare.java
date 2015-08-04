@@ -19,6 +19,7 @@ public class RoomSquare implements Square, InhabitableSquare{
 	private Room r;
 	private Player p;
 	private boolean isOccupied;
+	private boolean visited;
 
 
 	public RoomSquare(int x, int y, Room room){
@@ -87,6 +88,16 @@ public class RoomSquare implements Square, InhabitableSquare{
 	@Override
 	public void addPlayer(Player p) {
 		this.p = p;
+	}
+
+	@Override
+	public void setVisited(boolean v) {
+		visited = v;		
+	}
+
+	@Override
+	public boolean visited() {
+		return visited;
 	}
 
 }

@@ -27,5 +27,6 @@ public interface Square {
 
 
 
-	public String toString();
+	public String toString();	
+	
 }

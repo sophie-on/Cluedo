@@ -17,6 +17,7 @@ public class CorridorSquare implements Square, InhabitableSquare{
 	private int m_y;
 	private boolean isOccupied;
 	private Player p;
+	private boolean visited;
 
 	public CorridorSquare(int x, int y){
 		m_x = x;
@@ -60,6 +61,14 @@ public class CorridorSquare implements Square, InhabitableSquare{
 	@Override
 	public void addPlayer(Player p) {
 		this.p = p;
+	}
+	
+	public boolean visited(){
+		return visited;
+	}
+	
+	public void setVisited(boolean v){
+		visited = v;
 	}
 
 }

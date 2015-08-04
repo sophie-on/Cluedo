@@ -3,10 +3,13 @@ package cluedo.model.board;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -269,6 +272,142 @@ public class Board {
 
 		return rooms;
 	}
+
+	private class dStore{
+		private int moves;
+		private Square s;
+
+		public dStore(int m, Square s){
+			moves = m;
+			this.s = s;
+		}
+
+		public int getMoves(){
+			return moves;
+		}
+
+		public Square getSquare(){
+			return s;
+		}
+	}
+
+
+	/**
+	 * Djikstra's algorithm for path finding
+	 */
+
+	public Set<Square> djikstra(Player p, int roll){
+		Set<Square> squares = new HashSet<Square>();
+		// Sets all squares to unvisited
+		for(int i = 0; i < board.length; i ++){
+			for(int j = 0; j < board[i].length; j++){
+				Square s = board[i][j];
+				if(s instanceof InhabitableSquare){
+					((InhabitableSquare)s).setVisited(false);
+				}
+			}
+		}
+
+		// create comparator for priority queue
+
+		Comparator<dStore> comparator= new Comparator<dStore>() {
+			public int compare(dStore o1, dStore o2) { 
+				return o2.getMoves() - o1.getMoves();
+			} 
+		};
+
+		//set up fringe
+
+		Queue<dStore> fringe = new PriorityQueue<dStore>(comparator);
+		Square start = squareAt(p.getX(), p.getY());
+		dStore first = new dStore(0,start);
+
+		// continue until all possible landing squares found
+
+		while(!fringe.isEmpty()){
+			dStore current = fringe.poll(); // removes shortest path so far
+			InhabitableSquare currentSquare = (InhabitableSquare)current.getSquare();
+
+			if(!currentSquare.visited()){
+				currentSquare.setVisited(true);
+
+				if(current.getMoves() == roll){ // add as final destination square
+					squares.add((Square)currentSquare);
+				}
+
+				else{ // add all neighbours onto the fringe, if they are a door square add to squares (ends turn early)
+
+					// add square above
+					if(currentSquare.getY() != 0){
+						Square above = squareAt(currentSquare.getX(),currentSquare.getY()+1);
+						if(above instanceof InhabitableSquare ){
+							if(!((InhabitableSquare)above).visited()){ //only visit square if it hasn't already been
+								fringe.add(new dStore(current.getMoves()+1, above));
+							}
+						}
+						else if(above instanceof DoorSquare){ 
+							squares.add(above);
+						}
+					}
+
+					// add square below
+					if(currentSquare.getY() != board[0].length){
+						Square below = squareAt(currentSquare.getX(),currentSquare.getY()-1);
+						if(below instanceof InhabitableSquare){
+							if(!((InhabitableSquare)below).visited()){ //only visit square if it hasn't already been
+								fringe.add(new dStore(current.getMoves()+1, below));
+							}
+						}
+						else if(below instanceof DoorSquare){ 
+							squares.add(below);
+						}
+					}
+
+					// add square left
+					if(currentSquare.getX() != 0){
+						Square left = squareAt(currentSquare.getX()-1,currentSquare.getY());
+						if(left instanceof InhabitableSquare){
+							if(!((InhabitableSquare)left).visited()){ //only visit square if it hasn't already been
+								fringe.add(new dStore(current.getMoves()+1, left));
+							}
+						}
+						else if(left instanceof DoorSquare){ 
+							squares.add(left);
+						}
+					}
+
+					// add square right
+					if(currentSquare.getX() != board.length){
+						Square right = squareAt(currentSquare.getX()+1,currentSquare.getY());
+						if(right instanceof InhabitableSquare){
+							if(!((InhabitableSquare)right).visited()){ //only visit square if it hasn't already been
+								fringe.add(new dStore(current.getMoves()+1, right));
+							}
+						}
+						else if(right instanceof DoorSquare){ 
+							squares.add(right);
+						}
+					}
+				}
+
+			}			
+		}
+
+
+
+
+		return squares;
+	}
+
+
+
+
+
+
+
+
+
+
 
 	/**
 	 * Check if the player's move is valid
