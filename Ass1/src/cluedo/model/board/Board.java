@@ -250,13 +250,15 @@ public class Board {
 				if ((Math.abs(player.getX() - i) + Math.abs(player.getY() - j)) <= roll) {
 					Square square = squareAt(i, j);
 					if (square instanceof DoorSquare) {
-						DoorSquare door = (DoorSquare) square;
-						rooms.add(door);
+						if(! (square instanceof PassageWaySquare)){
+							DoorSquare door = (DoorSquare) square;
+							rooms.add(door);
+						}
 					}
 				}
 			}
 		}
-		
+
 		// Tunnel or secret passageways to rooms
 		Square s = board[player.getX()][player.getY()];
 		if(s instanceof RoomSquare){
@@ -264,7 +266,7 @@ public class Board {
 				rooms.add(passages.get(((RoomSquare)s).getRoom()).getPassage());
 			}
 		}
-		
+
 		return rooms;
 	}
 
@@ -281,6 +283,16 @@ public class Board {
 	 * @return true if move was valid
 	 */
 	public boolean isValid(Player player, int newX, int newY, int roll) {
+		
+		// Moving through passage
+		if(board[player.getX()][player.getY()] instanceof RoomSquare){
+			System.out.println("Finding secret passage ...s");
+			PassageWaySquare p = ((RoomSquare)squareAt(player.getX(), player.getY())).getRoom().getPassage();
+			if(p != null && (board[newX][newY] instanceof PassageWaySquare && 
+					((PassageWaySquare)board[newX][newY]).getRoom().equals(passages.get(p.getRoom())))){
+				return true;
+			}
+		}
 
 		// If the move is not on the board
 		if (newX < 0 || newX > 24 || newY < 0 || newY > 24) {

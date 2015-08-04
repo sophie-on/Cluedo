@@ -85,7 +85,8 @@ public class SuggestCommand implements Command {
 		}
 
 		weapon = WeaponType.values()[command];
-	}
+	}	
+	
 
 	@Override
 	public void execute(Game game) {
