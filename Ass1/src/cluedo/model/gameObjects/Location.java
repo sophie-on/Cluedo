@@ -8,6 +8,7 @@ import java.util.Set;
 
 import cluedo.model.Player;
 import cluedo.model.board.DoorSquare;
+import cluedo.model.board.PassageWaySquare;
 import cluedo.model.board.RoomSquare;
 
 /**
@@ -34,7 +35,7 @@ public class Location extends GameObject {
 		private Set<RoomSquare> squares;
 
 		//Whether it contains a passage or not
-		private boolean hasPassage;
+		private PassageWaySquare Passage;
 
 		// Characters that are in this room.
 		private Set<Player> characters;
@@ -74,8 +75,8 @@ public class Location extends GameObject {
 			addPlayerToRoom(p);
 		}
 
-		public void setPassage(){
-			hasPassage = true;
+		public void setPassage(PassageWaySquare p){
+			Passage = p;
 		}
 
 		public void addDoor(DoorSquare d){
@@ -85,6 +86,16 @@ public class Location extends GameObject {
 		public final Set<DoorSquare> getDoors() {
 			return doors;
 		}
+		
+		public boolean hasPassage(){
+			return Passage != null;
+		}
+		
+		public PassageWaySquare getPassage(){
+			return Passage;
+		}
+		
+
 	}
 
 	private Room m_room;
@@ -144,7 +155,8 @@ public class Location extends GameObject {
 			return false;
 		return true;
 	}
-
+	
+	
 
 
 	@Override

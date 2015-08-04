@@ -118,13 +118,12 @@ public class Board {
 					board[i][j] = new CorridorSquare(i, j);
 					break;
 				case 'p':
-					Room r = findRoom(i, j, s);
-					r.setPassage();
+					Room r = findRoom(i, j, s);					
+					PassageWaySquare pws = new PassageWaySquare(i, j, r, passages.get(r));
+					r.setPassage(pws);
 					if (DEBUG)
 						System.out.println("R is " + r);// +
-					// "passages.get(r) is "
-					// + passages.get(r));
-					board[i][j] = new PassageWaySquare(i, j, r, passages.get(r));
+					board[i][j] = pws;					
 					break;
 				case 'd':
 					Room dr = findRoom(i, j, s);
@@ -257,6 +256,15 @@ public class Board {
 				}
 			}
 		}
+		
+		// Tunnel or secret passageways to rooms
+		Square s = board[player.getX()][player.getY()];
+		if(s instanceof RoomSquare){
+			if(((RoomSquare)s).getRoom().hasPassage()){
+				rooms.add(passages.get(((RoomSquare)s).getRoom()).getPassage());
+			}
+		}
+		
 		return rooms;
 	}
 

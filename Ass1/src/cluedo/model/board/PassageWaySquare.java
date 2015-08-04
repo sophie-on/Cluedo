@@ -10,7 +10,7 @@ import cluedo.model.gameObjects.Location.Room;
  *
  */
 
-public class PassageWaySquare implements Square{
+public class PassageWaySquare extends DoorSquare{
 
 	private int m_x;
 	private int m_y;
@@ -18,8 +18,7 @@ public class PassageWaySquare implements Square{
 	private Room to;
 
 	public PassageWaySquare(int x, int y, Room from, Room to){
-		m_x = x;
-		m_y = y;
+		super(x,y,from);
 		this.from = from;
 		this.to = to;
 	}
