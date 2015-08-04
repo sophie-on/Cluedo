@@ -19,6 +19,7 @@ import cluedo.model.cards.Card;
 import cluedo.model.cards.CharacterCard;
 import cluedo.model.cards.RoomCard;
 import cluedo.model.cards.WeaponCard;
+import cluedo.model.commands.AccuseCommand;
 import cluedo.model.commands.MoveCommand;
 import cluedo.model.commands.SuggestCommand;
 import cluedo.model.gameObjects.CluedoCharacter;
@@ -231,7 +232,7 @@ public class Game {
 
 						System.out.println("\n*** Accusation ***");
 
-						SuggestCommand accuse = new SuggestCommand(this, READER);
+						AccuseCommand accuse = new AccuseCommand(this, READER);
 
 						// Wrong accusation
 						if (!checkAccusation(accuse)) {

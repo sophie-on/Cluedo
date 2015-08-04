@@ -27,10 +27,15 @@ public class SuggestCommand implements Command {
 	private WeaponType weapon;
 
 	public SuggestCommand(Game game, Scanner scan) {
+
 		// Room must be that of which the character is in
-		Square sq = game.getBoard().squareAt(game.getCurrent().getX(), game.getCurrent().getY());
+		Square sq = game.getBoard().squareAt(game.getCurrent().getX(),
+				game.getCurrent().getY());
 		assert sq instanceof RoomSquare;
-		room = ((RoomSquare)sq).getRoom();
+
+		// Set the room if it is not the swimming pool
+		if (!((RoomSquare) sq).getRoom().equals(Room.SWIMMING_POOL))
+			room = ((RoomSquare) sq).getRoom();
 
 		// Ask for suspect
 		System.out.println("*** Please enter a suspect ***");
@@ -85,38 +90,17 @@ public class SuggestCommand implements Command {
 		}
 
 		weapon = WeaponType.values()[command];
-		
-		if(room.equals(Room.SWIMMING_POOL)){
-			
-			// Ask for a room
-			System.out.println("*** Please enter a room ***");
 
-			for (int i = 0; i < 9; i++){
-				Room r = Room.values()[i];
-				System.out.println(r.toString() + " (" + r.getValue() + ") ");
-			}
-			
-		isValid = false;
-		command = 0;
-		
-		while (!isValid) {
+		// if (room.equals(Room.SWIMMING_POOL)) {
+		//
+		//
+		// }
 
-			while (!scan.hasNextInt()) {
-				System.out.println("*** Please enter an integer ***");
-				scan.next();
-			}
+	}
 
-			command = scan.nextInt() - 1;
-
-			if (command >= 0 && command <= 8)
-				isValid = true;
-			else
-				System.out.println("*** That is not a valid room ***");
-		}
-		}	
-		
-	}	
-	
+	public void setRoom(Room room) {
+		this.room = room;
+	}
 
 	@Override
 	public void execute(Game game) {
