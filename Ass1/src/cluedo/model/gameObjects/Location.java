@@ -71,6 +71,10 @@ public class Location extends GameObject {
 		public void addDoor(DoorSquare d){
 			doors.add(d);
 		}
+
+		public final Set<DoorSquare> getDoors() {
+			return doors;
+		}
 	}
 
 	private Room m_room;

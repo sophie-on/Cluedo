@@ -58,7 +58,7 @@ public class Game {
 	public static final Point DINING_ROOM_DOOR_EAST = new Point(12, 8);
 	public static final Point DINING_ROOOM_DOOR_SOUTH = new Point(15, 7);
 
-	public static final boolean DEBUG = true;
+	public static final boolean DEBUG = false;
 	public static int NUM_OF_DICE;
 
 	// The game board
@@ -189,15 +189,12 @@ public class Game {
 				current = p;
 				next = getNextPlayer();
 
-				// TODO parse commands
-
 				/**
 				 * Move if (inRoom) Suggestion else if (inSwimmingPool)
 				 * Accusation
 				 */
 
 				// Move Command
-				boolean isValid = false;
 
 				// Wait for a valid response
 				while (true) {
@@ -583,10 +580,10 @@ public class Game {
 
 		// Move the player's position
 		current.move(newX, newY);
-		
+
 		// Get new Square
 		s = m_board.squareAt(current.getX(), current.getY());
-		
+
 		// Lets player enter a room if landed on a door quare
 		if(s instanceof DoorSquare){
 			((DoorSquare)s).getRoom().addPlayer(current);
@@ -594,7 +591,7 @@ public class Game {
 
 		// Find the square that the player lands on and add the player to it
 		else{
-			
+
 		((InhabitableSquare) s).addPlayer(current);
 		}
 	}

@@ -233,11 +233,22 @@ public class Board {
 
 		List<Room> rooms = new ArrayList<Room>();
 
-		for (int i = player.getX(); i < x_size; i++) {
-			for (int j = player.getY(); j < y_size; j++) {
+		// Calculate search limits
+		int a = player.getX() - roll;
+		int b = player.getY() - roll;
+
+		// If a is less than 0 set minX to zero etc. etc.
+		int minX = (a > 0) ? a : 0;
+		int minY = (b > 0) ? b : 0;
+
+		for (int i = minX; i < x_size; i++) {
+			for (int j = minY; j < y_size; j++) {
+
+				if (DEBUG)
+					System.out.println("RIR x: " + i + " y: " + j);
 
 				// If the player is in reach of a room add it to the room set
-				if ((i + j) <= roll) {
+				if ((Math.abs(player.getX() - i) + Math.abs(player.getY() - j)) <= roll) {
 					Square square = squareAt(i, j);
 					if (square instanceof DoorSquare) {
 						DoorSquare door = (DoorSquare) square;
@@ -263,11 +274,10 @@ public class Board {
 	 */
 	public boolean isValid(Player player, int newX, int newY, int roll) {
 
-		//If the move is not on the board
-		if(newX < 0 || newX > 24 || newY < 0 || newY> 24){
+		// If the move is not on the board
+		if (newX < 0 || newX > 24 || newY < 0 || newY > 24) {
 			return false;
 		}
-
 
 		// If the move is too far
 		if (Math.abs((newX - player.getX()) + (newY - player.getY())) > roll) {
@@ -286,15 +296,16 @@ public class Board {
 		// If the square is occupied
 		if (square instanceof InhabitableSquare) {
 			if (((InhabitableSquare) square).isOccupied()) {
-				if (DEBUG) System.out.println("*** SQUARE IS OCCUPIED ***");
+				if (DEBUG)
+					System.out.println("*** SQUARE IS OCCUPIED ***");
 				return false;
 			}
 		}
 
-//		if (square instanceof DoorSquare) {
-//			((DoorSquare) square).getRoom().addPlayer(player);
-//			return true;
-//		}
+		// if (square instanceof DoorSquare) {
+		// ((DoorSquare) square).getRoom().addPlayer(player);
+		// return true;
+		// }
 
 		return true;
 	}

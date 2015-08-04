@@ -5,6 +5,7 @@ import java.util.Scanner;
 import java.util.Set;
 
 import cluedo.model.Game;
+import cluedo.model.board.DoorSquare;
 import cluedo.model.gameObjects.Location;
 import cluedo.model.gameObjects.Location.Room;
 
@@ -131,6 +132,14 @@ public class MoveCommand implements Command {
 				break;
 		}
 
+		// Put in coordinates of room
+		Room jumpTo = rooms.get(command);
+
+		for (DoorSquare d : jumpTo.getDoors()) {
+			this.m_x = d.getX();
+			this.m_y = d.getY();
+			break;
+		}
 	}
 
 	/**
