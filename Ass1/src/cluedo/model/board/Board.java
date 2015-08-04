@@ -286,7 +286,7 @@ public class Board {
 		
 		// Moving through passage
 		if(board[player.getX()][player.getY()] instanceof RoomSquare){
-			System.out.println("Finding secret passage ...s");
+			//System.out.println("Finding secret passage ...s");
 			PassageWaySquare p = ((RoomSquare)squareAt(player.getX(), player.getY())).getRoom().getPassage();
 			if(p != null && (board[newX][newY] instanceof PassageWaySquare && 
 					((PassageWaySquare)board[newX][newY]).getRoom().equals(passages.get(p.getRoom())))){

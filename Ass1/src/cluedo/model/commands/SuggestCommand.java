@@ -85,6 +85,34 @@ public class SuggestCommand implements Command {
 		}
 
 		weapon = WeaponType.values()[command];
+		
+		if(room.equals(Room.SWIMMING_POOL)){
+			
+			// Ask for a room
+			System.out.println("*** Please enter a room ***");
+
+			for (Room r : Room.values())
+				System.out.println(r.toString() + " (" + r.getValue() + ") ");
+			
+		isValid = false;
+		command = 0;
+		
+		while (!isValid) {
+
+			while (!scan.hasNextInt()) {
+				System.out.println("*** Please enter an integer ***");
+				scan.next();
+			}
+
+			command = scan.nextInt() - 1;
+
+			if (command >= 0 && command <= 5)
+				isValid = true;
+			else
+				System.out.println("*** That is not a valid room ***");
+		}
+		}	
+		
 	}	
 	
 

@@ -26,7 +26,8 @@ public class Location extends GameObject {
 	 *
 	 */
 	public enum Room {
-		KITCHEN, BALL_ROOM, CONSERVATORY, DINING_ROOM, BILLIARD_ROOM, LIBRARY, LOUNGE, HALL, STUDY, SWIMMING_POOL;
+		KITCHEN(0), BALL_ROOM(1), CONSERVATORY(2), DINING_ROOM(3), BILLIARD_ROOM(4), LIBRARY(5),
+		LOUNGE(6), HALL(7), STUDY(8), SWIMMING_POOL(9);
 
 		//DoorSquares that a room can be entered through
 		private Set<DoorSquare> doors;
@@ -39,13 +40,20 @@ public class Location extends GameObject {
 
 		// Characters that are in this room.
 		private Set<Player> characters;
+		
+		private final int value;
 
-		private Room(){
+		private Room(int value) {
+			this.value = value;
 			squares = new HashSet<RoomSquare>();
 			characters = new HashSet<Player>();
 			doors = new HashSet<DoorSquare>();
 		}
 
+		public int getValue() {
+			return value;
+		}
+		
 		public void addSquare(RoomSquare r){
 			squares.add(r);
 		}
