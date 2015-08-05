@@ -152,13 +152,16 @@ public class Game {
 		 *
 		 */
 
-		// Draw the board
-		m_board.drawBoard();
-
 		boolean gameOver = false;
 		// Scanner reader = new Scanner(System.in);
 
 		while (!gameOver) {
+
+			// Wipe the console
+			clearConsole();
+
+			// Draw the board
+			m_board.drawBoard();
 
 			for (Player p : playersList) {
 
@@ -170,6 +173,21 @@ public class Game {
 					break;
 				}
 
+				// Wait for player to be ready
+				while (true) {
+
+					// System.out.
+					System.out.println("\n*** " + p.getName()
+							+ " are you ready? (Press any key (character or int) then ENTER) ***");
+
+					if (READER.hasNext()) {
+						READER.next();
+						break;
+					}
+				}
+
+				READER.nextLine();
+
 				// Display name
 				System.out.println("\n*** " + p.getName()
 						+ " it's your turn to move ***");
@@ -179,7 +197,7 @@ public class Game {
 				for (Card c : p.getHand())
 					System.out.println(c.getObject().getName());
 
-				System.out.println("*** Your character is "
+				System.out.println("\n*** Your character is "
 						+ p.getCharacter().toMiniString() + " ***");
 
 				// Roll the die/ dice
@@ -281,9 +299,11 @@ public class Game {
 						}
 						if (refutes == 0) {
 							System.out
-									.println("No one could refute your suggestion");
+									.println("*** No one could refute your suggestion ***");
 						}
 					}
+
+					System.out.println();
 					m_board.drawBoard();
 				}
 			}
@@ -716,6 +736,29 @@ public class Game {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Clears the console, used to prevent players from cheating
+	 */
+	public final static void clearConsole() {
+
+		// If you're running the game on the system console use this code
+		// try {
+		// final String os = System.getProperty("os.name");
+		//
+		// if (os.contains("Windows")) {
+		// Runtime.getRuntime().exec("cls");
+		// } else {
+		// Runtime.getRuntime().exec("clear");
+		// }
+		// } catch (final Exception e) {
+		// // Handle any exceptions.
+		// }
+
+		// If your running it in eclipse use this
+		for (int i = 0; i < 100; i++)
+			System.out.println();
 	}
 
 	public static void main(String args[]) {

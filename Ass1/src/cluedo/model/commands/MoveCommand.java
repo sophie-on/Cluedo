@@ -43,7 +43,7 @@ public class MoveCommand implements Command {
 
 		// Ask for which option they want to take
 		System.out
-				.println("*** Which option do you want? ***\n*** Jump(1) * Manual(2) ***");
+				.println("*** Which move option do you want? ***\n*** Jump(1) * Manual(2) ***");
 
 		// if(scan.hasNext()) scan.nextLine();
 
@@ -58,7 +58,7 @@ public class MoveCommand implements Command {
 
 			command = scan.nextInt();
 			scan.nextLine();
-			System.out.println("COMMAND: " + command);
+			// System.out.println("COMMAND: " + command);
 
 			if (command != 1 && command != 2)
 				System.out.println("*** That is not a valid input ***");

@@ -20,8 +20,7 @@ import cluedo.model.gameObjects.Weapon.WeaponType;
 
 public class SuggestCommand implements Command {
 
-	// Things involved in the murder, might use the actual classes instead of
-	// the enums...
+	// Things involved in the murder.
 	private Suspect suspect;
 	private Room room;
 	private WeaponType weapon;
@@ -90,12 +89,6 @@ public class SuggestCommand implements Command {
 		}
 
 		weapon = WeaponType.values()[command];
-
-		// if (room.equals(Room.SWIMMING_POOL)) {
-		//
-		//
-		// }
-
 	}
 
 	public void setRoom(Room room) {
@@ -104,8 +97,9 @@ public class SuggestCommand implements Command {
 
 	@Override
 	public void execute(Game game) {
-		// TODO Auto-generated method stub
-
+		// Does nothing
+		System.out
+				.println("*** Execute method in suggest/ accuse not used ***");
 	}
 
 	public final Suspect getSuspect() {

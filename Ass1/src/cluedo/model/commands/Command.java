@@ -40,37 +40,5 @@ public interface Command {
 		}
 	}
 
-	// private Command m_command;
-
-//	public static Command getCommand(Scanner scan, Game game) {
-//
-//		String type = scan.next();
-//
-//		switch (type) {
-//		case "1":
-//			// m_command = new MoveCommand(scan, game);
-//			break;
-//		case "2":
-//			// m_command = new SuggestCommand(scan, game);
-//			break;
-//		case "3":
-//			// m_command = new AccuseCommand(scan, game);
-//			break;
-//		case "4":
-//			// m_command = new ShowCardsCommand(scan, game);
-//			break;
-//		case "5":
-//			// m_command = new HelpCommand(scan, game);
-//			break;
-//		case "6":
-//			// m_command = new QuitCommand(scan, game);
-//			break;
-//		default:
-//			// m_command = new MoveCommand(scan, game);
-//			break;
-//		}
-//		return null;
-//	}
-
 	public abstract void execute(Game game);
 }
