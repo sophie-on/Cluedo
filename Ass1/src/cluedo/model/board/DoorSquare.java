@@ -21,6 +21,8 @@ public class DoorSquare implements Square{
 
 	private int m_x;
 	private int m_y;
+	
+	// Room that corresponds to this door
 	private Room r;
 
 	public DoorSquare(int x, int y, Room r){
