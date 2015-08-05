@@ -15,7 +15,6 @@ import java.util.Set;
 
 import cluedo.model.Game;
 import cluedo.model.Player;
-import cluedo.model.gameObjects.Location;
 import cluedo.model.gameObjects.Location.Room;
 import cluedo.model.gameObjects.CluedoCharacter.Suspect;
 
@@ -98,23 +97,31 @@ public class Board {
 				if (DEBUG)
 					System.out.println("Key " + key + "i " + i + " j " + j);
 				switch (key) {
-				case '\r':
-				case '\n': // Does nothing, end of line character to indicate
-					// new row
+				
+				// Does nothing, end of line character to indicate new row
+				case '\r': 
+				
+				// Does nothing, end of line character to indicate new row
+				case '\n': 					 
 					j--;
 					if (DEBUG)
 						System.out.println("Newline found");
 					break;
-				case ' ': // Does nothing, end of line character to indicate new
-					// row
+					
+				// Does nothing, end of line character to indicate new row		
+				case ' ': 				
 					j--;
 					if (DEBUG)
 						System.out.println("Space found");
 					break;
-				case '!': // Does nothing, a non-used square for decoration
+					
+				// Does nothing, a non-used square for decoration	
+				case '!': 
 					board[i][j] = new BlankSquare(i, j);
 					break;
-				case 's': // Generates a starting square
+				
+				 // Generates a starting square	
+				case 's':
 					board[i][j] = new StarterSquare(i, j,
 							Suspect.values()[character++]);
 					if (DEBUG) {
@@ -122,9 +129,13 @@ public class Board {
 						System.out.println("Coordinates are " + i + " " + j);
 					}
 					break;
+					
+				// Generates a new corridor square	
 				case 'c':
 					board[i][j] = new CorridorSquare(i, j);
 					break;
+				
+				// Generates new secret passageway	
 				case 'p':
 					Room r = findRoom(i, j, s);
 					PassageWaySquare pws = new PassageWaySquare(i, j, r,
@@ -134,13 +145,16 @@ public class Board {
 						System.out.println("R is " + r);// +
 					board[i][j] = pws;
 					break;
+					
+				// Generates new door	
 				case 'd':
 					Room dr = findRoom(i, j, s);
 					DoorSquare d = new DoorSquare(i, j, dr);
 					dr.addDoor(d);
 					board[i][j] = d;
 					break;
-
+					
+				// Generates new room square	
 				default:
 					if (DEBUG) {
 						System.out.println("Making room square " + key);
@@ -177,6 +191,16 @@ public class Board {
 			}
 		}
 	}
+	
+	/**
+	 * findRoom is used as a helper method to associate
+	 * doors and passageways with the rooms they are attached to 
+	 * 
+	 * @param i is the x coordinate
+	 * @param j is the y coordinate
+	 * @param s is the scanner
+	 * @return Room
+	 */
 
 	private Room findRoom(int i, int j, Scanner s) {
 		if (DEBUG)
@@ -231,53 +255,7 @@ public class Board {
 			return Room.SWIMMING_POOL;
 		}
 		throw new RuntimeException("Not a valid room");
-	}
-
-	/**
-	 * Brute force method to find which rooms a player can move to according to
-	 * the roll they made.
-	 **/
-	public final List<DoorSquare> roomsInReach(Player player, int roll) {
-
-		List<DoorSquare> rooms = new ArrayList<DoorSquare>();
-
-		// Calculate search limits
-		int a = player.getX() - roll;
-		int b = player.getY() - roll;
-
-		// If a is less than 0 set minX to zero etc. etc.
-		int minX = (a > 0) ? a : 0;
-		int minY = (b > 0) ? b : 0;
-
-		for (int i = minX; i < x_size; i++) {
-			for (int j = minY; j < y_size; j++) {
-
-				if (DEBUG)
-					System.out.println("RIR x: " + i + " y: " + j);
-
-				// If the player is in reach of a room add it to the room set
-				if ((Math.abs(player.getX() - i) + Math.abs(player.getY() - j)) <= roll) {
-					Square square = squareAt(i, j);
-					if (square instanceof DoorSquare) {
-						if (!(square instanceof PassageWaySquare)) {
-							DoorSquare door = (DoorSquare) square;
-							rooms.add(door);
-						}
-					}
-				}
-			}
-		}
-
-		// Tunnel or secret passageways to rooms
-		Square s = board[player.getX()][player.getY()];
-		if (s instanceof RoomSquare) {
-			if (((RoomSquare) s).getRoom().hasPassage()) {
-				rooms.add(passages.get(((RoomSquare) s).getRoom()).getPassage());
-			}
-		}
-
-		return rooms;
-	}
+	}	
 
 	/**
 	 * Better method for finding locations to jump to, uses a version of
@@ -297,6 +275,8 @@ public class Board {
 		// Get list of all possible locations
 		Set<Square> possible = new HashSet<Square>();
 
+		// If a player is in a room, they will need to find all the possible locations
+		// from each door that they can exit the room by
 		if(playerAt instanceof RoomSquare){	
 			Set<DoorSquare> doors = ((RoomSquare)playerAt).getRoom().getDoors();
 			for(DoorSquare door: doors){
@@ -305,7 +285,6 @@ public class Board {
 				possible.addAll(tilesFromDoor);
 			}
 		} else{
-
 			possible = djikstra(playerAt, roll);
 		}
 
@@ -316,33 +295,16 @@ public class Board {
 			if(sq instanceof DoorSquare || sq instanceof PassageWaySquare){
 				jumps.add((DoorSquare)sq);
 			}
-
-			//			// If the door is a passage way add it to the list iff the passage
-			//			// way is in the room the player is currently in
-			//			if (sq instanceof PassageWaySquare) {
-			//				if (playerAt instanceof RoomSquare) {
-			//					RoomSquare room = (RoomSquare) playerAt;
-			//					PassageWaySquare passage = (PassageWaySquare) sq;
-			//					if (room.getRoom().equals(passage.getRoom()))
-			//						jumps.add(passage);
-			//				}
-			//			}
-			//
-			//			// If the door is contained in a room that the player is currently
-			//			// in do not add it to the list
-			//			else if (sq instanceof DoorSquare
-			//					&& !(sq instanceof PassageWaySquare)) {
-			//				if (playerAt instanceof RoomSquare) {
-			//					RoomSquare room = (RoomSquare) playerAt;
-			//					DoorSquare door = (DoorSquare) sq;
-			//					if (!room.getRoom().equals(door.getRoom()))
-			//						jumps.add((DoorSquare) sq);
-			//				} else
-			//					jumps.add((DoorSquare) sq);
-			//			}
 		}
 		return jumps;
 	}
+	
+	/**
+	 * A small class for storing a square and how many moves
+	 * it took to arrive there for the Dijkstra's algorithm
+	 * @author Cameron Bryers, Hannah Craighead
+	 *
+	 */
 
 	private class dStore {
 		private int moves;
@@ -407,20 +369,10 @@ public class Board {
 				System.out.println("PassageWay found");
 			}
 
+			// Add square above to priority queue
 			if(door.getY() != 0){
-				Square below = squareAt(door.getX(),
-						door.getY() - 1);
-				if (below instanceof InhabitableSquare) {
-					InhabitableSquare b = (InhabitableSquare) below;
-					if(!b.isOccupied()){
-						fringe.offer(new dStore(1,below));
-					}
-				}
-
-			}
-			if(door.getY() < board.length -1){
 				Square above = squareAt(door.getX(),
-						door.getY() + 1);
+						door.getY() - 1);
 				if (above instanceof InhabitableSquare) {
 					InhabitableSquare a = (InhabitableSquare) above;
 					if(!a.isOccupied()){
@@ -429,6 +381,21 @@ public class Board {
 				}
 
 			}
+			
+			// Add square below to priority queue
+			if(door.getY() < board.length -1){
+				Square below = squareAt(door.getX(),
+						door.getY() + 1);
+				if (below instanceof InhabitableSquare) {
+					InhabitableSquare b = (InhabitableSquare) below;
+					if(!b.isOccupied()){
+						fringe.offer(new dStore(1,below));
+					}
+				}
+
+			}
+			
+			// Add square to right to priority queue
 			if(door.getX() < board[0].length -1){
 				Square right = squareAt(door.getX()+1,
 						door.getY());
@@ -439,6 +406,8 @@ public class Board {
 					}
 				}
 			}
+			
+			//Add square to left to priority queu
 			if(door.getX() != 0){
 				Square left = squareAt(door.getX()-1,
 						door.getY());
@@ -449,13 +418,6 @@ public class Board {
 					}
 				}
 			}
-
-
-
-
-
-
-
 		}
 
 		// continue until all possible landing squares found
@@ -597,50 +559,6 @@ public class Board {
 
 		Square dest = squareAt(newX, newY);
 		return tiles.contains(dest);
-
-		/*
-		 * // If the move is not on the board if (newX < 0 || newX > 24 || newY
-		 * < 0 || newY > 24) { return false; }
-		 *
-		 * Square current = squareAt(player.getX(),player.getY()); Square future
-		 * = squareAt(newX, newY); // if the player is in a room
-		 *
-		 * if(current instanceof RoomSquare){ Room currentRoom =
-		 * ((RoomSquare)current).getRoom(); PassageWaySquare p =
-		 * (currentRoom.getPassage()); if(p != null && future instanceof
-		 * PassageWaySquare){ // if the current room has a tunnel and the future
-		 * square is a tunnel
-		 * if(passages.get(currentRoom).equals(((PassageWaySquare
-		 * )future).getRoom())){ return true; } else{ return false; } } else{ //
-		 * Room does not contain a secret tunnel for(DoorSquare d:
-		 * currentRoom.getDoors()){ if (Math.abs((newX - d.getX()) + (newY -
-		 * d.getY())) <= roll) { return true; } }
-		 * System.out.println("*** ROLL TUMEKE ***"); return false; //
-		 * destination could not be reached by leaving any door
-		 *
-		 * }
-		 *
-		 * }
-		 *
-		 *
-		 *
-		 * // If the move is too far if (Math.abs((newX - player.getX()) + (newY
-		 * - player.getY())) > roll) { if (DEBUG)
-		 * System.out.println("*** ROLL TUMEKE ***"); return false; }
-		 *
-		 *
-		 *
-		 * // TODO fix this if (future instanceof RoomSquare) { return false; }
-		 *
-		 * // If the square is occupi/am/phoenix/home1/craighhann/workspaceed if (future instanceof InhabitableSquare)
-		 * { if (((InhabitableSquare) future).isOccupied()) { if (DEBUG)
-		 * System.out.println("*** SQUARE IS OCCUPIED ***"); return false; } }
-		 *
-		 * if (future instanceof DoorSquare) { ((DoorSquare)
-		 * future).getRoom().addPlayer(player); return true; }
-		 *
-		 * return true;
-		 */
 	}
 
 	public final Square squareAt(int x, int y) {

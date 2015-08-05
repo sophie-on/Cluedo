@@ -604,11 +604,7 @@ public class Game {
 	 */
 	public final Player getCurrent() {
 		return current;
-	}
-
-	public final List<DoorSquare> getRoomsInReach() {
-		return m_board.roomsInReach(current, roll);
-	}
+	}	
 
 	public final List<DoorSquare> getJumpLocations() {
 		return m_board.getJumpLocations(current, getRoll());
