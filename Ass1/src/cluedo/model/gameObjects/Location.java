@@ -17,7 +17,7 @@ import cluedo.model.board.RoomSquare;
  * @author Cameron Bryers, Hannah Craighead.
  *
  */
-public class Location extends GameObject {
+public class Location implements GameObject {
 
 	/**
 	 * List of possible crime scenes.
@@ -108,38 +108,8 @@ public class Location extends GameObject {
 
 	private Room m_room;
 
-	// Weapons that are in this room.
-	private Set<Weapon> weapons;
-
-
-
-
-
-	public Location(boolean isCrimeScene, Room room) {
-		super(isCrimeScene);
+	public Location(Room room) {
 		this.m_room = room;
-
-		weapons = new HashSet<Weapon>();
-	}
-
-	/**
-	 * Add a weapon to the room.
-	 *
-	 * @param weapon
-	 * @return
-	 */
-	public boolean addWeapon(Weapon weapon) {
-		return weapons.add(weapon);
-	}
-
-	/**
-	 * Remove a weapon from the room.
-	 *
-	 * @param weapon
-	 * @return
-	 */
-	public boolean removeWeapon(Weapon weapon) {
-		return weapons.remove(weapon);
 	}
 
 	@Override

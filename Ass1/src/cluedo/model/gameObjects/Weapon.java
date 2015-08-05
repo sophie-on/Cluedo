@@ -6,7 +6,7 @@ package cluedo.model.gameObjects;
  * @author Cameron Bryers, Hannah Craighead.
  *
  */
-public class Weapon extends GameObject {
+public class Weapon implements GameObject {
 
 	/**
 	 * List of possible murder weapons.
@@ -50,8 +50,7 @@ public class Weapon extends GameObject {
 
 	private WeaponType m_weapon;
 
-	public Weapon(boolean isMurderWeapon, WeaponType weapon) {
-		super(isMurderWeapon);
+	public Weapon(WeaponType weapon) {
 		this.m_weapon = weapon;
 	}
 

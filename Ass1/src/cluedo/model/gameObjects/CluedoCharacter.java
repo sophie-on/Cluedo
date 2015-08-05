@@ -6,7 +6,7 @@ package cluedo.model.gameObjects;
  * @author Cameron Bryers, Hannah Craighead.
  *
  */
-public class CluedoCharacter extends GameObject {
+public class CluedoCharacter implements GameObject {
 
 	/**
 	 * List of possible suspects.
@@ -72,8 +72,7 @@ public class CluedoCharacter extends GameObject {
 
 	private Suspect m_suspect;
 
-	public CluedoCharacter(boolean isMurderer, Suspect suspect) {
-		super(isMurderer);
+	public CluedoCharacter(Suspect suspect) {
 		this.m_suspect = suspect;
 	}
 
