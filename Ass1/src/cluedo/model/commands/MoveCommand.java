@@ -39,6 +39,10 @@ public class MoveCommand implements Command {
 
 	public MoveCommand(Scanner scan, Game game) {
 
+		if(game.getBoard().djikstra(game.getBoard().squareAt(game.getCurrent().getX(), game.getCurrent().getY()), game.getRoll()).isEmpty()){
+			System.out.println("*** You are blocked, you must forfeit your turn ***");
+			return;
+		}
 		// Scanner reader = new Scanner(System.in);
 
 		// Ask for which option they want to take
