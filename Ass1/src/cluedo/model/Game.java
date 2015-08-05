@@ -761,6 +761,14 @@ public class Game {
 			System.out.println();
 	}
 
+	/**
+	 * Ends game
+	 */
+	public void endGame() {
+		System.out.println("*** Game Over ***");
+		System.exit(0);
+	}
+	
 	public static void main(String args[]) {
 
 		Game cluedo = new Game();

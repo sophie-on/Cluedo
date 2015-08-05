@@ -45,5 +45,4 @@ public class AccuseCommand extends SuggestCommand {
 
 		this.setRoom(Room.values()[command]);
 	}
-
 }
