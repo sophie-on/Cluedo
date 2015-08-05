@@ -11,6 +11,7 @@ import org.junit.Test;
 import cluedo.model.Game;
 import cluedo.model.Player;
 import cluedo.model.board.Board;
+import cluedo.model.board.DoorSquare;
 import cluedo.model.board.InhabitableSquare;
 import cluedo.model.board.Square;
 import cluedo.model.gameObjects.CluedoCharacter.Suspect;
@@ -79,6 +80,14 @@ public class BoardTests {
 		}
 	}
 
+	@Test
+	public void testDoorsAndRoom() {
+		Board board = new Board("cluedo.txt");
+		Square sq = board.squareAt(19, 6);
+		DoorSquare door = (DoorSquare) sq;
+		assertTrue(door.getRoom().equals(Room.LOUNGE));
+	}
+	
 	@Test
 	public void testJumpLocations_1() {
 		Board board = new Board("cluedo.txt");

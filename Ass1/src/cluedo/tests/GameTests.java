@@ -2,17 +2,24 @@ package cluedo.tests;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.Test;
 
 import cluedo.model.Game;
+import cluedo.model.cards.Card;
 
 public class GameTests {
 
 	@Test
 	public void testDeck() {
-		Game game1 = new Game();
-		Game game2 = new Game();
-		
-		assertFalse(game1.getDeck().equals(game2.getDeck()));
+		List<Card> deck = Game.createTestDeck().get(0);
+		List<Card> envelope = Game.createTestDeck().get(1);
+		assertFalse(deck.containsAll(envelope));
+	}
+	
+	@Test
+	public void testDeck_2() {
+		assertNotEquals(Game.createTestDeck().get(0), Game.createTestDeck().get(0));
 	}
 }

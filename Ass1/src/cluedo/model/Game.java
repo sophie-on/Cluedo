@@ -388,6 +388,44 @@ public class Game {
 		Collections.shuffle(deck);
 	}
 
+	public static List<List<Card>> createTestDeck() {
+		
+		List<Card> suspects = new ArrayList<Card>();
+		List<Card> rooms = new ArrayList<Card>();
+		List<Card> weapons = new ArrayList<Card>();
+		
+		// Add suspects, rooms and weapons.
+		for (Suspect s : Suspect.values()) 
+			suspects.add(new CharacterCard(new CluedoCharacter(false, s)));
+		
+		for (Room r : Room.values())
+			rooms.add(new RoomCard(new Location(false, r)));
+		
+		for (WeaponType w : WeaponType.values())
+			weapons.add(new WeaponCard(new Weapon(false, w)));
+		
+		List<Card> envelope = new ArrayList<Card>();
+		
+		// Generate random criminals
+		envelope.add(suspects.remove(randomNumber(0, 5)));
+		envelope.add(rooms.remove(randomNumber(0, 8)));
+		envelope.add(weapons.remove(randomNumber(0, 5)));
+		
+		// Add remaining cards to the deck
+		List<Card> deck = new ArrayList<Card>();
+		deck.addAll(suspects); 
+		deck.addAll(rooms);
+		deck.addAll(weapons);
+		
+		Collections.shuffle(deck);
+		
+		List<List<Card>> cards = new ArrayList<List<Card>>();
+		cards.add(deck);
+		cards.add(envelope);
+		
+		return cards;
+	}
+	
 	/**
 	 * Initialize the game, players etc.
 	 */
