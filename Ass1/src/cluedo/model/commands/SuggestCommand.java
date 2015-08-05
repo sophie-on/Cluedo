@@ -97,9 +97,7 @@ public class SuggestCommand implements Command {
 
 	@Override
 	public void execute(Game game) {
-		// Does nothing
-		System.out
-				.println("*** Execute method in suggest/ accuse not used ***");
+		// Does nothing		
 	}
 
 	public final Suspect getSuspect() {

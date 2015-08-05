@@ -42,7 +42,8 @@ public class AccuseCommand extends SuggestCommand {
 			else
 				System.out.println("*** That is not a valid room ***");
 		}
-
+		
+		//Sets given room for accuseCommand
 		this.setRoom(Room.values()[command]);
 	}
 }

@@ -71,6 +71,7 @@ public class Game {
 	// Current roll
 	private int roll;
 
+	// Scanner for taking player input/ instructions
 	private final Scanner READER;
 
 	public Game() {
@@ -100,17 +101,18 @@ public class Game {
 		// Set up dice
 		setupDice();
 
-		// NUM_OF_DICE = 1;
-
-		// TODO start the game
+		// start the game
 		startGame();
 
 		READER.close();
 	}
 
-	private void setupDice() {
+	/**
+	 * setupDice is responsible for taking user input to determine how
+	 * many dice (1 or 2) the game will be played with
+	 */
 
-		// Scanner reader = new Scanner(System.in);
+	private void setupDice() {		
 
 		// Create dice
 		System.out.println("*** How many dice are you playing with? (min = 1, max = 2) ***");
@@ -121,9 +123,7 @@ public class Game {
 			READER.nextLine();
 		}
 
-		NUM_OF_DICE = READER.nextInt();
-
-		// READER.close();
+		NUM_OF_DICE = READER.nextInt();		
 	}
 
 	/**
@@ -131,18 +131,17 @@ public class Game {
 	 */
 	private void startGame() {
 
-		/**
+		/*
 		 * loop until game is over: for each player: ask for a command validate
 		 * command check if player has lost update board
 		 *
 		 */
 
-		boolean gameOver = false;
-		// Scanner reader = new Scanner(System.in);
+		boolean gameOver = false;		
 
 		while (!gameOver) {
 
-			// Wipe the console
+			// Wipe the console between each round
 			clearConsole();
 
 			// Draw the board
@@ -159,8 +158,6 @@ public class Game {
 
 				// Wait for player to be ready
 				while (true) {
-
-					// System.out.
 					System.out.println("\n*** " + p.getName()
 							+ " are you ready? (Press any key (character or int) then ENTER) ***");
 
@@ -190,26 +187,26 @@ public class Game {
 				current = p;
 				next = getNextPlayer();
 
-				/**
+				/*
 				 * Move if (inRoom) Suggestion else if (inSwimmingPool)
 				 * Accusation
-				 */
-
-				// Move Command
+				 */				
 
 				// Wait for a valid response
 				while (true) {
 
-					if (DEBUG)
+					if (DEBUG){
 						System.out.println("curX: " + p.getX() + " curY: " + p.getY());
+					}
 
 					MoveCommand move = new MoveCommand(READER, this);
 
 					if (getBoard().isValid(current, move.getX(), move.getY(), roll)) {
 
 						move.execute(this);
-						if (DEBUG)
+						if (DEBUG){
 							System.out.println("newX: " + p.getX() + "newY: " + p.getY());
+						}
 						break;
 					} else
 						System.out.println("*** Sorry that is not a valid move, try again ***");
@@ -256,9 +253,12 @@ public class Game {
 
 						SuggestCommand suggest = new SuggestCommand(this, READER);
 
-						// Go through the other players, if a player has at
-						// least one of the cards the suggestion can not be
-						// refuted. Otherwise refute it
+						/* 
+						 * Go through the other players, if a player has at
+						   least one of the cards the suggestion can not be
+						   refuted. Otherwise refute it
+						 */
+
 						int refutes = 0;
 						for (Player c : players) {
 							if (!c.equals(current)) {
@@ -330,10 +330,7 @@ public class Game {
 
 		players = new HashSet<Player>();
 		playersList = new ArrayList<Player>();
-		usedSuspects = new HashSet<Suspect>();
-
-		// Create a scanner
-		// Scanner READER = new Scanner(System.in);
+		usedSuspects = new HashSet<Suspect>();		
 
 		// Number of players (min = 3, max = 6)
 		int numOfPlayers = 0;
@@ -474,14 +471,11 @@ public class Game {
 				p = null;
 				break;
 			}
-			Player player = new Player(name, suspect, p);
-			// players.add(player);
-			// playersList.add(player);
+			Player player = new Player(name, suspect, p);			
 
 			if (players.add(player))
 				playersList.add(player);
-		}
-		// READER.close();
+		}		
 	}
 
 	/**
@@ -534,9 +528,6 @@ public class Game {
 	 */
 	public void move(int newX, int newY) {
 
-		// if (!m_board.isValid(current, dx, dy, roll))
-		// return false;
-
 		// Find the original square the player was at
 		Square s = m_board.squareAt(current.getX(), current.getY());
 
@@ -573,10 +564,19 @@ public class Game {
 		return new Random().nextInt((max - min) + 1) + min;
 	}
 
+	/**
+	 * Returns full deck of cards
+	 * @return deck of cards
+	 */
 	public final List<Card> getDeck() {
 		return deck;
 	}
 
+	/**
+	 * Returns the "murder scenario"
+	 * i.e. the cards inside the envelope
+	 * @return
+	 */
 	public final List<Card> getEnvelope() {
 		return envelope;
 	}
@@ -590,7 +590,7 @@ public class Game {
 	}
 
 	/**
-	 *
+	 * Gets the next player to have a turn
 	 * @return the next player to play
 	 */
 	public final Player getNextPlayer() {
@@ -598,6 +598,10 @@ public class Game {
 		return playersList.get((curIndex + 1) % playersList.size());
 	}
 
+	/**
+	 * Gets current player
+	 * @return current player
+	 */
 	public final Player getCurrent() {
 		return current;
 	}
@@ -663,22 +667,7 @@ public class Game {
 	/**
 	 * Clears the console, used to prevent players from cheating
 	 */
-	public final static void clearConsole() {
-
-		// If you're running the game on the system console use this code
-		// try {
-		// final String os = System.getProperty("os.name");
-		//
-		// if (os.contains("Windows")) {
-		// Runtime.getRuntime().exec("cls");
-		// } else {
-		// Runtime.getRuntime().exec("clear");
-		// }
-		// } catch (final Exception e) {
-		// // Handle any exceptions.
-		// }
-
-		// If your running it in eclipse use this
+	public final static void clearConsole() {		
 		for (int i = 0; i < 100; i++)
 			System.out.println();
 	}

@@ -47,10 +47,20 @@ public class Player {
 		this.m_y = start.y;
 	}
 
+	/**
+	 * Moves a player's coordinates to the x and y coordinates given
+	 * @param x is the x coordinate
+	 * @param y is the y coordinate
+	 */
 	public void move(int x, int y) {
 		m_x = x;
 		m_y = y;
 	}
+	
+	/**
+	 * setHand givens a collection of cards that belong to the player
+	 * @param hand is a set of the player's cards
+	 */
 
 	public void setHand(Set<Card> hand) {
 		this.hand = hand;
@@ -71,6 +81,11 @@ public class Player {
 	public final Suspect getCharacter() {
 		return m_character;
 	}
+	
+	/**
+	 * Gets the players hand of cards
+	 * @return the player's hand
+	 */
 
 	public final Set<Card> getHand() {
 		return hand;

@@ -49,4 +49,12 @@ public class PlayerTests {
 		Room.LOUNGE.addPlayer(player);
 		assertTrue(board.isValid(player, 5, 23, 1));
 	}
+	
+	@Test
+	public void testPassageWayInvalid(){
+		Board board = new Board("cluedo.txt");
+		Player player = new Player("Jim", Suspect.COLONEL_MUSTARD, Game.COLONEL_MUSTARD_START);
+		Room.LOUNGE.addPlayer(player);
+		assertFalse(board.isValid(player, 4, 1, 1));
+	}
 }

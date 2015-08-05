@@ -1,8 +1,13 @@
 package cluedo.model.commands;
-
-import java.util.Scanner;
-
 import cluedo.model.Game;
+
+/**
+ * A class to represent the different types of commands a player can make
+ * on their turn
+ * 
+ * @author Cameron Bryers, Hannah Craighead
+ *
+ */
 
 public interface Command {
 
