@@ -291,11 +291,12 @@ public class Board {
 
 		List<DoorSquare> jumps = new ArrayList<DoorSquare>();
 
-		// Get list of all possible locations
-		Set<Square> possible = djikstra(player, roll);
-
 		// Get player's current location
 		Square playerAt = squareAt(player.getX(), player.getY());
+
+		// Get list of all possible locations
+		Set<Square> possible = djikstra(playerAt, roll);
+
 
 		// Go through each square, if it is a door square add it to the list
 		for (Square sq : possible) {
@@ -349,7 +350,7 @@ public class Board {
 	 * Djikstra's algorithm for path finding
 	 */
 
-	public Set<Square> djikstra(Player p, int roll) {
+	public Set<Square> djikstra(Square start, int roll) {
 		Set<Square> squares = new HashSet<Square>();
 		// Sets all squares to unvisited
 		for (int i = 0; i < board.length; i++) {
@@ -372,7 +373,6 @@ public class Board {
 		// set up fringe
 
 		Queue<dStore> fringe = new PriorityQueue<dStore>(comparator);
-		Square start = squareAt(p.getX(), p.getY());
 		dStore first = new dStore(0, start);
 		fringe.offer(first);
 
@@ -387,12 +387,12 @@ public class Board {
 				currentSquare.setVisited(true);
 
 				if (current.getMoves() == roll) { // add as final destination
-													// square
+					// square
 					squares.add((Square) currentSquare);
 				}
 
 				else { // add all neighbours onto the fringe, if they are a door
-						// square add to squares (ends turn early)
+					// square add to squares (ends turn early)
 
 					// add square above
 					if (currentSquare.getY() != 0) {
@@ -486,7 +486,19 @@ public class Board {
 	 */
 	public boolean isValid(Player player, int newX, int newY, int roll) {
 
-		Set<Square> tiles = djikstra(player, roll);
+		Set<Square> tiles = new HashSet<Square>();
+		Square current = squareAt(player.getX(), player.getY());
+		if(! (current instanceof RoomSquare)){
+			tiles = djikstra(current, roll);
+		}
+		else{ // include possible destination tiles from all doors
+			Set<DoorSquare> doors = ((RoomSquare)current).getRoom().getDoors();
+			for(DoorSquare door: doors){
+				Set<Square> tilesFromDoor = new HashSet<Square>();
+				tilesFromDoor = djikstra(door,roll);
+				tiles.addAll(tilesFromDoor);
+			}
+		}
 
 		Square dest = squareAt(newX, newY);
 		return tiles.contains(dest);
