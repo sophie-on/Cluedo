@@ -87,6 +87,9 @@ public class RoomSquare implements Square, InhabitableSquare{
 
 	@Override
 	public void addPlayer(Player p) {
+		if (this.p != null){
+			throw new RuntimeException("Cannot add two players to the same square");
+		}
 		this.p = p;
 	}
 

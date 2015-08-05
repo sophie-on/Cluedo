@@ -412,7 +412,9 @@ public class Board {
 						door.getY() - 1);
 				if (below instanceof InhabitableSquare) {
 					InhabitableSquare b = (InhabitableSquare) below;
-					fringe.offer(new dStore(1,below));
+					if(!b.isOccupied()){
+						fringe.offer(new dStore(1,below));
+					}
 				}
 
 			}
@@ -421,7 +423,9 @@ public class Board {
 						door.getY() + 1);
 				if (above instanceof InhabitableSquare) {
 					InhabitableSquare a = (InhabitableSquare) above;
-					fringe.offer(new dStore(1,above));
+					if(!a.isOccupied()){
+						fringe.offer(new dStore(1,above));
+					}
 				}
 
 			}
@@ -430,15 +434,19 @@ public class Board {
 						door.getY());
 				if (right instanceof InhabitableSquare) {
 					InhabitableSquare r = (InhabitableSquare) right;
-					fringe.offer(new dStore(1,right));
+					if(!r.isOccupied()){
+						fringe.offer(new dStore(1,right));
+					}
 				}
 			}
 			if(door.getX() != 0){
-				Square right = squareAt(door.getX()-1,
+				Square left = squareAt(door.getX()-1,
 						door.getY());
-				if (right instanceof InhabitableSquare) {
-					InhabitableSquare r = (InhabitableSquare) right;
-					fringe.offer(new dStore(1,right));
+				if (left instanceof InhabitableSquare) {
+					InhabitableSquare l = (InhabitableSquare) left;
+					if(!l.isOccupied()){
+						fringe.offer(new dStore(1,left));
+					}
 				}
 			}
 
