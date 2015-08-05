@@ -13,6 +13,8 @@ import cluedo.model.Player;
 import cluedo.model.board.Board;
 import cluedo.model.board.DoorSquare;
 import cluedo.model.board.InhabitableSquare;
+import cluedo.model.board.PassageWaySquare;
+import cluedo.model.board.RoomSquare;
 import cluedo.model.board.Square;
 import cluedo.model.gameObjects.CluedoCharacter.Suspect;
 import cluedo.model.gameObjects.Location.Room;
@@ -33,7 +35,19 @@ public class BoardTests {
 			fail("Should be able to do this");
 		}
 	}
-
+    
+	@Test
+	public void testValidAddPlayer_2() {
+		Board board = new Board("cluedo.txt");
+		Player player = new Player("Jim", Suspect.COLONEL_MUSTARD, Game.COLONEL_MUSTARD_START);
+		
+		Square sq = board.squareAt(1, 1);
+		RoomSquare room = (RoomSquare) sq;
+		
+		room.addPlayer(player);
+		assertEquals(room.getPlayer(), player);
+	}
+	
 	@Test
 	public void testInvalidAddPlayer() {
 		Board board = new Board("cluedo.txt");
@@ -81,7 +95,44 @@ public class BoardTests {
 	}
 
 	@Test
-	public void testDoorsAndRoom() {
+	public void testRoomSquare() {
+		Board board = new Board("cluedo.txt");
+		Square sq = board.squareAt(1, 1);
+		assertTrue(sq instanceof RoomSquare);
+	}
+	
+	@Test
+	public void testRoomSquare_2() {
+		Board board = new Board("cluedo.txt");
+		Square sq = board.squareAt(1, 1);
+		RoomSquare room = (RoomSquare) sq;
+		assertTrue(room.getRoom().equals(Room.KITCHEN));
+	}
+	
+	@Test
+	public void testRoomSquare_3() {
+		Board board = new Board("cluedo.txt");
+		Square sq = board.squareAt(1, 1);
+		RoomSquare room = (RoomSquare) sq;
+		room.getRoom().getDoors().contains(board.squareAt(6, 4));
+	}
+	
+	@Test
+	public void testPassageWaySquare() {
+		Board board = new Board("cluedo.txt");
+		Square sq = board.squareAt(19, 0);
+		assertTrue (sq instanceof PassageWaySquare);
+	}
+	
+	@Test
+	public void testUnInhabitableSquare() {
+		Board board = new Board("cluedo.txt");
+		Square sq = board.squareAt(0, 0);
+		assertFalse(sq instanceof InhabitableSquare);
+	}
+	
+	@Test
+	public void testDoorSquare() {
 		Board board = new Board("cluedo.txt");
 		Square sq = board.squareAt(19, 6);
 		DoorSquare door = (DoorSquare) sq;
