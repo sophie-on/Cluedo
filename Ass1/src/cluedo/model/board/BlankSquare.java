@@ -27,7 +27,7 @@ public class BlankSquare implements Square{
 	}
 
 	public String toString(){
-		return "_";
+		return "#";
 	}
 
 }
