@@ -390,12 +390,13 @@ public class Board {
 		// set up fringe
 
 		Queue<dStore> fringe = new PriorityQueue<dStore>(comparator);
+		DoorSquare door = null;
 		if(start instanceof InhabitableSquare){
 			dStore first = new dStore(0, start);
 			fringe.offer(first);
 		}
 		else{ // starts from a door square
-			DoorSquare door = ((DoorSquare)start);
+			door = ((DoorSquare)start);
 			System.out.println("In a room");
 
 			// Gets passageway square if a secret tunnel exists
@@ -541,6 +542,9 @@ public class Board {
 				}
 
 			}
+		}
+		if(door != null){
+			squares.remove(door);
 		}
 		return squares;
 	}
