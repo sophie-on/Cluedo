@@ -295,35 +295,51 @@ public class Board {
 		Square playerAt = squareAt(player.getX(), player.getY());
 
 		// Get list of all possible locations
-		Set<Square> possible = djikstra(playerAt, roll);
+		Set<Square> possible = new HashSet<Square>();
+
+		if(playerAt instanceof RoomSquare){	
+			Set<DoorSquare> doors = ((RoomSquare)playerAt).getRoom().getDoors();
+			for(DoorSquare door: doors){
+				Set<Square> tilesFromDoor = new HashSet<Square>();
+				tilesFromDoor = djikstra(door,roll);
+				possible.addAll(tilesFromDoor);
+			}
+		} else{
+
+			possible = djikstra(playerAt, roll);
+		}
 
 
 		// Go through each square, if it is a door square add it to the list
 		for (Square sq : possible) {
 
-			// If the door is a passage way add it to the list iff the passage
-			// way is in the room the player is currently in
-			if (sq instanceof PassageWaySquare) {
-				if (playerAt instanceof RoomSquare) {
-					RoomSquare room = (RoomSquare) playerAt;
-					PassageWaySquare passage = (PassageWaySquare) sq;
-					if (room.getRoom().equals(passage.getRoom()))
-						jumps.add(passage);
-				}
+			if(sq instanceof DoorSquare || sq instanceof PassageWaySquare){
+				jumps.add((DoorSquare)sq);
 			}
 
-			// If the door is contained in a room that the player is currently
-			// in do not add it to the list
-			else if (sq instanceof DoorSquare
-					&& !(sq instanceof PassageWaySquare)) {
-				if (playerAt instanceof RoomSquare) {
-					RoomSquare room = (RoomSquare) playerAt;
-					DoorSquare door = (DoorSquare) sq;
-					if (!room.getRoom().equals(door.getRoom()))
-						jumps.add((DoorSquare) sq);
-				} else
-					jumps.add((DoorSquare) sq);
-			}
+			//			// If the door is a passage way add it to the list iff the passage
+			//			// way is in the room the player is currently in
+			//			if (sq instanceof PassageWaySquare) {
+			//				if (playerAt instanceof RoomSquare) {
+			//					RoomSquare room = (RoomSquare) playerAt;
+			//					PassageWaySquare passage = (PassageWaySquare) sq;
+			//					if (room.getRoom().equals(passage.getRoom()))
+			//						jumps.add(passage);
+			//				}
+			//			}
+			//
+			//			// If the door is contained in a room that the player is currently
+			//			// in do not add it to the list
+			//			else if (sq instanceof DoorSquare
+			//					&& !(sq instanceof PassageWaySquare)) {
+			//				if (playerAt instanceof RoomSquare) {
+			//					RoomSquare room = (RoomSquare) playerAt;
+			//					DoorSquare door = (DoorSquare) sq;
+			//					if (!room.getRoom().equals(door.getRoom()))
+			//						jumps.add((DoorSquare) sq);
+			//				} else
+			//					jumps.add((DoorSquare) sq);
+			//			}
 		}
 		return jumps;
 	}
@@ -351,6 +367,7 @@ public class Board {
 	 */
 
 	public Set<Square> djikstra(Square start, int roll) {
+		System.out.println("Djikstra");
 		Set<Square> squares = new HashSet<Square>();
 		// Sets all squares to unvisited
 		for (int i = 0; i < board.length; i++) {
@@ -379,6 +396,15 @@ public class Board {
 		}
 		else{ // starts from a door square
 			DoorSquare door = ((DoorSquare)start);
+			System.out.println("In a room");
+
+			// Gets passageway square if a secret tunnel exists
+			Room room = door.getRoom();
+			if(passages.containsKey(room)){
+				PassageWaySquare tunnel = passages.get(room).getPassage();
+				squares.add(tunnel);
+				System.out.println("PassageWay found");
+			}
 
 			if(door.getY() != 0){
 				Square below = squareAt(door.getX(),
@@ -454,7 +480,7 @@ public class Board {
 								fringe.offer(new dStore(current.getMoves() + 1,
 										above));
 							}
-						} else if (above instanceof DoorSquare) {
+						} else if (above instanceof DoorSquare && !(above instanceof PassageWaySquare) ){
 							squares.add(above);
 						}
 					}
@@ -472,7 +498,7 @@ public class Board {
 								fringe.offer(new dStore(current.getMoves() + 1,
 										below));
 							}
-						} else if (below instanceof DoorSquare) {
+						} else if (below instanceof DoorSquare && !(below instanceof PassageWaySquare)) {
 							squares.add(below);
 						}
 					}
@@ -490,7 +516,7 @@ public class Board {
 								fringe.offer(new dStore(current.getMoves() + 1,
 										left));
 							}
-						} else if (left instanceof DoorSquare) {
+						} else if (left instanceof DoorSquare && !(left instanceof PassageWaySquare)) {
 							squares.add(left);
 						}
 					}
@@ -508,7 +534,7 @@ public class Board {
 								fringe.offer(new dStore(current.getMoves() + 1,
 										right));
 							}
-						} else if (right instanceof DoorSquare) {
+						} else if (right instanceof DoorSquare && !(right instanceof PassageWaySquare)) {
 							squares.add(right);
 						}
 					}
@@ -538,9 +564,11 @@ public class Board {
 		Set<Square> tiles = new HashSet<Square>();
 		Square current = squareAt(player.getX(), player.getY());
 		if(! (current instanceof RoomSquare)){
+			System.out.println("Not in a room square " + player.getX() + " " + player.getY());
 			tiles = djikstra(current, roll);
 		}
 		else{ // include possible destination tiles from all doors
+			System.out.println("In a room");
 			Set<DoorSquare> doors = ((RoomSquare)current).getRoom().getDoors();
 			for(DoorSquare door: doors){
 				Set<Square> tilesFromDoor = new HashSet<Square>();

@@ -83,7 +83,7 @@ public class MoveCommand implements Command {
 		switch (option) {
 		case JUMP:
 
-			if (game.getRoomsInReach().isEmpty()) {
+			if (game.getJumpLocations().isEmpty()) {
 				System.out
 						.println("*** Sorry you cannot jump to any rooms ***");
 				manualMove(scan, game);
