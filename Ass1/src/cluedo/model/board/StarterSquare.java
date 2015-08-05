@@ -3,8 +3,16 @@ package cluedo.model.board;
 import cluedo.model.Player;
 import cluedo.model.gameObjects.CluedoCharacter.Suspect;
 
-public class StarterSquare implements Square, InhabitableSquare{
+/**
+ * Represents a starting position for a player, these are predefined in
+ * Game.java
+ * 
+ * @author Cameron Bryers and Hannah Craighead.
+ *
+ */
+public class StarterSquare implements Square, InhabitableSquare {
 
+	// Suspect that starts at this square
 	private Suspect s;
 	private int m_x;
 	private int m_y;
@@ -32,8 +40,8 @@ public class StarterSquare implements Square, InhabitableSquare{
 		return p != null;
 	}
 
-	public String toString(){
-		if(p != null){
+	public String toString() {
+		if (p != null) {
 			return s.toMiniString();
 		}
 		return "?";
@@ -44,13 +52,13 @@ public class StarterSquare implements Square, InhabitableSquare{
 		return p;
 	}
 
-	public Suspect getSuspect(){
+	public Suspect getSuspect() {
 		return s;
 	}
 
 	@Override
 	public void addPlayer(Player p) {
-		if (this.p != null){
+		if (this.p != null) {
 			throw new RuntimeException("Cannot add two players to the same square");
 		}
 		this.p = p;
@@ -58,7 +66,7 @@ public class StarterSquare implements Square, InhabitableSquare{
 
 	@Override
 	public void setVisited(boolean v) {
-		visited = v;		
+		visited = v;
 	}
 
 	@Override

@@ -29,6 +29,7 @@ public interface InhabitableSquare {
 
 	public void addPlayer(Player p);
 
+	// Used for the dijkstra's algorithm in the board class
 	public void setVisited(boolean v);
 
 	public boolean visited();

@@ -16,9 +16,10 @@ public class RoomSquare implements Square, InhabitableSquare{
 
 	private int m_x;
 	private int m_y;
+	
+	// Room the square is associated with
 	private Room r;
 	private Player p;
-	private boolean isOccupied;
 	private boolean visited;
 
 

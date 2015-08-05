@@ -14,6 +14,8 @@ public class PassageWaySquare extends DoorSquare{
 
 	private int m_x;
 	private int m_y;
+	
+	// Rooms at start and end of passage
 	private Room from;
 	private Room to;
 
