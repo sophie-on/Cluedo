@@ -8,6 +8,7 @@ import cluedo.model.Game;
 import cluedo.model.Player;
 import cluedo.model.board.Board;
 import cluedo.model.gameObjects.CluedoCharacter.Suspect;
+import cluedo.model.gameObjects.Location.Room;
 
 public class PlayerTests {
 
@@ -39,5 +40,13 @@ public class PlayerTests {
 		Board board = new Board("cluedo.txt");
 		Player player = new Player("Jim", Suspect.COLONEL_MUSTARD, Game.COLONEL_MUSTARD_START);
 		assertFalse(board.isValid(player, 17, 2, 1));
+	}
+	
+	@Test
+	public void testPassageWay(){
+		Board board = new Board("cluedo.txt");
+		Player player = new Player("Jim", Suspect.COLONEL_MUSTARD, Game.COLONEL_MUSTARD_START);
+		Room.LOUNGE.addPlayer(player);
+		assertTrue(board.isValid(player, 5, 23, 1));
 	}
 }
