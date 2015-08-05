@@ -586,7 +586,7 @@ public class Board {
 		 *
 		 * // TODO fix this if (future instanceof RoomSquare) { return false; }
 		 *
-		 * // If the square is occupied if (future instanceof InhabitableSquare)
+		 * // If the square is occupi/am/phoenix/home1/craighhann/workspaceed if (future instanceof InhabitableSquare)
 		 * { if (((InhabitableSquare) future).isOccupied()) { if (DEBUG)
 		 * System.out.println("*** SQUARE IS OCCUPIED ***"); return false; } }
 		 *
