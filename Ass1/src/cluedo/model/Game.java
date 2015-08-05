@@ -269,7 +269,7 @@ public class Game {
 						else {
 							System.out
 									.println("*** That accusation was correct! You won ***");
-							System.exit(0);
+							endGame();
 						}
 
 					}
