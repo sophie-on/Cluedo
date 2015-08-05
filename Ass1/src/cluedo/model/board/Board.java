@@ -569,11 +569,17 @@ public class Board {
 		}
 		else{ // include possible destination tiles from all doors
 			System.out.println("In a room");
-			Set<DoorSquare> doors = ((RoomSquare)current).getRoom().getDoors();
+			Room currentRoom = ((RoomSquare)current).getRoom();
+			Set<DoorSquare> doors = currentRoom.getDoors();
 			for(DoorSquare door: doors){
 				Set<Square> tilesFromDoor = new HashSet<Square>();
 				tilesFromDoor = djikstra(door,roll);
 				tiles.addAll(tilesFromDoor);
+			}
+			if(currentRoom.hasPassage()){				
+				PassageWaySquare pws = (passages.get(currentRoom).getPassage());
+				tiles.add(pws);
+				System.out.println("Added passage  " + pws.getX() + " " + pws.getY() + " " + pws.getRoom());
 			}
 		}
 

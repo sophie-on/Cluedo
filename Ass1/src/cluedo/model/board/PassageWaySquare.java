@@ -19,6 +19,8 @@ public class PassageWaySquare extends DoorSquare{
 
 	public PassageWaySquare(int x, int y, Room from, Room to){
 		super(x,y,from);
+		m_x = x;
+		m_y = y;
 		this.from = from;
 		this.to = to;
 	}
