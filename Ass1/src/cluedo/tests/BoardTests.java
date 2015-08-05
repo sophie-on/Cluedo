@@ -11,6 +11,8 @@ import org.junit.Test;
 import cluedo.model.Game;
 import cluedo.model.Player;
 import cluedo.model.board.Board;
+import cluedo.model.board.InhabitableSquare;
+import cluedo.model.board.Square;
 import cluedo.model.gameObjects.CluedoCharacter.Suspect;
 
 public class BoardTests {
@@ -88,5 +90,22 @@ public class BoardTests {
 		Board board = new Board("cluedo.txt");
 		Player player = new Player("Jim", Suspect.MISS_SCARLET, Game.MISS_SCARLET_START);
 		assertTrue(board.getJumpLocations(player, 6).size() == 1);
+	}
+	
+	@Test
+	public void testDoorBlocking(){
+		Board board = new Board("cluedo.txt");
+		Square start = board.squareAt(22, 14);
+		
+		Player playerBlocked = new Player("Jim", Suspect.MISS_SCARLET, new Point(14, 22));
+		Player playerBlocker1 = new Player("Bill", Suspect.COLONEL_MUSTARD,new Point(13,21));
+		Player playerBlocker2 = new Player("Alex", Suspect.PROFESSOR_PLUM,new Point(16,17));
+		
+		((InhabitableSquare)board.squareAt(14,22)).addPlayer(playerBlocked);
+		((InhabitableSquare)board.squareAt(13,21)).addPlayer(playerBlocker1);
+		((InhabitableSquare)board.squareAt(16,17)).addPlayer(playerBlocker2);
+		board.drawBoard();
+		
+		assertTrue(board.djikstra(start, 5).isEmpty());
 	}
 }
