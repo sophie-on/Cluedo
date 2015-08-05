@@ -373,8 +373,55 @@ public class Board {
 		// set up fringe
 
 		Queue<dStore> fringe = new PriorityQueue<dStore>(comparator);
-		dStore first = new dStore(0, start);
-		fringe.offer(first);
+		if(start instanceof InhabitableSquare){
+			dStore first = new dStore(0, start);
+			fringe.offer(first);
+		}
+		else{ // starts from a door square
+			DoorSquare door = ((DoorSquare)start);
+
+			if(door.getY() != 0){
+				Square below = squareAt(door.getX(),
+						door.getY() - 1);
+				if (below instanceof InhabitableSquare) {
+					InhabitableSquare b = (InhabitableSquare) below;
+					fringe.offer(new dStore(1,below));
+				}
+
+			}
+			if(door.getY() < board.length -1){
+				Square above = squareAt(door.getX(),
+						door.getY() + 1);
+				if (above instanceof InhabitableSquare) {
+					InhabitableSquare a = (InhabitableSquare) above;
+					fringe.offer(new dStore(1,above));
+				}
+
+			}
+			if(door.getX() < board[0].length -1){
+				Square right = squareAt(door.getX()+1,
+						door.getY());
+				if (right instanceof InhabitableSquare) {
+					InhabitableSquare r = (InhabitableSquare) right;
+					fringe.offer(new dStore(1,right));
+				}
+			}
+			if(door.getX() != 0){
+				Square right = squareAt(door.getX()-1,
+						door.getY());
+				if (right instanceof InhabitableSquare) {
+					InhabitableSquare r = (InhabitableSquare) right;
+					fringe.offer(new dStore(1,right));
+				}
+			}
+
+
+
+
+
+
+
+		}
 
 		// continue until all possible landing squares found
 
@@ -471,6 +518,8 @@ public class Board {
 		}
 		return squares;
 	}
+
+
 
 	/**
 	 * Check if the player's move is valid
