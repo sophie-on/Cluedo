@@ -29,6 +29,11 @@ import cluedo.model.gameObjects.CluedoCharacter.Suspect;
 
 public class Board {
 
+	/**
+	 * Used to print out grid coordinates.
+	 *
+	 * @author Cameron Bryers, Hannah Craighead.
+	 */
 	public enum Alphabet {
 		A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y;
 	}
@@ -274,6 +279,14 @@ public class Board {
 		return rooms;
 	}
 
+	/**
+	 * Better method for finding locations to jump to, uses a version of
+	 * djikstra's algorithm instead of a brute force algorithm.
+	 *
+	 * @param player
+	 * @param roll
+	 * @return List of doors that a player can jump to
+	 */
 	public final List<DoorSquare> getJumpLocations(Player player, int roll) {
 
 		List<DoorSquare> jumps = new ArrayList<DoorSquare>();
@@ -307,7 +320,8 @@ public class Board {
 					DoorSquare door = (DoorSquare) sq;
 					if (!room.getRoom().equals(door.getRoom()))
 						jumps.add((DoorSquare) sq);
-				}
+				} else
+					jumps.add((DoorSquare) sq);
 			}
 		}
 		return jumps;
@@ -386,13 +400,10 @@ public class Board {
 								currentSquare.getY() - 1);
 						if (above instanceof InhabitableSquare) {
 							InhabitableSquare a = (InhabitableSquare) above;
-							if (!a.visited() && !a.isOccupied()) { // only visit
-																	// square if
-																	// it hasn't
-																	// already
-																	// been or
-																	// is
-																	// unoccupied
+
+							// Only visit a square if it hasn't already has been
+							// visited occupied
+							if (!a.visited() && !a.isOccupied()) {
 								fringe.offer(new dStore(current.getMoves() + 1,
 										above));
 							}
@@ -407,13 +418,10 @@ public class Board {
 								currentSquare.getY() + 1);
 						if (below instanceof InhabitableSquare) {
 							InhabitableSquare b = (InhabitableSquare) below;
-							if (!b.visited() && !b.isOccupied()) { // only visit
-																	// square if
-																	// it hasn't
-																	// already
-																	// been or
-																	// is
-																	// unoccupied
+
+							// Only visit a square if it hasn't already has been
+							// visited occupied
+							if (!b.visited() && !b.isOccupied()) {
 								fringe.offer(new dStore(current.getMoves() + 1,
 										below));
 							}
@@ -428,13 +436,10 @@ public class Board {
 								currentSquare.getY());
 						if (left instanceof InhabitableSquare) {
 							InhabitableSquare l = (InhabitableSquare) left;
-							if (!l.visited() && !l.isOccupied()) { // only visit
-																	// square if
-																	// it hasn't
-																	// already
-																	// been or
-																	// is
-																	// unoccupied
+
+							// Only visit a square if it hasn't already has been
+							// visited occupied
+							if (!l.visited() && !l.isOccupied()) {
 								fringe.offer(new dStore(current.getMoves() + 1,
 										left));
 							}
@@ -449,13 +454,10 @@ public class Board {
 								currentSquare.getY());
 						if (right instanceof InhabitableSquare) {
 							InhabitableSquare r = (InhabitableSquare) right;
-							if (!r.visited() && !r.isOccupied()) { // only visit
-																	// square if
-																	// it hasn't
-																	// already
-																	// been or
-																	// is
-																	// unoccupied
+
+							// Only visit a square if it hasn't already has been
+							// visited occupied
+							if (!r.visited() && !r.isOccupied()) {
 								fringe.offer(new dStore(current.getMoves() + 1,
 										right));
 							}
@@ -489,72 +491,49 @@ public class Board {
 		Square dest = squareAt(newX, newY);
 		return tiles.contains(dest);
 
-		// // If the move is not on the board
-		// if (newX < 0 || newX > 24 || newY < 0 || newY > 24) {
-		// return false;
-		// }
-		//
-		// Square current = squareAt(player.getX(),player.getY());
-		// Square future = squareAt(newX, newY);
-		// // if the player is in a room
-		//
-		// if(current instanceof RoomSquare){
-		// Room currentRoom = ((RoomSquare)current).getRoom();
-		// PassageWaySquare p = (currentRoom.getPassage());
-		// if(p != null && future instanceof PassageWaySquare){ // if the
-		// current room has a tunnel and the future square is a tunnel
-		// if(passages.get(currentRoom).equals(((PassageWaySquare)future).getRoom())){
-		// return true;
-		// }
-		// else{
-		// return false;
-		// }
-		// }
-		// else{ // Room does not contain a secret tunnel
-		// for(DoorSquare d: currentRoom.getDoors()){
-		// if (Math.abs((newX - d.getX()) + (newY - d.getY())) <= roll) {
-		// return true;
-		// }
-		// }
-		// System.out.println("*** ROLL TUMEKE ***");
-		// return false; // destination could not be reached by leaving any door
-		//
-		// }
-		//
-		// }
-		//
-		//
-		//
-		// // If the move is too far
-		// if (Math.abs((newX - player.getX()) + (newY - player.getY())) > roll)
-		// {
-		// if (DEBUG)
-		// System.out.println("*** ROLL TUMEKE ***");
-		// return false;
-		// }
-		//
-		//
-		//
-		// // TODO fix this
-		// if (future instanceof RoomSquare) {
-		// return false;
-		// }
-		//
-		// // If the square is occupied
-		// if (future instanceof InhabitableSquare) {
-		// if (((InhabitableSquare) future).isOccupied()) {
-		// if (DEBUG)
-		// System.out.println("*** SQUARE IS OCCUPIED ***");
-		// return false;
-		// }
-		// }
-		//
-		// if (future instanceof DoorSquare) {
-		// ((DoorSquare) future).getRoom().addPlayer(player);
-		// return true;
-		// }
-		//
-		// return true;
+		/*
+		 * // If the move is not on the board if (newX < 0 || newX > 24 || newY
+		 * < 0 || newY > 24) { return false; }
+		 *
+		 * Square current = squareAt(player.getX(),player.getY()); Square future
+		 * = squareAt(newX, newY); // if the player is in a room
+		 *
+		 * if(current instanceof RoomSquare){ Room currentRoom =
+		 * ((RoomSquare)current).getRoom(); PassageWaySquare p =
+		 * (currentRoom.getPassage()); if(p != null && future instanceof
+		 * PassageWaySquare){ // if the current room has a tunnel and the future
+		 * square is a tunnel
+		 * if(passages.get(currentRoom).equals(((PassageWaySquare
+		 * )future).getRoom())){ return true; } else{ return false; } } else{ //
+		 * Room does not contain a secret tunnel for(DoorSquare d:
+		 * currentRoom.getDoors()){ if (Math.abs((newX - d.getX()) + (newY -
+		 * d.getY())) <= roll) { return true; } }
+		 * System.out.println("*** ROLL TUMEKE ***"); return false; //
+		 * destination could not be reached by leaving any door
+		 *
+		 * }
+		 *
+		 * }
+		 *
+		 *
+		 *
+		 * // If the move is too far if (Math.abs((newX - player.getX()) + (newY
+		 * - player.getY())) > roll) { if (DEBUG)
+		 * System.out.println("*** ROLL TUMEKE ***"); return false; }
+		 *
+		 *
+		 *
+		 * // TODO fix this if (future instanceof RoomSquare) { return false; }
+		 *
+		 * // If the square is occupied if (future instanceof InhabitableSquare)
+		 * { if (((InhabitableSquare) future).isOccupied()) { if (DEBUG)
+		 * System.out.println("*** SQUARE IS OCCUPIED ***"); return false; } }
+		 *
+		 * if (future instanceof DoorSquare) { ((DoorSquare)
+		 * future).getRoom().addPlayer(player); return true; }
+		 *
+		 * return true;
+		 */
 	}
 
 	public final Square squareAt(int x, int y) {
@@ -563,8 +542,12 @@ public class Board {
 		return board[x][y];
 	}
 
+	/**
+	 * Draw the board and display it on the console
+	 */
 	public void drawBoard() {
 		System.out.printf("   ");
+
 		// Print out y coordinates
 		for (Alphabet a : Alphabet.values())
 			System.out.printf(a.name() + " ");

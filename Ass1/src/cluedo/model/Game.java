@@ -206,12 +206,13 @@ public class Game {
 
 					MoveCommand move = new MoveCommand(READER, this);
 
-					if (getBoard().isValid(current,
-							move.getX(),
-							move.getY(), roll)) {
+					if (getBoard().isValid(current, move.getX(), move.getY(),
+							roll)) {
 
 						move.execute(this);
-						if (DEBUG) System.out.println("newX: " + p.getX() + "newY: " + p.getY());
+						if (DEBUG)
+							System.out.println("newX: " + p.getX() + "newY: "
+									+ p.getY());
 						break;
 					} else
 						System.out
@@ -270,8 +271,10 @@ public class Game {
 						for (Player c : players) {
 							if (!c.equals(current)) {
 								if (checkSuggestion(suggest, c)) {
-									System.out.println("*** " + c.getName()
-											+ " can refute this suggestion ***");
+									System.out
+											.println("*** "
+													+ c.getName()
+													+ " can refute this suggestion ***");
 									refutes++;
 								}
 							}
@@ -576,6 +579,12 @@ public class Game {
 		return true;
 	}
 
+	/**
+	 * Move a player given a new position, *USE THIS ONE*.
+	 *
+	 * @param newX
+	 * @param newY
+	 */
 	public void move(int newX, int newY) {
 
 		// if (!m_board.isValid(current, dx, dy, roll))
@@ -594,13 +603,13 @@ public class Game {
 		s = m_board.squareAt(current.getX(), current.getY());
 
 		// Lets player enter a room if landed on a door square
-		if(s instanceof DoorSquare){
-			((DoorSquare)s).getRoom().addPlayer(current);
+		if (s instanceof DoorSquare) {
+			((DoorSquare) s).getRoom().addPlayer(current);
 		}
 
 		// Find the square that the player lands on and add the player to it
-		else{
-		((InhabitableSquare) s).addPlayer(current);
+		else {
+			((InhabitableSquare) s).addPlayer(current);
 		}
 	}
 
@@ -652,6 +661,7 @@ public class Game {
 	public final List<DoorSquare> getJumpLocations() {
 		return m_board.getJumpLocations(current, getRoll());
 	}
+
 	/**
 	 * Check if the accusation was correct
 	 *
